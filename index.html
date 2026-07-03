@@ -217,7 +217,7 @@ body.theme-paper{background:#f6f5f1}
 .swipe-hint-lbl{font-size:9px;color:rgba(255,255,255,.18);text-align:center;padding:4px 0 8px;letter-spacing:.05em}
 .exp-filter-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 12px;font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;font-family:inherit;color:var(--txt)}
 .exp-filter-btn.active{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.4);color:var(--acc)}
-.td-hdr-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 8px;font-size:15px;cursor:pointer;transition:all .15s;color:var(--mut);flex-shrink:0}
+.td-hdr-btn{position:relative;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 8px;font-size:15px;cursor:pointer;transition:all .15s;color:var(--mut);flex-shrink:0}
 .td-hdr-btn:active{background:rgba(255,255,255,.12)}
 .td-hdr-btn-close{font-size:13px;font-weight:800}
 .exp-filter-panel{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px 14px;margin-bottom:12px;animation:fadeIn .18s ease}
@@ -562,6 +562,20 @@ textarea.fi{resize:none}
 /* ── TOAST ── */
 .tst{position:fixed;bottom:calc(var(--nh)+18px);left:50%;transform:translateX(-50%) translateY(20px);background:#1e2a3a;border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:700;color:var(--txt);white-space:nowrap;z-index:999;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none}
 .tst.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── PWA TELEPÍTÉS BANNER ── */
+.pwaBanner{position:fixed;left:12px;right:12px;bottom:calc(var(--nh) + 10px);max-width:406px;margin:0 auto;background:var(--bg2);border:1.5px solid var(--brd);border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 10px 32px rgba(0,0,0,.5);z-index:180;transform:translateY(140%);opacity:0;transition:transform .35s cubic-bezier(.34,1.15,.64,1),opacity .3s;pointer-events:none}
+.pwaBanner.on{transform:translateY(0);opacity:1;pointer-events:auto}
+.pwaBanner .pwaClose{position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:50%;background:var(--bg3);border:1.5px solid var(--brd);color:var(--mut);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;padding:0}
+.pwaBanner .pwaIco{width:38px;height:38px;border-radius:12px;background:var(--adim);border:1.5px solid var(--ab);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.pwaBanner .pwaTxt{flex:1;min-width:0;cursor:pointer}
+.pwaBanner .pwaTtl{font-size:12.5px;font-weight:800;color:var(--txt);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pwaBanner .pwaSub{font-size:10.5px;color:var(--mut);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pwaBanner .pwaBtn{background:var(--acc);color:#0a0e1a;border:none;border-radius:11px;padding:9px 13px;font-size:12px;font-weight:900;cursor:pointer;flex-shrink:0;font-family:inherit;letter-spacing:.01em}
+.pwaStep{display:flex;align-items:flex-start;gap:10px;background:var(--bg3);border:1px solid var(--brd);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.pwaStepNum{width:22px;height:22px;border-radius:50%;background:var(--adim);border:1.5px solid var(--ab);color:var(--acc);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pwaStepTxt{font-size:12.5px;color:var(--txt);line-height:1.5;padding-top:1px}
+.pwaStepTxt b{color:var(--acc)}
 
 /* ── EMPTY ── */
 .emp{text-align:center;padding:48px 24px}
@@ -1547,7 +1561,7 @@ textarea.fi{resize:none}
         <div class="td-trip-name" id="tdTripName">–</div>
         <div class="td-trip-dest" id="tdTripDest"></div>
       </div>
-      <button class="td-hdr-btn" onclick="dashOpenId&&openTripChat(dashOpenId)" title="Csoportos chat">💬</button>
+      <button class="td-hdr-btn" onclick="dashOpenId&&openTripChat(dashOpenId)" title="Csoportos chat">💬<span class="hbtn-badge" id="tdChatBadge" style="display:none">0</span></button>
       <button class="td-hdr-btn" onclick="dashOpenId&&openTripMembers(dashOpenId)" title="Résztvevők">👥</button>
       <button class="td-hdr-btn" onclick="dashOpenId&&openExtraToolsForTrip(dashOpenId)" title="Extra eszközök">🧰</button>
       <button class="td-hdr-btn td-hdr-btn-close" onclick="dashOpenId&&openSum(dashOpenId)" id="tdCloseBtn" title="Lezárás">🔒</button>
@@ -1615,6 +1629,39 @@ textarea.fi{resize:none}
 
 <button class="fab" id="fab" onclick="fabAct()" style="display:none">⚡</button>
 <div class="tst" id="tst"></div>
+
+<!-- ══ PWA TELEPÍTÉS BANNER ══ -->
+<div class="pwaBanner" id="pwaBanner">
+  <button class="pwaClose" id="pwaCloseBtn" onclick="pwaBannerClose()">✕</button>
+  <div class="pwaIco" id="pwaIco">📲</div>
+  <div class="pwaTxt" onclick="openPwaInfoModal()">
+    <div class="pwaTtl" id="pwaBannerTtl">Telepítsd az appot</div>
+    <div class="pwaSub" id="pwaBannerSub">Egy koppintással a kezdőképernyőn</div>
+  </div>
+  <button class="pwaBtn" id="pwaBtn" onclick="pwaBannerAction()">Telepítés</button>
+</div>
+
+<!-- ══ PWA TELEPÍTÉS INFO MODAL ══ -->
+<div class="mbg" id="pwaInfoMbg" style="z-index:1000" onclick="if(event.target===this)closePwaInfoModal()">
+  <div class="modal">
+    <div class="dpill"></div>
+    <div class="mhdr"><span class="mttl">📲 App telepítése</span><button class="mcls" onclick="closePwaInfoModal()">✕</button></div>
+    <div class="mbdy" id="pwaInfoBody" style="padding-top:6px"></div>
+    <div class="mft" id="pwaInfoFooter"></div>
+  </div>
+</div>
+
+<!-- ══ PWA "LEGKÖZELEBB IS?" MEGERŐSÍTŐ MODAL ══ -->
+<div class="cfbg" id="pwaAskMbg">
+  <div class="cfbox">
+    <div class="cficon">📲</div>
+    <div class="cfmsg">Legközelebb is emlékeztesselek, hogy telepítsd az appot a kezdőképernyődre?</div>
+    <div class="cfbtns">
+      <button class="btns" onclick="pwaAskAgainAnswer(false)">Ne mutasd többé</button>
+      <button class="btnp" onclick="pwaAskAgainAnswer(true)">Igen, emlékeztess</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══ EXP VIEWER OVERLAY (in-app popup helyett) ══ -->
 <div id="expViewerOverlay" style="position:fixed;inset:0;z-index:9000;background:#0a0e1a;display:none;flex-direction:column;">
@@ -1734,7 +1781,7 @@ textarea.fi{resize:none}
           <div id="qaConvInfo" style="font-size:10px;color:var(--acc);margin-top:4px;font-weight:700"></div>
         </div>
       </div>
-      <div class="fld"><div class="flbl" id="fEN"></div><div class="ac-wrap"><input class="fi" id="qaNev" type="text" autocomplete="off" oninput="nevAC(this.value)" onblur="setTimeout(hideNevAC,600)"><div class="ac-list" id="nevAcL"></div></div></div>
+      <div class="fld"><div class="flbl" id="fEN"></div><input class="fi" id="qaNev" type="text" autocomplete="off"></div>
       <div class="two">
         <div class="fld"><div class="flbl" id="fED"></div><input class="fi" id="qaDat" type="date" oninput="checkPend()"></div>
         <div class="fld"><div class="flbl" id="fET"></div><input class="fi" id="qaIdo" type="time" oninput="checkPend()"></div>
@@ -1830,6 +1877,10 @@ textarea.fi{resize:none}
     <div class="sosec">
       <div class="soscl">🔗 <span id="soShareLbl">App megosztása</span></div>
       <div class="sorow" onclick="openAppShareModal()"><div class="sorinf"><div class="sorl" id="soShareRL">App linkjének küldése</div><div class="sors" id="soShareRS">Küldd el valakinek, hogy megnyithassa/telepíthesse a MONYK-ot — utazás és kód nélkül is</div></div><span class="sorchv">›</span></div>
+    </div>
+    <div class="sosec">
+      <div class="soscl">📲 <span id="soPwaLbl">Telepítés</span></div>
+      <div class="sorow" onclick="openPwaInfoModal()"><div class="sorinf"><div class="sorl" id="soPwaRL">App telepítése a kezdőképernyőre</div><div class="sors" id="soPwaRS">Android és iPhone útmutató</div></div><span class="sorchv">›</span></div>
     </div>
     <div class="sosec"><div class="soscl" id="soSLang"></div><div class="lchips" id="langChips"></div></div>
     <div class="sosec">
@@ -2918,6 +2969,15 @@ function selDest(i){
 }
 function hideDestAC(){const l=$('destAcL');if(l)l.style.display='none';}
 
+// Ha az utazáshoz nincs kifejezetten beállítva valuta, megpróbáljuk kitalálni
+// a cél (trip.cel) szövegéből – város és/vagy ország név alapján a DESTS listából.
+function guessCurrencyFromDest(destStr){
+  if(!destStr)return null;
+  const q=destStr.toLowerCase();
+  const hit=DESTS.find(d=>q.includes(d[0].toLowerCase())||q.includes(d[1].toLowerCase())||q.includes(d[2].toLowerCase()));
+  return hit?hit[4]:null;
+}
+
 function airportAC(which,val){
   const lst=$(which==='From'?'aacFrom':'aacTo');if(!val||val.length<2){lst.style.display='none';return;}
   const q=val.toLowerCase();
@@ -3458,6 +3518,7 @@ function openTripDash(id, cardEl, instant){
     ? ` · ${getCurSym(trip.valuta)} ${trip.valuta.toUpperCase()}`
     : (trip.valuta ? ` · ${getCurSym(trip.valuta)}` : '');
   set('tdTripDest',trip.cel?'📍 '+trip.cel+destCurLabel:(trip.valuta?getCurSym(trip.valuta)+' '+trip.valuta.toUpperCase():''));
+  if(typeof window.refreshHeaderChatBadge==='function') window.refreshHeaderChatBadge();
   renderTdBS(trip);
 
   // Labels
@@ -4739,7 +4800,7 @@ function renderRep(){
 
   // ── #4 EGYESÍTETT személyes kártyák (egyenleg + lista egy kártyán) ──
   const personCardsHTML=tgk.length>0?`<div class="secdiv">👤 ${t('repExportPerson')}</div>`+tgk.map((tg,idx)=>{
-    const isMe=idx===0;
+    const isMe=meId?tg.id===meId:idx===0;
     const paidTg=Math.round(paid[tg.id]||0);
     const shareTg=Math.round(shold[tg.id]||0);
     const bal=bals.find(b=>b.id===tg.id);
@@ -5615,7 +5676,7 @@ function openQA(tid,eid){
   setH('catGrd',kats.map(k=>`<button class="cbtn${k.id===selKat?' on':''}" onclick="selCat(this,'${k.id}')">`+
     `<span class="cbi">${k.ikon}</span>${k.nev}</button>`).join(''));
   // Felső = utazás valutája (ahol fizetsz), Alsó = saját alapvaluta
-  const tripCur=(trip.valuta||BASE_CURRENCY).toUpperCase();
+  const tripCur=(trip.valuta||guessCurrencyFromDest(trip.cel)||BASE_CURRENCY).toUpperCase();
   const homeCur=(homeCurrencies[0]||'EUR').toUpperCase();
   const vs=$('qaVal');
   if(vs) vs.innerHTML=CURRENCIES.map(c=>`<option value="${c.code}"${c.code===tripCur?' selected':''}>${c.symbol} ${c.code}</option>`).join('');
@@ -7387,6 +7448,124 @@ function showConfirm(msg,cb,icon){
 }
 function cfOk(){$('cfMbg').classList.remove('on');if(cfCallback){cfCallback();cfCallback=null;}}
 function cfCancel(){$('cfMbg').classList.remove('on');cfCallback=null;}
+
+// ══════════════════════════════════════
+// PWA TELEPÍTÉS BANNER
+// ══════════════════════════════════════
+// Csak akkor releváns, ha az app önállóan (böngészőben/telepítve) fut,
+// nem pedig a főapp iframe-jébe ágyazva – iframe módban a fő MONYK app
+// már saját telepítési logikával rendelkezik.
+const PWA_PREF_KEY='monyk_travel_pwaBannerPref'; // 'hide' = ne mutassa automatikusan többé
+let pwaDeferredPrompt=null;
+
+function pwaIsStandalone(){
+  try{
+    return window.matchMedia('(display-mode: standalone)').matches
+      || window.navigator.standalone===true
+      || document.referrer.indexOf('android-app://')===0;
+  }catch(e){ return false; }
+}
+function pwaIsIOS(){
+  try{
+    return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  }catch(e){ return false; }
+}
+function pwaGetPref(){ try{ return localStorage.getItem(PWA_PREF_KEY); }catch(e){ return null; } }
+function pwaSetPref(v){ try{ localStorage.setItem(PWA_PREF_KEY,v); }catch(e) { console.warn('[MONYK]', e); } }
+
+window.addEventListener('beforeinstallprompt',(e)=>{
+  e.preventDefault();
+  pwaDeferredPrompt=e;
+  pwaUpdateBannerContent();
+  pwaMaybeAutoShow();
+});
+window.addEventListener('appinstalled',()=>{
+  pwaDeferredPrompt=null;
+  pwaHideBanner();
+  const mbg=document.getElementById('pwaInfoMbg'); if(mbg) mbg.classList.remove('on');
+});
+
+function pwaUpdateBannerContent(){
+  const ttl=document.getElementById('pwaBannerTtl'), sub=document.getElementById('pwaBannerSub'), btn=document.getElementById('pwaBtn');
+  if(!ttl||!sub||!btn) return;
+  if(pwaIsIOS()){
+    ttl.textContent='Telepítsd az appot';
+    sub.textContent='Oszd meg → Főképernyőhöz adás';
+    btn.textContent='Mutasd';
+  }else if(pwaDeferredPrompt){
+    ttl.textContent='Telepítsd az appot';
+    sub.textContent='Egy koppintással a kezdőképernyőn';
+    btn.textContent='Telepítés';
+  }else{
+    ttl.textContent='Telepítsd az appot';
+    sub.textContent='Böngésző menü → Telepítés / Hozzáadás';
+    btn.textContent='Mutasd';
+  }
+}
+
+function pwaShouldAutoShow(){
+  if(typeof isIframe!=='undefined' && isIframe) return false;
+  if(pwaIsStandalone()) return false;
+  if(pwaGetPref()==='hide') return false;
+  return true;
+}
+function pwaMaybeAutoShow(){
+  if(!pwaShouldAutoShow()) return;
+  const el=document.getElementById('pwaBanner'); if(!el) return;
+  pwaUpdateBannerContent();
+  if(!el.classList.contains('on')) setTimeout(()=>el.classList.add('on'),900);
+}
+function pwaHideBanner(){
+  const el=document.getElementById('pwaBanner'); if(el) el.classList.remove('on');
+}
+window.pwaBannerClose=function(){
+  pwaHideBanner();
+  document.getElementById('pwaAskMbg')?.classList.add('on');
+};
+window.pwaAskAgainAnswer=function(showAgain){
+  pwaSetPref(showAgain?'again':'hide');
+  document.getElementById('pwaAskMbg')?.classList.remove('on');
+  toast(showAgain?'✓ Legközelebb emlékeztetünk':'✓ Rendben, nem mutatjuk többé — de a ⚙️ Beállításokban bármikor megtalálod');
+};
+window.pwaBannerAction=function(){
+  if(pwaIsIOS()){ openPwaInfoModal(); return; }
+  if(pwaDeferredPrompt){
+    pwaHideBanner();
+    pwaDeferredPrompt.prompt();
+    pwaDeferredPrompt.userChoice.then(()=>{ pwaDeferredPrompt=null; }).catch(()=>{});
+  }else{
+    openPwaInfoModal();
+  }
+};
+window.openPwaInfoModal=function(){
+  const body=document.getElementById('pwaInfoBody');
+  const foot=document.getElementById('pwaInfoFooter');
+  if(!body||!foot) return;
+  if(pwaIsStandalone()){
+    body.innerHTML=`<div style="font-size:13px;color:var(--mut);line-height:1.6;text-align:center;padding:8px 0 4px">✅ Az app már telepítve van a kezdőképernyődre.</div>`;
+    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">Rendben</button>`;
+  }else if(pwaIsIOS()){
+    body.innerHTML=`
+      <div style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5">iPhone-on/iPaden a Safari böngészőből tudod hozzáadni az appot a kezdőképernyőhöz — utána egy sima ikonként nyílik meg, böngészősáv nélkül.</div>
+      <div class="pwaStep"><div class="pwaStepNum">1</div><div class="pwaStepTxt">Nyomd meg a <b>Megosztás</b> ikont (⬆️) a Safari alsó (vagy felső) sávjában</div></div>
+      <div class="pwaStep"><div class="pwaStepNum">2</div><div class="pwaStepTxt">Görgess le, és válaszd: <b>„Főképernyőhöz adás”</b></div></div>
+      <div class="pwaStep"><div class="pwaStepNum">3</div><div class="pwaStepTxt">Koppints a <b>„Hozzáadás”</b> gombra jobb fent</div></div>
+      <div style="font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5">⚠️ Ez csak Safariban működik — Chrome vagy más iOS böngészőben nem jelenik meg ez az opció.</div>`;
+    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">Értem</button>`;
+  }else if(pwaDeferredPrompt){
+    body.innerHTML=`<div style="font-size:13px;color:var(--mut);line-height:1.6;text-align:center;padding:8px 0 4px">Telepítsd a MONYK Travelt a kezdőképernyődre — utána egy sima appként nyílik meg, böngésző nélkül.</div>`;
+    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="pwaBannerAction()">📲 Telepítés most</button>`;
+  }else{
+    body.innerHTML=`
+      <div style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5">Android/Chrome-on a böngésző menüjéből tudod hozzáadni az appot a kezdőképernyőhöz.</div>
+      <div class="pwaStep"><div class="pwaStepNum">1</div><div class="pwaStepTxt">Nyisd meg a böngésző menüjét (⋮ jobb felül)</div></div>
+      <div class="pwaStep"><div class="pwaStepNum">2</div><div class="pwaStepTxt">Válaszd: <b>„Telepítés”</b> vagy <b>„Hozzáadás a kezdőképernyőhöz”</b></div></div>
+      <div class="pwaStep"><div class="pwaStepNum">3</div><div class="pwaStepTxt">Erősítsd meg — az ikon megjelenik a kezdőképernyőn</div></div>`;
+    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">Értem</button>`;
+  }
+  document.getElementById('pwaInfoMbg').classList.add('on');
+};
+window.closePwaInfoModal=function(){ document.getElementById('pwaInfoMbg')?.classList.remove('on'); };
 
 // ══════════════════════════════════════
 // CHART
@@ -9269,6 +9448,10 @@ window.addEventListener('message', function(ev){
     }
     renderAll();
     applyLang();
+    // Személyes (tag-szintű) valutaárfolyamok lekérése – enélkül a riportban és a
+    // tételeknél sosem jelenik meg mindenki saját alapvalutájában az összeg,
+    // mert a normál (iframe) indítási úton korábban ez sosem futott le.
+    prefetchAllPersonRates().then(()=>{ renderRep(); renderExps(); renderTrips(); });
     // Azonnali tab váltás átmenet nélkül (újranyitáskor az előző tab villanását megakadályozza)
     const _trkEl = $('trk');
     if(_trkEl){ _trkEl.classList.add('nt'); _trkEl.style.transform='translateX(0%)'; void _trkEl.offsetHeight; }
@@ -9386,6 +9569,10 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   // Önálló megnyitás (böngészőből) vs iframe (app) megkülönböztetése
   const isIframe = (window.self !== window.top);
+  window.isIframe = isIframe;
+
+  // PWA telepítés banner – csak önálló (nem iframe) megnyitáskor releváns
+  if(!isIframe){ pwaMaybeAutoShow(); }
 
   // Ha iframe módban fut, az overlay szülő kezeli a top safe area-t → csak --sat-ot nullázzuk
   // A --sab-ot az iframe maga kezeli (bnav padding), különben a tartalom a nav sáv alá kerülne
@@ -9458,7 +9645,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   async function monykInitPush(){
     if(!pushSupported) return false;
     try{
-      swReg=await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      swReg=await navigator.serviceWorker.register('firebase-messaging-sw.js');
       messaging=firebase.messaging();
       messaging.onMessage(function(payload){
         // előtérben lévő appnál nem natív push-ot mutatunk, hanem toast-ot
@@ -10354,10 +10541,19 @@ document.addEventListener('DOMContentLoaded',async()=>{
   // ── fejléc chat-badge frissítése (összes megosztott utazás olvasatlan üzenete) ──
   window.refreshHeaderChatBadge=function(){
     const el=document.getElementById('hdrChatBadge');
-    if(!el) return;
-    const n=totalChatUnread();
-    if(n>0){ el.textContent=n>99?'99+':String(n); el.style.display='flex'; }
-    else{ el.style.display='none'; }
+    if(el){
+      const n=totalChatUnread();
+      if(n>0){ el.textContent=n>99?'99+':String(n); el.style.display='flex'; }
+      else{ el.style.display='none'; }
+    }
+    // Trip Dashboard fejléc 💬 gombjának jelvénye (az éppen nyitva lévő utazáshoz)
+    const tdEl=document.getElementById('tdChatBadge');
+    if(tdEl){
+      const dTrip=typeof dashOpenId!=='undefined'&&dashOpenId?trips.find(t=>t.id===dashOpenId):null;
+      const n2=dTrip?chatUnreadCount(dTrip):0;
+      if(n2>0){ tdEl.textContent=n2>99?'99+':String(n2); tdEl.style.display='flex'; }
+      else{ tdEl.style.display='none'; }
+    }
   };
   window.closeExtraTools=function(){
     const bg=document.getElementById('etoBg');
@@ -10813,26 +11009,45 @@ document.addEventListener('DOMContentLoaded',async()=>{
     etoSetBack(true); etoSetTitle('📍 Élő helyzetmegosztás');
     const trip=etoCurrentTrip();
     if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
-    const ls=trip.liveShare||{enabled:false};
+    trip.liveShare=trip.liveShare||{};
+    trip.liveShare.members=trip.liveShare.members||{};
+    const myKey=myProfileName||'Ismeretlen';
+    const mine=trip.liveShare.members[myKey]||{enabled:false};
+    // Lista az összes csapattag legutóbb megosztott pozíciójáról (mindenki a sajátját írja, nem írják egymást felül)
+    const allEntries=Object.entries(trip.liveShare.members).filter(([name])=>name!==myKey);
+    const othersHTML=allEntries.length?`<div class="secdiv" style="margin-top:14px">👥 Csapat pozíciói</div>`+allEntries.map(([name,m])=>{
+      const when=m.lastTs?new Date(m.lastTs).toLocaleString():'még nem osztott meg pozíciót';
+      return `<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:12px;padding:10px 12px;margin-bottom:8px">
+        <div style="min-width:0">
+          <div style="font-weight:700;font-size:13px">${chatEsc(name)} ${m.enabled?'🟢':'⚪'}</div>
+          <div style="font-size:10.5px;color:var(--mut)">${chatEsc(when)}</div>
+        </div>
+        ${m.lastLink?`<button class="abtn" style="flex-shrink:0" onclick="window.open('${m.lastLink}','_blank')">🗺️ Térkép</button>`:''}
+      </div>`;
+    }).join(''):`<div class="eto-note" style="margin-top:14px">Még senki más nem osztott meg pozíciót ebben az utazásban.</div>`;
     etoBody().innerHTML=`
       <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:14px;padding:14px;margin-bottom:14px">
         <div><div style="font-weight:800">Helyzetmegosztás</div><div style="font-size:11px;color:var(--mut)">A csapat láthatja, hol jársz</div></div>
         <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0">
-          <input type="checkbox" id="etoLiveToggle" ${ls.enabled?'checked':''} onchange="etoToggleLive(this.checked)" style="opacity:0;width:0;height:0">
-          <span style="position:absolute;inset:0;background:${ls.enabled?'var(--acc)':'rgba(255,255,255,.15)'};border-radius:26px;transition:.2s;pointer-events:none"></span>
-          <span style="position:absolute;top:3px;left:${ls.enabled?'23px':'3px'};width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s;pointer-events:none"></span>
+          <input type="checkbox" id="etoLiveToggle" ${mine.enabled?'checked':''} onchange="etoToggleLive(this.checked)" style="opacity:0;width:0;height:0">
+          <span style="position:absolute;inset:0;background:${mine.enabled?'var(--acc)':'rgba(255,255,255,.15)'};border-radius:26px;transition:.2s;pointer-events:none"></span>
+          <span style="position:absolute;top:3px;left:${mine.enabled?'23px':'3px'};width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s;pointer-events:none"></span>
         </label>
       </div>
       <button class="btnp" style="width:100%;margin-bottom:10px" onclick="etoShareLocationNow()">📍 Pozíció megosztása most</button>
       <button class="abtn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="etoRequestLocation()">🙋 Frissítést kérek a csapattól</button>
       <button class="abtn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="monykEnableNotifications()">🔔 Értesítések bekapcsolása ezen a készüléken</button>
-      <div id="etoLiveLast" class="eto-note" style="margin-top:0">${ls.lastLink?`Utoljára megosztva: ${new Date(ls.lastTs).toLocaleString()}`:'Még nem osztottál meg pozíciót.'}</div>
-      <div class="eto-note">A kapcsoló jelzi a csapatnak, hogy elérhető vagy — a valós pozíció frissítéséhez nyomd meg a gombot, amikor meg szeretnéd osztani, hol vagy. Amíg ez a képernyő nyitva van, a telefon nem alszik el; háttérbe/zárt appra váltva a frissítés szünetel, de a "Frissítést kérek" gomb push értesítést küld a társaidnak, hogy nyissák meg és osszák meg friss pozíciójukat.</div>`;
-    if(ls.enabled) etoAcquireWakeLock();
+      <div id="etoLiveLast" class="eto-note" style="margin-top:0">${mine.lastLink?`Utoljára megosztva: ${new Date(mine.lastTs).toLocaleString()} · <a href="#" onclick="window.open('${mine.lastLink}','_blank');return false" style="color:var(--acc);font-weight:700">🗺️ Térkép megnyitása</a>`:'Még nem osztottál meg pozíciót.'}</div>
+      <div class="eto-note">A kapcsoló jelzi a csapatnak, hogy elérhető vagy — a valós pozíció frissítéséhez nyomd meg a gombot, amikor meg szeretnéd osztani, hol vagy. Amíg ez a képernyő nyitva van, a telefon nem alszik el; háttérbe/zárt appra váltva a frissítés szünetel, de a "Frissítést kérek" gomb push értesítést küld a társaidnak, hogy nyissák meg és osszák meg friss pozíciójukat.${othersHTML}</div>`;
+    if(mine.enabled) etoAcquireWakeLock();
   };
   window.etoToggleLive=function(checked){
     const trip=etoCurrentTrip(); if(!trip)return;
-    trip.liveShare=trip.liveShare||{}; trip.liveShare.enabled=checked; saveTrips(); window.etoShowLive();
+    trip.liveShare=trip.liveShare||{}; trip.liveShare.members=trip.liveShare.members||{};
+    const myKey=myProfileName||'Ismeretlen';
+    trip.liveShare.members[myKey]=trip.liveShare.members[myKey]||{};
+    trip.liveShare.members[myKey].enabled=checked;
+    saveTrips(); window.etoShowLive();
   };
   window.etoShareLocationNow=function(){
     const trip=etoCurrentTrip(); if(!trip)return;
@@ -10840,12 +11055,22 @@ document.addEventListener('DOMContentLoaded',async()=>{
     navigator.geolocation.getCurrentPosition(function(pos){
       const latitude=pos.coords.latitude, longitude=pos.coords.longitude;
       const link=`https://maps.google.com/?q=${latitude},${longitude}`;
-      trip.liveShare=trip.liveShare||{}; trip.liveShare.lastLink=link; trip.liveShare.lastTs=Date.now();
+      trip.liveShare=trip.liveShare||{}; trip.liveShare.members=trip.liveShare.members||{};
+      const myKey=myProfileName||'Ismeretlen';
+      trip.liveShare.members[myKey]=trip.liveShare.members[myKey]||{};
+      trip.liveShare.members[myKey].enabled=true;
+      trip.liveShare.members[myKey].lastLink=link;
+      trip.liveShare.members[myKey].lastTs=Date.now();
       saveTrips();
       if(navigator.share){ navigator.share({title:'Az én pozícióm',text:'Itt vagyok most:',url:link}).catch(()=>{}); }
       else if(navigator.clipboard){ navigator.clipboard.writeText(link); toast('📋 Link a vágólapon'); }
       window.etoShowLive();
-    },function(){ toast('❌ Nem sikerült lekérni a pozíciót'); },{enableHighAccuracy:true,timeout:10000});
+    },function(err){
+      const msg=err&&err.code===1?'❌ Nincs engedélyezve a helymeghatározás (ellenőrizd a böngésző/telefon beállításait)':
+                 err&&err.code===2?'❌ A pozíció jelenleg nem elérhető':
+                 err&&err.code===3?'❌ Túl sokáig tartott a pozíció lekérése':'❌ Nem sikerült lekérni a pozíciót';
+      toast(msg);
+    },{enableHighAccuracy:true,timeout:10000});
   };
   // "Frissítést kérek" – ezt a meglévő trip-metaadat szinkron (liveShare)
   // viszi át a többiekhez; nyitott appnál toast jelzi, zárt appnál a Cloud
