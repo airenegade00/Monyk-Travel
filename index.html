@@ -21,35 +21,60 @@
   --grn:#10b981;--wrn:#f59e0b;--red:#ef4444;--blu:#38bdf8;
   --nh:60px;
 }
-/* ── 🌴 TROPIC ── */
-.theme-tropic{
-  --bg:#071a12;--bg2:#0d2118;--bg3:#122a1f;
-  --acc:#2dd4a0;--acc2:#22b889;
-  --adim:rgba(45,212,160,.12);--ab:rgba(45,212,160,.28);
-  --brd:rgba(255,255,255,.08);
-  --txt:#e8fdf4;--mut:rgba(232,253,244,.4);
+/* ── 📄 PAPER (light) ── */
+.theme-paper{
+  --bg:#f6f5f1;--bg2:#ffffff;--bg3:#ebe9e2;
+  --acc:#3d5a80;--acc2:#2f4a66;
+  --adim:rgba(61,90,128,.10);--ab:rgba(61,90,128,.28);
+  --brd:rgba(20,20,20,.10);
+  --txt:#1b1d21;--mut:rgba(27,29,33,.48);
 }
-/* ── 🌅 SUNSET ── */
-.theme-sunset{
-  --bg:#1a0a0e;--bg2:#241018;--bg3:#2e1520;
-  --acc:#fb923c;--acc2:#f97316;
-  --adim:rgba(251,146,60,.12);--ab:rgba(251,146,60,.28);
-  --brd:rgba(255,255,255,.08);
-  --txt:#fff1ec;--mut:rgba(255,241,236,.4);
-}
-/* ── 🌊 OCEAN ── */
-.theme-ocean{
-  --bg:#040f1a;--bg2:#071828;--bg3:#0a2035;
-  --acc:#38bdf8;--acc2:#0ea5e9;
-  --adim:rgba(56,189,248,.12);--ab:rgba(56,189,248,.28);
-  --brd:rgba(255,255,255,.08);
-  --txt:#e0f4ff;--mut:rgba(224,244,255,.4);
-}
+/* ── Paper: lightened header / hero / overlay sections that were hardcoded dark ── */
+.theme-paper .hdr,
+.theme-paper .sohdr,
+.theme-paper .td-hdr{background:linear-gradient(180deg,var(--bg2),var(--bg));border-bottom-color:var(--brd)}
+.theme-paper .logo{color:var(--txt)}
+.theme-paper .tch,
+.theme-paper .tc.aktiv .tch{background:linear-gradient(135deg,var(--bg3),var(--bg2))!important}
+.theme-paper .xbtn{background:rgba(20,20,20,.05);border-color:rgba(20,20,20,.15)}
+.theme-paper .td-drag-hint{background:rgba(20,20,20,.15)}
+.theme-paper .fchip{background:rgba(20,20,20,.05);border-color:rgba(20,20,20,.12);color:rgba(20,20,20,.55)}
+.theme-paper .tcdst{color:rgba(20,20,20,.5)}
+.theme-paper .tc-stat2-l{color:rgba(20,20,20,.4)}
+.theme-paper .ec-swbtn span{color:rgba(20,20,20,.75)}
+.theme-paper .ec-chev{color:rgba(20,20,20,.3)}
+.theme-paper .ec-dl{color:rgba(20,20,20,.3)}
+.theme-paper .ec-note{color:rgba(20,20,20,.45)}
+.theme-paper .swipe-hint-lbl{color:rgba(20,20,20,.2)}
+.theme-paper .exp-filter-sec{color:rgba(20,20,20,.35)}
+.theme-paper .mli.mli-fam{background:rgba(20,20,20,.02);border-color:rgba(20,20,20,.08)}
+.theme-paper .terv-nav-btn{color:rgba(20,20,20,.45)}
+.theme-paper .tday-sum-sep{color:rgba(20,20,20,.18)}
+.theme-paper .tl-hour-lbl{color:rgba(20,20,20,.25)}
+.theme-paper .exp-day-cnt{color:rgba(20,20,20,.25)}
+.theme-paper .ec-card.ec-pend,
+.theme-paper .er.pend-bar .ec-card.ec-pend{background:var(--bg3)}
+.theme-paper #expViewerOverlay{background:var(--bg)}
+.theme-paper #expViewerOverlay>div{background:var(--bg2)!important;border-bottom-color:var(--brd)!important}
+.theme-paper #expViewerIframe{background:var(--bg)}
+.theme-paper .tcs,
+.theme-paper .tc.aktiv .tcs{background:rgba(20,20,20,.04)}
+.theme-paper .tc-stats2,
+.theme-paper .rep-dash-stats,
+.theme-paper .psc-big-split-item,
+.theme-paper .pc-stat{background:rgba(20,20,20,.05)}
+/* Accent-colored buttons: switch to white text since Paper's accent is a mid-tone blue, not yellow */
+.theme-paper .btnp,
+.theme-paper .fab,
+.theme-paper .terv-nav-btn.on,
+.theme-paper .mcr.sel .mcbox,
+.theme-paper .mcr-grp-hdr.sel-all .mcbox,
+.theme-paper .widget-opt.on .widget-opt-chk{color:#fff}
 html,body{width:100%;height:100%;overflow:hidden;background:#000;color:var(--txt);font-family:'Bricolage Grotesque',-apple-system,sans-serif;line-height:1.4}
 .shell{position:fixed;inset:0;display:flex;flex-direction:column;max-width:430px;margin:0 auto;background:var(--bg)}
 
 /* ── THEME scope a body-n lévő fixed elemekhez (modálok) ── */
-body.theme-tropic,body.theme-sunset,body.theme-ocean{background:#000}
+body.theme-paper{background:#f6f5f1}
 
 /* ── HEADER ── */
 .hdr{background:linear-gradient(180deg,#0d1628,#0a0e1a);border-bottom:1px solid var(--brd);flex-shrink:0;padding:6px 18px 6px;padding-top:max(6px,env(safe-area-inset-top))}
@@ -57,7 +82,8 @@ body.theme-tropic,body.theme-sunset,body.theme-ocean{background:#000}
 .logo{font-size:20px;font-weight:900;letter-spacing:2.5px;color:#f0ece4}.logo span{color:var(--acc)}
 .badge{font-size:8px;font-weight:800;background:var(--adim);border:1px solid var(--ab);color:var(--acc);padding:2px 7px;border-radius:20px;margin-left:6px;letter-spacing:.05em}
 .hacts{display:flex;gap:4px;align-items:center}
-.hbtn{background:transparent;border:none;padding:7px;color:var(--mut);font-size:18px;cursor:pointer;border-radius:10px}
+.hbtn{position:relative;background:transparent;border:none;padding:7px;color:var(--mut);font-size:18px;cursor:pointer;border-radius:10px}
+.hbtn-badge{position:absolute;top:2px;right:2px;min-width:14px;height:14px;padding:0 4px;border-radius:8px;background:var(--red);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;letter-spacing:0}
 .xbtn{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:7px 13px;color:var(--txt);font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
 
 /* ── BUDGET STRIP ── */
@@ -308,8 +334,22 @@ textarea.fi{resize:none}
 
 /* ── TRIP MEMBER LIST (in form) ── */
 .mli{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:1.5px solid var(--brd);border-radius:14px;margin-bottom:8px}
+.mli.mli-fam{margin-left:20px;padding:8px 12px;background:rgba(255,255,255,.02);border-color:rgba(255,255,255,.08);position:relative}
+.mli.mli-fam::before{content:'↳';position:absolute;left:-16px;top:50%;transform:translateY(-50%);color:var(--mut);font-size:13px}
 .mliem{font-size:26px;cursor:pointer}
+.mli-fam .mliem{font-size:20px}
+.mlifb{background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);border-radius:8px;padding:5px 8px;font-size:11px;font-weight:700;cursor:pointer;color:var(--acc);font-family:inherit;white-space:nowrap;flex-shrink:0}
 .mlid{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:5px 9px;font-size:12px;cursor:pointer;color:var(--red);font-family:inherit}
+
+/* ── SPLIT LIST FAMILY GROUPING ── */
+.mcr-grp{margin-bottom:6px}
+.mcr-grp-hdr{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(245,200,66,.05);border:1.5px dashed rgba(245,200,66,.3);border-radius:12px;margin-bottom:5px;cursor:pointer}
+.mcr-grp-hdr .mcico{font-size:16px}
+.mcr-grp-hdr .mcnm{flex:1;font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.mcr-grp-hdr.sel-all .mcbox{background:var(--acc);border-color:var(--acc);color:#0a0e1a}
+.mcr-grp-body{padding-left:12px;margin-left:9px;border-left:2px solid rgba(245,200,66,.15)}
+.mcr.mcr-fam{padding:8px 12px;margin-bottom:5px}
+.mcr.mcr-fam .mcico{font-size:18px}
 
 /* ── EXPAND BTN ── */
 .expbtn{width:100%;padding:10px;background:rgba(255,255,255,.04);border:1.5px dashed var(--brd);border-radius:12px;color:var(--acc);font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;font-family:inherit}
@@ -1369,6 +1409,46 @@ textarea.fi{resize:none}
 }
 </style>
 
+<style>
+/* ══ EXTRA ESZKÖZÖK (Extra Tools) ══ */
+.eto-bg{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column}
+.eto-bg.on{display:flex}
+.eto-hdr{display:flex;align-items:center;gap:10px;padding:14px 16px;padding-top:max(14px,env(safe-area-inset-top));border-bottom:1px solid var(--brd);flex-shrink:0;background:var(--bg2)}
+.eto-back{background:rgba(255,255,255,.08);border:none;border-radius:50%;width:32px;height:32px;font-size:16px;color:var(--txt);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;flex-shrink:0}
+.eto-ttl{font-size:15px;font-weight:800;flex:1}
+.eto-body{flex:1;overflow-y:auto;padding:16px;padding-bottom:calc(24px + var(--sab,env(safe-area-inset-bottom,0px)))}
+.eto-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.eto-card{background:var(--bg2);border:1.5px solid var(--brd);border-radius:16px;padding:16px 12px;display:flex;flex-direction:column;gap:8px;cursor:pointer;font-family:inherit;text-align:left}
+.eto-card .ic{font-size:26px}
+.eto-card .lbl{font-size:12.5px;font-weight:800;line-height:1.25;color:var(--txt)}
+.eto-sec{margin-bottom:18px}
+.eto-doc{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:12px;padding:10px;margin-bottom:8px}
+.eto-doc img{width:44px;height:44px;object-fit:cover;border-radius:8px;flex-shrink:0;cursor:pointer}
+.eto-doc .picn{width:44px;height:44px;border-radius:8px;flex-shrink:0;cursor:pointer;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);display:flex;align-items:center;justify-content:center;font-size:18px}
+.eto-doc .nm{flex:1;font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eto-poll-opt{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:12px;padding:10px 12px;margin-bottom:2px;cursor:pointer}
+.eto-poll-bar{position:relative;height:6px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-bottom:8px}
+.eto-poll-fil{position:absolute;left:0;top:0;height:100%;background:var(--acc);border-radius:4px;transition:width .4s}
+.eto-conv-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.eto-diary-item{background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:12px;padding:10px;margin-bottom:10px}
+.eto-diary-item img{width:100%;border-radius:10px;margin-bottom:8px;max-height:220px;object-fit:cover}
+.eto-note{font-size:11px;color:var(--mut);line-height:1.5;margin-top:10px}
+.eto-chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 210px);min-height:320px}
+.eto-chat-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px;padding-bottom:8px}
+.eto-chat-msg{max-width:78%;display:flex;flex-direction:column;margin-bottom:8px}
+.eto-chat-msg.mine{align-self:flex-end;align-items:flex-end}
+.eto-chat-msg:not(.mine){align-self:flex-start;align-items:flex-start}
+.eto-chat-sender{font-size:10.5px;font-weight:800;color:var(--acc);margin-bottom:2px;padding:0 4px}
+.eto-chat-bubble{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:9px 12px;font-size:13.5px;line-height:1.4;white-space:pre-wrap;word-break:break-word}
+.eto-chat-msg.mine .eto-chat-bubble{background:var(--acc);color:#0a0e1a;border-color:var(--acc);font-weight:600}
+.eto-chat-time{font-size:9.5px;color:var(--mut);margin-top:2px;padding:0 4px}
+.eto-chat-inputrow{display:flex;gap:8px;align-items:center;padding-top:10px;border-top:1px solid var(--brd);flex-shrink:0}
+.eto-chat-inputrow .fi{flex:1}
+.eto-chat-inputrow .btnp{width:44px;height:44px;padding:0;flex-shrink:0;font-size:16px}
+.eto-flight-card{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--brd);border-radius:16px;padding:16px;text-align:center;margin-bottom:16px}
+.eto-flight-big{font-size:30px;font-weight:900;font-family:'Courier New',monospace}
+</style>
+
 <div id="travelSplash" style="display:none;">
   <div class="tsp-icon">✈️</div>
   <div class="tsp-title">Üdv a <span>Travel</span> módban!</div>
@@ -1407,14 +1487,13 @@ textarea.fi{resize:none}
         </div>
       </div>
       <div class="hacts">
-        <button id="exitBtn" onclick="exitApp()" title="Vissza a MONYK-ba"
-            style="background:rgba(239,68,68,.12);border:1.5px solid rgba(239,68,68,.5);border-radius:10px;
-                   padding:8px 14px;color:#f87171;font-size:13px;font-weight:900;cursor:pointer;
-                   font-family:inherit;letter-spacing:.02em;display:flex;align-items:center;gap:4px;">
-          ← <span id="exitLbl">Ki</span>
-        </button>
+        <button class="hbtn" id="hdrBackBtn" onclick="universalBack()" title="Vissza">←</button>
+        <button class="hbtn" id="hdrThemeBtn" onclick="toggleTheme()" title="Téma váltás">🌙</button>
+        <button class="hbtn" id="hdrChatBtn" onclick="openChatDirect()" title="Csoportos chat">💬<span class="hbtn-badge" id="hdrChatBadge" style="display:none">0</span></button>
+        <button class="hbtn" onclick="etoShowSharedDocsGlobal()" title="Megosztott dokumentumok">🗂️</button>
         <button class="hbtn" onclick="openSettings()">⚙️</button>
       </div>
+
     </div>
   </div>
   <div class="vp" id="vp">
@@ -1469,8 +1548,9 @@ textarea.fi{resize:none}
         <div class="td-trip-dest" id="tdTripDest"></div>
       </div>
       <button class="td-hdr-btn" onclick="openValuta()" title="Valutaváltó">💱</button>
+      <button class="td-hdr-btn" onclick="dashOpenId&&openExtraToolsForTrip(dashOpenId)" title="Extra eszközök">🧰</button>
       <button class="td-hdr-btn td-hdr-btn-close" onclick="dashOpenId&&openSum(dashOpenId)" id="tdCloseBtn" title="Lezárás">🔒</button>
-      <button class="td-hdr-btn" onclick="exitApp()" title="Vissza a MONYK-ba" style="background:rgba(239,68,68,.15);border:1.5px solid rgba(239,68,68,.4);color:#f87171;font-size:11px;font-weight:900;padding:6px 10px;border-radius:9px;" id="tdExitBtn">← Ki</button>
+      <button class="td-hdr-btn" onclick="closeTripDash()" title="Vissza az utazáslistához" style="background:rgba(255,255,255,.06);border:1.5px solid var(--brd);color:var(--txt);font-size:11px;font-weight:900;padding:6px 10px;border-radius:9px;" id="tdExitBtn">← Vissza</button>
     </div>
     <div class="td-bs" id="tdBs">
       <div class="td-bst">
@@ -1616,7 +1696,7 @@ textarea.fi{resize:none}
           <div class="fld"><div class="flbl" id="fTB"></div><input class="fi mn" id="tKeret" type="number" inputmode="decimal" placeholder="0"></div>
           <div class="fld">
             <div class="flbl" id="fTC"></div>
-            <input class="fi mn" id="tValuta" type="text" maxlength="5" style="text-transform:uppercase;letter-spacing:.05em" oninput="onTValuta(this.value);const v=this.value.toUpperCase();$('fTR')&&($('fTR').textContent='ÁRFOLYAM (1 '+(v||'?')+' = ? '+BASE_CURRENCY+')')">
+            <select class="fi mn" id="tValuta" style="text-transform:uppercase;letter-spacing:.05em" onchange="onTValuta(this.value);const v=this.value.toUpperCase();$('fTR')&&($('fTR').textContent='ÁRFOLYAM (1 '+(v||'?')+' = ? '+BASE_CURRENCY+')')"></select>
             <div class="rts" id="tRS"></div>
           </div>
         </div>
@@ -1739,11 +1819,14 @@ textarea.fi{resize:none}
     <span class="sottl" id="soTtl"></span>
   </div>
   <div class="sobdy">
-    <div class="sosec"><div class="soscl" id="soSLang"></div><div class="lchips" id="langChips"></div></div>
     <div class="sosec">
-      <div class="soscl" id="soThemeLbl"></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0" id="themeChips"></div>
+      <div class="soscl">👤 <span id="soProfileLbl">Profil</span></div>
+      <div class="sorow" style="cursor:default;flex-direction:column;align-items:flex-start;gap:8px">
+        <div class="sors" id="soProfileHint">A neved — ezzel csatlakozol be a megosztott utazásokhoz, és ez lesz az alapértelmezett fizető új tételnél (mindig módosítható).</div>
+        <input class="fi" id="soProfileInp" type="text" maxlength="24" placeholder="pl. Réka" style="width:100%" oninput="setProfileName(this.value)">
+      </div>
     </div>
+    <div class="sosec"><div class="soscl" id="soSLang"></div><div class="lchips" id="langChips"></div></div>
     <div class="sosec">
       <div class="soscl" id="soSKat"></div>
       <div class="sorow" onclick="openKat()"><div class="sorinf"><div class="sorl" id="soKL"></div><div class="sors" id="soKS"></div></div><span class="sorchv">›</span></div>
@@ -1791,6 +1874,8 @@ textarea.fi{resize:none}
       <div class="fld"><div class="flbl">ESEMÉNY NEVE</div><input class="fi" id="tervNev" type="text" placeholder="pl. Colosseum megtekintés"></div>
       <div class="fld"><div class="flbl">TÍPUS</div><div class="cgrd" id="tervTipGrd"></div></div>
       <div class="fld"><div class="flbl">MEGJEGYZÉS</div><input class="fi" id="tervMegj" type="text" placeholder="pl. Jegyek előre megvéve"></div>
+      <div class="fld"><div class="flbl" id="fTervLink">LINK / MAPS URL</div><input class="fi" id="tervLink" type="url" placeholder="https://maps.google.com/..."></div>
+      <div class="fld"><div class="flbl" id="fTervAr">ÁR (opcionális)</div><input class="fi mn" id="tervAr" type="number" inputmode="decimal" placeholder="0"></div>
     </div>
     <div class="mft">
       <button class="btns" onclick="closeTerv()">Mégse</button>
@@ -1809,7 +1894,8 @@ textarea.fi{resize:none}
       <div class="fld"><div class="flbl">TÍPUS</div><div class="cgrd" id="helyTipGrd"></div></div>
       <div class="fld"><div class="flbl">PRIORITÁS</div><div class="prow" id="helyPrioRow"></div></div>
       <div class="fld"><div class="flbl">MEGJEGYZÉS / NYITVATARTÁS</div><textarea class="fi" id="hMegj" rows="2" placeholder="pl. H-P: 9-17"></textarea></div>
-      <div class="fld"><div class="flbl">LINK / MAPS URL</div><input class="fi" id="hLink" type="url" placeholder="https://maps.google.com/..."></div>
+      <div class="fld"><div class="flbl" id="fHLink">LINK / MAPS URL</div><input class="fi" id="hLink" type="url" placeholder="https://maps.google.com/..."></div>
+      <div class="fld"><div class="flbl" id="fHAr">ÁR (opcionális)</div><input class="fi mn" id="hAr" type="number" inputmode="decimal" placeholder="0"></div>
     </div>
     <div class="mft">
       <button class="btns" onclick="closeHely()">Mégse</button>
@@ -1817,11 +1903,23 @@ textarea.fi{resize:none}
     </div>
   </div>
 </div>
+<!-- ══ EXCEL IMPORT ══ -->
+<input type="file" id="xlsImportFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleXlsFile(this)">
+<div class="mbg" id="xlsMbg" onclick="if(event.target===this)closeXlsImport()">
+  <div class="modal" style="max-height:85vh">
+    <div class="dpill"></div>
+    <div class="mhdr"><span class="mttl" id="xlsMttl"></span><button class="mcls" onclick="closeXlsImport()">✕</button></div>
+    <div class="mbdy" id="xlsMbdy" style="overflow-y:auto"></div>
+    <div class="mft" id="xlsMft"></div>
+  </div>
+</div>
 
 <!-- MONYK megosztott utazás – Firebase (Firestore) -->
 <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-messaging-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
 // ══════════════════════════════════════
@@ -1838,7 +1936,14 @@ const CURRENCIES=[
   {code:'MXN',symbol:'MX$'},{code:'BRL',symbol:'R$'},{code:'ARS',symbol:'AR$'},
   {code:'ZAR',symbol:'R'},{code:'MAD',symbol:'MAD'},{code:'EGP',symbol:'E£'},
   {code:'AED',symbol:'AED'},{code:'VND',symbol:'₫'},{code:'MYR',symbol:'RM'},
+  {code:'ISK',symbol:'kr'},{code:'RSD',symbol:'дин'},
 ];
+function populateTValutaOptions(){
+  const sel=document.getElementById('tValuta');if(!sel)return;
+  const prev=sel.value;
+  sel.innerHTML=CURRENCIES.map(c=>`<option value="${c.code}">${c.symbol} ${c.code}</option>`).join('');
+  if(prev)sel.value=prev;
+}
 
 const DESTS=[
   ['Amszterdam','Hollandia','Netherlands','🇳🇱','EUR'],['Athén','Görögország','Greece','🇬🇷','EUR'],
@@ -1924,12 +2029,13 @@ hu:{
   btnNT:'Új utazás',btnQA:'Új tétel',btnCancel:'Mégse',btnSave:'✈️ Mentés',btnAdd:'⚡ Hozzáad',
   btnAM:'Tag hozzáadása',btnDets:'Részletek',btnAct:'✈️ Aktiválás',btnDeact:'🔒 Lezárás',
   btnDel:'Törlés',btnEdit:'Szerkesztés',btnAE:'✏️ Szerkesztés',btnAC:'✓ Bezárás',
-  fc0:'🗺️ Összes',fc1:'📅 Ma',fc2:'⏳ Tervezett',fc3:'👤 Saját',fc4:'🤝 Osztott',
+  fc0:'🗺️ Összes',fc1:'📅 Ma',fc2:'⏳ Tervezett',fc3:'👤 Saját',fc4:'🤝 Közös',
   tmNew:'✈️ Új utazás',tmEdit:'Utazás szerkesztése',
   wzNext:'Tovább →',wzBack:'← Vissza',wzFinish:'✓ Létrehozás',wzSave:'✓ Mentés',
   wz1:'Alapok',wz2:'Utazók',wz3:'Közlekedés',wz4:'Szállás',wz5:'Pénzügy',
   attTransport:'KÖZLEKEDÉS',attAccomm:'SZÁLLÁS',attCosts:'UTAZÁSI KÖLTSÉGEK',
   attWho:'Ki fizette',attSplit:'Kik között',attSave:'Mentés',attAllMembers:'Mindenki',
+  famAdd:'+ családtag',famGroupAll:'{name} családja — mind',
   attNoPayer:'— nem megadva —',attLegCost:'Összeg',attHotCost:'Szállás összege',attTravellers:'UTAZÓK',
   fTN:'UTAZÁS NEVE *',fTD:'CÉLÁLLOMÁS',fTS:'KEZDŐ DÁTUM *',fTE:'ZÁRÓ DÁTUM',
   fTB:'TELJES KERET (opcionális)',fTC:'HELYI VALUTA',fTR:'ÁRFOLYAM (1 helyi = ? alap)',fTM:'👥 UTAZÓTÁRSAK',
@@ -1962,8 +2068,8 @@ hu:{
   tqaVeh:'🚌 JÁRMŰ',vehDef:'🚂 Vonat,🚌 Busz,✈️ Repülő,🚗 Autó,🚢 Hajó,🛵 Roller,🚇 Metro',
   bsL0:'Napi átlag',bsL1:'Maradék',bsL2:'Napok',bsPv:'vs. keret',
   splitFore:'főre',splitOsszesen:'összesen',csomDb:'db',
-  tervNevReq:'Add meg az esemény nevét!',tervSaved:'Esemény mentve',tervDeled:'Esemény törölve',
-  hSaved:'Hely mentve',hDeled:'Hely törölve',hNevReq:'Add meg a hely nevét!',
+  tervNevReq:'Add meg az esemény nevét!',tervSaved:'Esemény mentve',tervDeled:'Esemény törölve',tervLinkLbl:'LINK / MAPS URL',tervArLbl:'ÁR (opcionális)',
+  hSaved:'Hely mentve',hDeled:'Hely törölve',hNevReq:'Add meg a hely nevét!',hLinkLbl:'LINK / MAPS URL',hArLbl:'ÁR (opcionális)',xlsImportBtn:'📥 Import Excelből',xlsImportTitle:'Import Excelből',xlsImportLoading:'Fájl beolvasása...',xlsImportAiLoading:'AI elemzi az oszlopokat...',xlsImportNoName:'Nem található név/helyszín oszlop',xlsImportEmpty:'Nincs importálható sor',xlsImportCount:'sor kiválasztva',xlsImportConfirm:'✅ Import',xlsImportCancel:'Mégse',xlsImportSuccess:'importálva',xlsImportError:'Hiba az import során',xlsPreviewEvent:'📅 Napi program',xlsPreviewPlace:'📍 Hely',xlsImportSwitch:'Kategória csere',
   genDeled:'Törölve',packResetDone:'Lista visszaállítva',
   repPersonal:'Elszámolás',repExport:'📤 Összegző exportálás',repExportPerson:'👤 Személyes export',repExportClose:'Bezárás',repExportShare:'Megosztás',repExportPrint:'Nyomtatás / PDF',repExportTitle:'Utazási összegző',repExportGenerated:'Generálva',packQuick:'GYORS HOZZÁADÁS',
   pcPaid:'Fizetett',pcShare:'Ebből a saját rész',pcOwes:'Tartozik',pcRecv:'Visszakap',pcSettled:'✓ Kiegyenlített',pcMe:'Én',pcAlone:'Egyedül',pcFromShared:'Közösből rám',
@@ -2106,6 +2212,7 @@ de:{
   wz1:'Grundlagen',wz2:'Reisende',wz3:'Transport',wz4:'Unterkunft',wz5:'Finanzen',
   attTransport:'TRANSPORT',attAccomm:'UNTERKUNFT',attCosts:'REISEKOSTEN',
   attWho:'Wer bezahlt',attSplit:'Aufteilen unter',attSave:'Speichern',attAllMembers:'Alle',
+  famAdd:'+ Familienmitglied',famGroupAll:'{name}s Familie — alle',
   attNoPayer:'— nicht angegeben —',attLegCost:'Betrag',attHotCost:'Unterkunftskosten',attTravellers:'REISENDE',
   fTN:'REISENAME *',fTD:'REISEZIEL',fTS:'STARTDATUM *',fTE:'ENDDATUM',
   fTB:'GESAMTBUDGET (optional)',fTC:'LOKALWÄHRUNG',fTR:'WECHSELKURS (1 lokal = ? basis)',fTM:'👥 REISEMITGLIEDER',
@@ -2138,8 +2245,8 @@ de:{
   tqaVeh:'🚌 VERKEHRSMITTEL',vehDef:'🚂 Zug,🚌 Bus,✈️ Flugzeug,🚗 Auto,🚢 Schiff,🛵 Roller,🚇 Metro',
   bsL0:'Tagesdurchschn.',bsL1:'Verbleibend',bsL2:'Tage',bsPv:'vs. Budget',
   splitFore:'Personen',splitOsszesen:'gesamt',csomDb:'Stück',
-  tervNevReq:'Bitte Ereignisname eingeben!',tervSaved:'Ereignis gespeichert',tervDeled:'Ereignis gelöscht',
-  hSaved:'Ort gespeichert',hDeled:'Ort gelöscht',hNevReq:'Bitte Ortsname eingeben!',
+  tervNevReq:'Bitte Ereignisname eingeben!',tervSaved:'Ereignis gespeichert',tervDeled:'Ereignis gelöscht',tervLinkLbl:'LINK / MAPS URL',tervArLbl:'PREIS (optional)',
+  hSaved:'Ort gespeichert',hDeled:'Ort gelöscht',hNevReq:'Bitte Ortsname eingeben!',hLinkLbl:'LINK / MAPS URL',hArLbl:'PREIS (optional)',xlsImportBtn:'📥 Excel importieren',xlsImportTitle:'Excel-Import',xlsImportLoading:'Datei wird gelesen...',xlsImportAiLoading:'KI analysiert Spalten...',xlsImportNoName:'Keine Name/Ort-Spalte gefunden',xlsImportEmpty:'Keine importierbaren Zeilen',xlsImportCount:'Zeilen ausgewählt',xlsImportConfirm:'✅ Importieren',xlsImportCancel:'Abbrechen',xlsImportSuccess:'importiert',xlsImportError:'Fehler beim Import',xlsPreviewEvent:'📅 Tagesplan',xlsPreviewPlace:'📍 Ort',xlsImportSwitch:'Kategorie wechseln',
   genDeled:'Gelöscht',packResetDone:'Liste zurückgesetzt',
   repPersonal:'Abrechnung',repExport:'📤 Zusammenfassung exportieren',repExportPerson:'👤 Persönlicher Export',repExportClose:'Schließen',repExportShare:'Teilen',repExportPrint:'Drucken / PDF',repExportTitle:'Reisezusammenfassung',repExportGenerated:'Erstellt',packQuick:'SCHNELL HINZUFÜGEN',
   pcPaid:'Bezahlt',pcShare:'Davon eigener Anteil',pcOwes:'Schuldet',pcRecv:'Bekommt zurück',pcSettled:'✓ Ausgeglichen',pcMe:'Ich',pcAlone:'Allein',pcFromShared:'Aus Gemeinschaft',
@@ -2277,6 +2384,7 @@ en:{
   wz1:'Basics',wz2:'Travellers',wz3:'Transport',wz4:'Accommodation',wz5:'Finances',
   attTransport:'TRANSPORT',attAccomm:'ACCOMMODATION',attCosts:'TRAVEL COSTS',
   attWho:'Who paid',attSplit:'Split between',attSave:'Save',attAllMembers:'Everyone',
+  famAdd:'+ family member',famGroupAll:'{name}\u2019s family — all',
   attNoPayer:'— not set —',attLegCost:'Amount',attHotCost:'Accommodation cost',attTravellers:'TRAVELLERS',
   fTN:'TRIP NAME *',fTD:'DESTINATION',fTS:'START DATE *',fTE:'END DATE',
   fTB:'TOTAL BUDGET (optional)',fTC:'LOCAL CURRENCY',fTR:'EXCHANGE RATE (1 local = ? base)',fTM:'👥 TRAVEL COMPANIONS',
@@ -2309,8 +2417,8 @@ en:{
   tqaVeh:'🚌 VEHICLE',vehDef:'🚂 Train,🚌 Bus,✈️ Flight,🚗 Car,🚢 Ship,🛵 Scooter,🚇 Metro',
   bsL0:'Daily avg',bsL1:'Remaining',bsL2:'Days',bsPv:'vs. budget',
   splitFore:'people',splitOsszesen:'total',csomDb:'items',
-  tervNevReq:'Please enter an event name!',tervSaved:'Event saved',tervDeled:'Event deleted',
-  hSaved:'Place saved',hDeled:'Place deleted',hNevReq:'Please enter a place name!',
+  tervNevReq:'Please enter an event name!',tervSaved:'Event saved',tervDeled:'Event deleted',tervLinkLbl:'LINK / MAPS URL',tervArLbl:'PRICE (optional)',
+  hSaved:'Place saved',hDeled:'Place deleted',hNevReq:'Please enter a place name!',hLinkLbl:'LINK / MAPS URL',hArLbl:'PRICE (optional)',xlsImportBtn:'📥 Import from Excel',xlsImportTitle:'Excel Import',xlsImportLoading:'Reading file...',xlsImportAiLoading:'AI analyzing columns...',xlsImportNoName:'No name/place column found',xlsImportEmpty:'No importable rows',xlsImportCount:'rows selected',xlsImportConfirm:'✅ Import',xlsImportCancel:'Cancel',xlsImportSuccess:'imported',xlsImportError:'Import error',xlsPreviewEvent:'📅 Daily plan',xlsPreviewPlace:'📍 Place',xlsImportSwitch:'Switch category',
   genDeled:'Deleted',packResetDone:'List reset',
   repPersonal:'Settlement',repExport:'📤 Export summary',repExportPerson:'👤 Personal export',repExportClose:'Close',repExportShare:'Share',repExportPrint:'Print / PDF',repExportTitle:'Trip summary',repExportGenerated:'Generated',packQuick:'QUICK ADD',
   pcPaid:'Paid',pcShare:'Own share',pcOwes:'Owes',pcRecv:'Gets back',pcSettled:'✓ Settled up',pcMe:'Me',pcAlone:'Alone',pcFromShared:'From shared',
@@ -2426,7 +2534,32 @@ let homeCurrencies=['EUR']; // saját alapvaluta(k)
 let editTripId=null, editExpId=null, editExpTrId=null;
 let editMems=[], detsOpen=false, curTransport="none";
 let customKats=null, editKats=[], cfmCallback=null;
-let liveRates=null, ratesBusy=false;
+let liveRates=null, ratesBusy=false, _valRateFetchTs=0;
+// Élő árfolyamok lekérése – elsődleges forrás: Frankfurter (ECB), ha nem elérhető: open.er-api.com
+// A cache 1 óránál nem régebbi eredményt újrahasznál, force=true esetén mindig újat kér.
+async function fetchLiveRates(base='EUR',{force=false}={}){
+  base=(base||'EUR').toUpperCase();
+  const now=Date.now();
+  if(!force&&liveRates&&liveRates.base===base&&liveRates.rates&&(now-(_valRateFetchTs||0))<3600000){
+    return liveRates;
+  }
+  try{
+    const r=await fetch(`https://api.frankfurter.app/latest?base=${base}`,{cache:'no-store'});
+    if(r.ok){
+      const d=await r.json();
+      if(d&&d.rates){liveRates={base:d.base||base,rates:d.rates};_valRateFetchTs=now;return liveRates;}
+    }
+  }catch(e){ console.warn('[MONYK] frankfurter fetch failed',e); }
+  try{
+    const r2=await fetch(`https://open.er-api.com/v6/latest/${base}`,{cache:'no-store'});
+    if(r2.ok){
+      const d2=await r2.json();
+      if(d2&&d2.result==='success'&&d2.rates){liveRates={base:d2.base_code||base,rates:d2.rates};_valRateFetchTs=now;return liveRates;}
+    }
+  }catch(e){ console.warn('[MONYK] fallback fx fetch failed',e); }
+  // Mindkét forrás sikertelen – a meglévő (esetleg elavult) cache-et adjuk vissza, ha van
+  return liveRates;
+}
 // Statikus fallback árfolyamok (EUR alapon) – offline esetén
 const STATIC_RATES_EUR={USD:1.08,GBP:0.856,HUF:395,CHF:0.963,JPY:162,CAD:1.47,AUD:1.64,SEK:11.4,NOK:11.7,DKK:7.46,PLN:4.27,CZK:25.1,RON:4.97,BGN:1.956,TRY:34.8,MXN:19.2,BRL:5.5,INR:89.5,CNY:7.75,KRW:1430,SGD:1.44,THB:38.5,MYR:4.95,IDR:16800,PHP:60.5,AED:3.97,SAR:4.05,ZAR:20.2,ILS:3.95,NZD:1.78,CLP:1010,COP:4530,PEN:4.05,EGP:33.2,MAD:10.8,UAH:43.5,KZT:508,GEL:2.9,AMD:430,AZN:1.84,PKR:300,BDT:117,LKR:330,MMK:2280,VND:26000,HKD:8.44,TWD:34.5,RSD:117};
 function _staticCrossRate(from,to){
@@ -2453,7 +2586,50 @@ let aiTipCache={};     // {tripId: {text, tags, date}}
 let aiTipCacheDate=null, aiTipCacheTrip=null;
 let aiPackCache={}; // {tripId: [{nev, kat, reason}]}
 let aiPlaceCache={}; // {tripId: [{nev, tip, prio, reason, price, hours, distance}]}
+let xlsImportTripId=null, xlsPreviewItems=[];
 try{const dc=localStorage.getItem('monyk_homeCur');if(dc){homeCurrencies=JSON.parse(dc);defaultCurrency=homeCurrencies[0];}}catch(e) { console.warn('[MONYK]', e); }
+// ── Saját profil (eszközszintű, nem szinkronizált) ──
+let myProfileName='';
+try{const pn=localStorage.getItem('monyk_profileName');if(pn)myProfileName=pn;}catch(e) { console.warn('[MONYK]', e); }
+function setProfileName(name){
+  myProfileName=(name||'').trim();
+  try{localStorage.setItem('monyk_profileName',myProfileName);}catch(e) { console.warn('[MONYK]', e); }
+}
+// ── Utazásonkénti chat-becenév (eszközszintű, nem szinkronizált) ──
+// Ha egy utazáshoz nincs beállítva külön becenév, a globális profilnév (myProfileName) érvényes.
+function chatNickKey(code){ return 'monyk_chat_nick_'+code; }
+function chatNickFor(code){
+  if(!code) return '';
+  try{ return (localStorage.getItem(chatNickKey(code))||'').trim(); }catch(e){ return ''; }
+}
+function chatSenderFor(code){ return chatNickFor(code)||myProfileName||'Ismeretlen'; }
+function setChatNick(code,name){
+  if(!code) return;
+  try{
+    if(name&&name.trim()) localStorage.setItem(chatNickKey(code),name.trim());
+    else localStorage.removeItem(chatNickKey(code));
+  }catch(e){}
+}
+function getMyMemberId(trip){
+  const tgk=trip?.tagok||[];
+  if(myProfileName){
+    const m=tgk.find(tg=>(tg.nev||'').trim().toLowerCase()===myProfileName.trim().toLowerCase());
+    if(m) return m.id;
+  }
+  return tgk[0]?.id;
+}
+// Csak azokat a tételeket mutatjuk, amelyekhez hozzá vagyok adva (fizetem/osztozom rajta) —
+// akihez nem lettem hozzáadva a "kik között" listánál, azt nem látom.
+function myKiadasok(trip){
+  const all=trip?.kiadasok||[];
+  const tgk=trip?.tagok||[];
+  const meId=getMyMemberId(trip);
+  if(!meId||tgk.length<=1) return all;
+  return all.filter(e=>{
+    const os=e.osztott||tgk.map(tg=>tg.id);
+    return os.includes(meId);
+  });
+}
 
 let trips=(function(){
   // LocalStorage betöltés – sablon adatok nélkül, tiszta állapot
@@ -2491,7 +2667,7 @@ const $=id=>document.getElementById(id);
 const set=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
 const setH=(id,h)=>{const e=$(id);if(e)e.innerHTML=h;};
 const genId=()=>'i'+Math.random().toString(36).slice(2,9);
-const today=()=>new Date().toISOString().split('T')[0];
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const t=k=>(I18N[lang]||I18N.hu)[k]||k;
 const tx=(k,o={})=>{let s=t(k);Object.entries(o).forEach(([a,b])=>{s=s.replace(`{${a}}`,b)});return s;};
 // ── VALUTA RENDSZER ──
@@ -2516,6 +2692,9 @@ const fmt=(n,sym)=>{
 
 // Helyi valuta szimbólum lekérése
 const getCurSym=(code)=>(CURRENCIES.find(c=>c.code===code)||{symbol:code}).symbol;
+// HTML escape helper – kötelező minden felhasználói szabadszöveges mező (nev, megjegyzés, jegyzet stb.)
+// innerHTML-be illesztése előtt, mert az utazások megosztottak (Firestore real-time sync minden útitárssal).
+const esc=(s)=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
 // ── MULTI-CURRENCY FORMATTER ──
 // Minden összegnél: helyi (trip) · alap (BASE) · összes tag egyedi személyes valutája
@@ -2666,52 +2845,38 @@ async function fetchRate(tgt,base='EUR'){
   tgt=(tgt||'').trim().toUpperCase();
   if(!tgt||tgt.length<3)return null;
   if(tgt===base)return 1;
-  // Cache-ből visszaadjuk ha van (akár a főapptól kapott, akár saját fetch)
-  if(liveRates&&liveRates.base===base&&liveRates.rates[tgt])return liveRates.rates[tgt];
-  // Cross-rate: ha cache más base-ben van
-  if(liveRates&&liveRates.rates){
+  // Cache-ből visszaadjuk ha friss van (akár a főapptól kapott, akár saját fetch)
+  if(liveRates&&liveRates.base===base&&liveRates.rates[tgt]&&(Date.now()-(_valRateFetchTs||0))<3600000)return liveRates.rates[tgt];
+  if(liveRates&&liveRates.rates&&(Date.now()-(_valRateFetchTs||0))<3600000){
     if(liveRates.base===tgt&&liveRates.rates[base])return 1/liveRates.rates[base];
-    // pl. cache EUR-based, kérés: GBP→HUF → EUR→GBP és EUR→HUF-ból
-    if(liveRates.rates[tgt]&&liveRates.rates[base]){
-      return liveRates.rates[tgt]/liveRates.rates[base];
-    }
+    if(liveRates.rates[tgt]&&liveRates.rates[base])return liveRates.rates[tgt]/liveRates.rates[base];
   }
   if(ratesBusy){
     // Várjuk meg a folyamatban lévő fetchet, majd cache-ből adjuk vissza
     await new Promise(res=>{ const iv=setInterval(()=>{if(!ratesBusy){clearInterval(iv);res();}},100); setTimeout(()=>{clearInterval(iv);res();},5000); });
-    if(liveRates&&liveRates.base===base&&liveRates.rates[tgt])return liveRates.rates[tgt];
-    if(liveRates&&liveRates.rates){
-      if(liveRates.base===tgt&&liveRates.rates[base])return 1/liveRates.rates[base];
-      if(liveRates.rates[tgt]&&liveRates.rates[base])return liveRates.rates[tgt]/liveRates.rates[base];
-    }
-    return null;
   }
   ratesBusy=true;
   try{
     // Mindig EUR alapon fetchelünk – így a cross-rate számítás mindent lefed
     const fetchBase=base==='EUR'?base:'EUR';
-    const r=await fetch(`https://api.frankfurter.app/latest?base=${fetchBase}`,{cache:'no-store'});
-    if(!r.ok)throw 0;
-    const d=await r.json();
-    liveRates={base:d.base,rates:d.rates};
+    const res=await fetchLiveRates(fetchBase);
+    if(!res||!res.rates){
+      const sr=_staticCrossRate(base,tgt);
+      return sr;
+    }
     // Mindig frissítjük a conv panelt ha nyitva van (nem csak '—' esetén)
     const convRes=document.getElementById('qaConvResult');
     if(convRes&&convRes.closest('#qaMbg')?.classList.contains('on')&&typeof updateQaConv==='function'){
       updateQaConv();
     }
     // A kért cross-rate visszaadása
-    if(liveRates.base===base&&liveRates.rates[tgt])return liveRates.rates[tgt];
-    if(liveRates.base===tgt&&liveRates.rates[base])return 1/liveRates.rates[base];
-    if(liveRates.rates[tgt]&&liveRates.rates[base])return liveRates.rates[tgt]/liveRates.rates[base];
-    if(liveRates.base===base)return liveRates.rates[tgt]||null;
-    return null;
+    if(res.base===base&&res.rates[tgt])return res.rates[tgt];
+    if(res.base===tgt&&res.rates[base])return 1/res.rates[base];
+    if(res.rates[tgt]&&res.rates[base])return res.rates[tgt]/res.rates[base];
+    if(res.base===base)return res.rates[tgt]||_staticCrossRate(base,tgt);
+    return _staticCrossRate(base,tgt);
   }catch{
-    // Ha a fetch sikertelen, próbáljuk a meglévő cache-ből cross-rate számítással
-    if(liveRates&&liveRates.rates){
-      if(liveRates.rates[tgt]&&liveRates.rates[base]) return liveRates.rates[tgt]/liveRates.rates[base];
-      if(liveRates.base===tgt&&liveRates.rates[base]) return 1/liveRates.rates[base];
-    }
-    return null;
+    return _staticCrossRate(base,tgt);
   }
   finally{ratesBusy=false;}
 }
@@ -2994,7 +3159,7 @@ function applyLang(){
   const bnav=$('bnav');
   if(bnav){document.documentElement.style.setProperty('--nh',bnav.offsetHeight+'px');}
   const ids={
-    logoBadge:null,exitLbl:'exit',exitBtn:'exit',nl0:'nav0',nl1:'nav1',nl2:'nav2',nl3:'nav3',
+    logoBadge:null,nl0:'nav0',nl1:'nav1',nl2:'nav2',nl3:'nav3',
     slbl0:'sbl0',slbl1:'sbl1',btnNT:'btnNT',btnQA:'btnQA',
     fc0:'fc0',fc1:'fc1',fc2:'fc2',fc3:'fc3',fc4:'fc4',
     fTM:'fTM',
@@ -3025,6 +3190,7 @@ function applyLang(){
     fpTimeLbl:'expFilterTime',fpPayerLbl:'expFilterPayer',fpCatLbl:'expFilterCat',
     tdFpPayerLbl:'expFilterPayer',
     fc3all:'fc0',
+    fHLink:'hLinkLbl',fHAr:'hArLbl',fTervLink:'tervLinkLbl',fTervAr:'tervArLbl',
   };
   Object.entries(ids).forEach(([id,key])=>set(id,t(key)));
   const _lb=$('logoBadge');if(_lb)_lb.textContent='TRAVEL';
@@ -3074,7 +3240,7 @@ function renderTrips(){
   const past=trips.filter(tr=>!tr.aktiv&&tr.veg&&tr.veg<todayStr).sort((a,b)=>new Date(b.kezdo)-new Date(a.kezdo));
 
   function buildCard(tr){
-    const sp=(tr.kiadasok||[]).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
+    const sp=myKiadasok(tr).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
     const pct=tr.keret>0?Math.min(100,Math.round(sp/tr.keret*100)):0;
     const pc=pct>90?'var(--red)':pct>70?'var(--wrn)':'var(--acc)';
     const s0=new Date(tr.kezdo),e0=tr.veg?new Date(tr.veg):null;
@@ -3092,8 +3258,8 @@ function renderTrips(){
           <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
             <div style="flex:1;min-width:0">
               <div style="font-size:10px;font-weight:800;color:var(--grn);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;display:flex;align-items:center;gap:5px"><span class="aktiv-dot"></span>${t('cardActive')}</div>
-              <div class="tcttl" style="font-size:22px;margin-bottom:3px">${tr.nev}</div>
-              ${tr.cel?`<div class="tcdst" style="font-size:12px">📍 ${tr.cel}</div>`:''}
+              <div class="tcttl" style="font-size:22px;margin-bottom:3px">${esc(tr.nev)}</div>
+              ${tr.cel?`<div class="tcdst" style="font-size:12px">📍 ${esc(tr.cel)}</div>`:''}
             </div>
             <div style="font-size:36px;line-height:1;flex-shrink:0;margin-left:10px;opacity:.9">${flag}</div>
           </div>
@@ -3136,8 +3302,8 @@ function renderTrips(){
         <div class="tcbg">${flag}</div>
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:${tr.cel?'4px':'8px'}">
           <div style="flex:1;min-width:0">
-            <div class="tcttl" style="font-size:16px">${tr.nev}${badge}</div>
-            ${tr.cel?`<div class="tcdst" style="margin-bottom:6px">📍 ${tr.cel}</div>`:''}
+            <div class="tcttl" style="font-size:16px">${esc(tr.nev)}${badge}</div>
+            ${tr.cel?`<div class="tcdst" style="margin-bottom:6px">📍 ${esc(tr.cel)}</div>`:''}
           </div>
           <div style="font-size:28px;line-height:1;flex-shrink:0;margin-left:10px;opacity:.6;margin-top:2px">${flag}</div>
         </div>
@@ -3343,7 +3509,7 @@ function tdGoTab(i){
 }
 
 function renderTdBS(trip){
-  const sp=(trip.kiadasok||[]).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
+  const sp=myKiadasok(trip).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
   const kr=trip.keret||0;const pct=kr>0?Math.min(100,Math.round(sp/kr*100)):0;
   const st=pct>90?'over':pct>70?'warn':'safe';
   const pc=st==='over'?'var(--red)':st==='warn'?'var(--wrn)':'var(--acc)';
@@ -3430,12 +3596,12 @@ function renderTdExps(){
   }
   const tod=today();
   const tgk=trip.tagok||[];
-  const meId=tgk[0]?.id;
-  let exps=[...(trip.kiadasok||[])].reverse();
+  const meId=getMyMemberId(trip);
+  let exps=[...myKiadasok(trip)].reverse();
   if(flt==='today')exps=exps.filter(e=>e.dat===tod);
   else if(flt==='pending')exps=exps.filter(e=>isPend(e));
-  if(payerFlt==='mine')exps=exps.filter(e=>e.fizette===meId);
-  else if(payerFlt==='split')exps=exps.filter(e=>e.osztott&&e.osztott.length>1);
+  if(payerFlt==='mine')exps=exps.filter(e=>{const os=e.osztott||tgk.map(tg=>tg.id);return os.length===1;});
+  else if(payerFlt==='split')exps=exps.filter(e=>{const os=e.osztott||tgk.map(tg=>tg.id);return os.length>1;});
   if(expCatFilter&&expCatFilter!=='all')exps=exps.filter(e=>e.kat===expCatFilter);
   if(!exps.length){
     c.innerHTML=`<div class="emp"><div class="empico">💸</div><div class="empttl">${t('empExp')}</div><div class="empdsc">${t('empExpD')}</div></div>`;
@@ -3457,8 +3623,8 @@ function renderTdExps(){
         <div class="et">
           <div class="ei">${k.ikon}</div>
           <div class="ein">
-            <div class="enm">${e.nev}${e.atts&&e.atts.length?`<span class='att-badge'>📎 ${e.atts.length}</span>`:''}</div>
-            <div class="esb">${k.nev}${pyr?' · '+pyr.ikon+' '+pyr.nev:''}${pb}</div>
+            <div class="enm">${esc(e.nev)}${e.atts&&e.atts.length?`<span class='att-badge'>📎 ${e.atts.length}</span>`:''}</div>
+            <div class="esb">${esc(k.nev)}${pyr?' · '+pyr.ikon+' '+esc(pyr.nev):''}${pb}</div>
           </div>
           <div class="ert">
             <div class="eam" style="color:${isPend(e)?'var(--mut)':'var(--acc)'}">${fmtExp(e,trip)}</div>
@@ -3470,8 +3636,8 @@ function renderTdExps(){
           <div class="ec-inner">
             <div class="ec-dets">
               <div class="ec-det"><div class="ec-dl">${t('colDate')}</div><div class="ec-dv">${e.dat}${e.ido?' '+e.ido:''}</div></div>
-              <div class="ec-det"><div class="ec-dl">${t('cardKat')}</div><div class="ec-dv">${k.ikon} ${k.nev}</div></div>
-              ${e.megj?`<div class="ec-det ec-det-full"><div class="ec-dl">${t('colNote')}</div><div class="ec-dv">${e.megj}</div></div>`:''}
+              <div class="ec-det"><div class="ec-dl">${t('cardKat')}</div><div class="ec-dv">${k.ikon} ${esc(k.nev)}</div></div>
+              ${e.megj?`<div class="ec-det ec-det-full"><div class="ec-dl">${t('colNote')}</div><div class="ec-dv">${esc(e.megj)}</div></div>`:''}
             </div>
             ${hasSplit?`<div class="esplit open" style="margin:8px 0 0;border-radius:10px">${splitRows}</div>`:''}
           </div>
@@ -3864,7 +4030,7 @@ async function loadAiWidget(trip){
   el.innerHTML=`<div class="trip-widget tw-ai"><div class="tw-ai-spin"><div class="tw-spinner"></div>${t('twAiLoading')}</div></div>`;
   try{
     const members=(trip.tagok||[]).map(tg=>tg.nev).join(', ')||'1 fő';
-    const spent=(trip.kiadasok||[]).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
+    const spent=myKiadasok(trip).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
     const now=new Date(),s0=new Date(trip.kezdo);
     const dayNum=Math.max(1,daysElapsedSince(s0,now));
     const weather=await getWeatherForPrompt(trip.cel||trip.nev);
@@ -3997,7 +4163,7 @@ function renderExps(){
     const banner=$('activeTripBanner');
     if(banner){
       if(trip){
-        const sp=(trip.kiadasok||[]).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
+        const sp=myKiadasok(trip).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
         const kr=trip.keret||0;
         const pct=kr>0?Math.min(100,Math.round(sp/kr*100)):0;
         const pc=pct>90?'var(--red)':pct>70?'var(--wrn)':'var(--grn)';
@@ -4010,8 +4176,8 @@ function renderExps(){
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
             <div style="display:flex;align-items:center;gap:6px">
               <span class="aktiv-dot"></span>
-              <span style="font-size:13px;font-weight:900;color:var(--acc)">${trip.nev}</span>
-              ${trip.cel?`<span style="font-size:11px;color:var(--mut)">📍 ${trip.cel}</span>`:''}
+              <span style="font-size:13px;font-weight:900;color:var(--acc)">${esc(trip.nev)}</span>
+              ${trip.cel?`<span style="font-size:11px;color:var(--mut)">📍 ${esc(trip.cel)}</span>`:''}
             </div>
             <span style="font-size:10px;color:var(--mut)">▶</span>
           </div>
@@ -4047,12 +4213,12 @@ function renderExps(){
   if(!trip){c.innerHTML=`<div class="emp"><div class="empico">✈️</div><div class="empttl">${t('empTrip')}</div><div class="empdsc">${t('empTripD')}</div></div>`;return;}
   const tod=today();
   const tgk=trip.tagok||[];
-  const meId=tgk[0]?.id;
-  let exps=[...(trip.kiadasok||[])].reverse();
+  const meId=getMyMemberId(trip);
+  let exps=[...myKiadasok(trip)].reverse();
   if(flt==='today')exps=exps.filter(e=>e.dat===tod);
   else if(flt==='pending')exps=exps.filter(e=>isPend(e));
-  if(payerFlt==='mine')exps=exps.filter(e=>e.fizette===meId);
-  else if(payerFlt==='split')exps=exps.filter(e=>e.osztott&&e.osztott.length>1);
+  if(payerFlt==='mine')exps=exps.filter(e=>{const os=e.osztott||tgk.map(tg=>tg.id);return os.length===1;});
+  else if(payerFlt==='split')exps=exps.filter(e=>{const os=e.osztott||tgk.map(tg=>tg.id);return os.length>1;});
   if(expCatFilter&&expCatFilter!=='all')exps=exps.filter(e=>e.kat===expCatFilter);
   if(!exps.length){c.innerHTML=`<div class="emp"><div class="empico">💸</div><div class="empttl">${t('empExp')}</div><div class="empdsc">${t('empExpD')}</div></div>`;return;}
 
@@ -4096,8 +4262,8 @@ function renderExps(){
           <div class="et">
             <div class="ei">${k.ikon}</div>
             <div class="ein">
-              <div class="enm">${e.nev}${e.atts&&e.atts.length?`<span class='att-badge'>📎 ${e.atts.length}</span>`:''}</div>
-              <div class="esb">${k.nev}${pyr?' · '+pyr.ikon+' '+pyr.nev:''}${pb}</div>
+              <div class="enm">${esc(e.nev)}${e.atts&&e.atts.length?`<span class='att-badge'>📎 ${e.atts.length}</span>`:''}</div>
+              <div class="esb">${esc(k.nev)}${pyr?' · '+pyr.ikon+' '+esc(pyr.nev):''}${pb}</div>
             </div>
             <div class="ert">
               <div class="eam" style="color:${isPend(e)?'var(--mut)':'var(--acc)'}">${fmtExp(e,trip)}</div>
@@ -4107,7 +4273,7 @@ function renderExps(){
           </div>
           <div class="ec-body" id="ecbody_${e.id}">
             <div class="ec-inner">
-              ${e.megj?`<div class="ec-dets"><div class="ec-det ec-det-full"><div class="ec-dl">${t('colNote')}</div><div class="ec-dv">${e.megj}</div></div></div>`:''}
+              ${e.megj?`<div class="ec-dets"><div class="ec-det ec-det-full"><div class="ec-dl">${t('colNote')}</div><div class="ec-dv">${esc(e.megj)}</div></div></div>`:''}
               ${hasSplit?`<div class="esplit open" id="esplit_${e.id}" style="margin:4px 0 0;border-radius:10px">${splitRows}</div>`:''}
             </div>
           </div>
@@ -4156,7 +4322,7 @@ function buildMiniSplit(e, tgk, trip){
     const owesAmt=Math.round(r.owes)>0?fmtD(Math.round(r.owes),trip,{tag:r.tag}):'–';
     return`<div class="esplit-row">
       <div class="esplit-ico">${r.tag.ikon}</div>
-      <div class="esplit-name">${r.tag.nev}${isMe?' <span style="font-size:9px;color:var(--acc)">▶ te</span>':''}</div>
+      <div class="esplit-name">${esc(r.tag.nev)}${isMe?' <span style="font-size:9px;color:var(--acc)">▶ te</span>':''}</div>
       <div>
         <div class="esplit-amt" style="color:${bal>1?'var(--grn)':bal<-1?'var(--red)':'var(--mut)'}">
           ${Math.round(r.owes)>0?owesAmt:'-'}
@@ -4474,7 +4640,7 @@ function renderRep(){
 
   // ── #1 Dashboard fejléc – toggle: teljes / saját ──
   // Saját rész számítása: az első tag (tgk[0]) = "én"
-  const meId=tgk[0]?.id;
+  const meId=getMyMemberId(trip);
   const meShold=meId?(shold[meId]||0):sp;
   const mePaid=meId?(paid[meId]||0):sp;
   const meNet=meId?Math.round((paid[meId]||0)-(shold[meId]||0)):0;
@@ -5232,8 +5398,9 @@ function wzGo(dir){
 function openTripModal(id){
   editTripId=id||null;
   wzStep=1;
+  populateTValutaOptions();
   const tr=id?trips.find(t2=>t2.id===id):null;
-  editMems=tr?(tr.tagok||[]).map(m=>({...m})):[{id:genId(),nev:t('memDef')[0],ikon:'🧑'}];
+  editMems=tr?(tr.tagok||[]).map(m=>({...m})):[{id:genId(),nev:myProfileName||t('memDef')[0],ikon:'🧑'}];
   set('tripMttl',tr?t('tmEdit'):t('tmNew'));
   const flds=[['tNev',tr?.nev||''],['tCel',tr?.cel||''],['tKezdo',tr?.kezdo||today()],
     ['tVeg',tr?.veg||''],['tKeret',tr?.keret||''],['tValuta',tr?.valuta||''],
@@ -5362,19 +5529,41 @@ function delLeg(i){
 
 // toggleDets removed — wizard replaces it
 function renderMembers(){
-  const curList=CURRENCIES.map(c=>`<option value="${c.code}">${c.symbol} ${c.code}</option>`).join('');
   setH('memberList',editMems.map((m,i)=>{
     const mCur=m.valuta||BASE_CURRENCY;
     const opts=CURRENCIES.map(c=>`<option value="${c.code}"${c.code===mCur?' selected':''}>${c.symbol} ${c.code}</option>`).join('');
-    return`<div class="mli">
+    const isFam=!!m.csoport;
+    return`<div class="mli${isFam?' mli-fam':''}">
     <div class="mliem" onclick="pickEmoji(${i},'m')">${m.ikon}</div>
-    <div style="flex:1"><input class="fi" style="padding:6px 10px;font-size:13px" value="${m.nev||''}" oninput="editMems[${i}].nev=this.value"></div>
+    <div style="flex:1"><input class="fi" style="padding:6px 10px;font-size:13px" value="${esc(m.nev||'')}" oninput="editMems[${i}].nev=this.value"></div>
     <select class="fi" style="width:90px;font-size:12px;padding:4px 6px;color:var(--acc);font-weight:800" onchange="editMems[${i}].valuta=this.value">${opts}</select>
-    ${editMems.length>1?`<button class="mlid" onclick="editMems.splice(${i},1);renderMembers()">✕</button>`:''}
+    <button class="mlifb" onclick="addFamilyMember(${i})" title="${t('famAdd')}">${t('famAdd')}</button>
+    ${editMems.length>1?`<button class="mlid" onclick="removeMember(${i})">✕</button>`:''}
   </div>`;}).join(''));
 }
 function addMember(){
   const names=t('memDef');editMems.push({id:genId(),nev:names[editMems.length%names.length],ikon:'🧑',valuta:BASE_CURRENCY});
+  renderMembers();
+}
+// Családtag hozzáadása: a kattintott taghoz (vagy annak csoportjához) köti az új tagot,
+// és rögtön a csoport utolsó tagja mögé illeszti, hogy a lista együtt maradjon.
+function addFamilyMember(idx){
+  const leader=editMems[idx];if(!leader)return;
+  const root=leader.csoport||leader.id;
+  let insertAt=idx;
+  for(let i=editMems.length-1;i>=0;i--){
+    if(editMems[i].id===root||editMems[i].csoport===root){insertAt=i;break;}
+  }
+  const names=t('memDef');
+  editMems.splice(insertAt+1,0,{id:genId(),nev:names[editMems.length%names.length],ikon:'🧑',valuta:BASE_CURRENCY,csoport:root});
+  renderMembers();
+}
+// Tag eltávolítása: ha valaki csoportvezetőt töröl, a hozzá kötött családtagok
+// megmaradnak, csak leválnak a csoportról (nem vesznek el adatok).
+function removeMember(i){
+  const removedId=editMems[i]?.id;
+  editMems.splice(i,1);
+  if(removedId)editMems.forEach(m=>{if(m.csoport===removedId)delete m.csoport;});
   renderMembers();
 }
 function saveTrip(){
@@ -5432,10 +5621,11 @@ function openQA(tid,eid){
   const tgk=trip.tagok||[];
   if(tgk.length>1){
     $('payerWrap').style.display='';
-    setH('pyrRow',tgk.map((tg,i)=>`<button class="pchip${i===0?' on':''}" onclick="selPyr(this,'${tg.id}')">${tg.ikon} ${tg.nev}</button>`).join(''));
-    setH('splList',tgk.map(tg=>`<div class="mcr sel" id="sp_${tg.id}" onclick="togSpl(this)"><div class="mcico">${tg.ikon}</div><div class="mcnm">${tg.nev}</div><div class="mcbox">✓</div></div>`).join(''));
-    // Számlák megjelenítése alapból (én az első tag)
-    renderQaAccountChips(tgk[0]?.id);
+    const _defPyrId=eid?null:getMyMemberId(trip);
+    setH('pyrRow',tgk.map((tg,i)=>`<button class="pchip${tg.id===_defPyrId||(!_defPyrId&&!eid&&i===0)?' on':''}" onclick="selPyr(this,'${tg.id}')">${tg.ikon} ${tg.nev}</button>`).join(''));
+    setH('splList',buildSplitListHtml(tgk));
+    // Számlák megjelenítése alapból (a saját profilhoz tartozó tag, vagy edit módban a tényleges fizető)
+    renderQaAccountChips(_defPyrId||(eid?null:tgk[0]?.id));
   }else{
     $('payerWrap').style.display='none';
     // 1 tag: számlachipek közvetlenül
@@ -5461,6 +5651,13 @@ function openQA(tid,eid){
       selKat=exp.kat||'etkezes';
       document.querySelectorAll('#catGrd .cbtn').forEach(b=>b.classList.remove('on'));
       $('catGrd').querySelectorAll('.cbtn').forEach(b=>{if(b.getAttribute('onclick').includes(`'${selKat}'`))b.classList.add('on');});
+      // Visszatöltjük az eredeti fizetőt (ki fizette) edit módban
+      if(exp.fizette){
+        document.querySelectorAll('#pyrRow .pchip').forEach(b=>{
+          const m=b.getAttribute('onclick')?.match(/'([^']+)'/);
+          if(m && m[1]===exp.fizette) b.classList.add('on'); else b.classList.remove('on');
+        });
+      }
       // Visszatöltjük a számla kiválasztást edit módban
       if(exp.kartyaId && mainAppAccounts.length){
         setTimeout(()=>{
@@ -5502,7 +5699,8 @@ function calcSplit(){
   const share=Math.round(amt/n);
   box.classList.add('show');
   const lbl=$('splitCalcLbl');const val=$('splitCalcVal');const sub=$('splitCalcSub');
-  const sym=($('qaVal')?.value||BASE_SYM);
+  const selCode=$('qaVal')?.value;
+  const sym=selCode?getCurSym(selCode.toUpperCase()):BASE_SYM;
   if(lbl)lbl.textContent=t('tqaPP');
   if(val)val.textContent=fmt(share,sym);
   if(sub)sub.textContent=`${n} ${t('splitFore')} · ${fmt(amt,sym)} ${t('splitOsszesen')}`;
@@ -5516,7 +5714,7 @@ function selPyr(el,id){
 function renderQaAccountChips(payerId){
   const trip=trips.find(t2=>t2.id===editExpTrId)||getActiveTrip();
   const tgk=trip?trip.tagok||[]:[];
-  const meId=tgk[0]?.id;
+  const meId=getMyMemberId(trip);
   const isMe=!payerId||payerId===meId||payerId==='me';
   const wrap=$('qaAccountWrap');
   if(!wrap)return;
@@ -5540,8 +5738,61 @@ function getSelAccountId(){
   const m=onclick.match(/'([^']+)'/);
   return m?m[1]:mainAppDefaultCardId||'';
 }
+// Tagokat családi csoportokba rendezi (csoport = a "vezető" tag id-je).
+// Sorrend-tartó: minden csoport az első előfordulás helyén jelenik meg.
+function groupTags(tgk){
+  const seen=new Set(),groups=[];
+  tgk.forEach(tg=>{
+    const root=tg.csoport||tg.id;
+    if(seen.has(root))return;
+    seen.add(root);
+    groups.push({root:tgk.find(x=>x.id===root)||tg,members:tgk.filter(x=>(x.csoport||x.id)===root)});
+  });
+  return groups;
+}
+// A "kik között" lista HTML-je: egyszemélyes tagok simán, családok pedig
+// egy közös be/ki kapcsolóval a tetején és egyenkénti sorokkal alatta.
+function buildSplitListHtml(tgk){
+  return groupTags(tgk).map(g=>{
+    if(g.members.length<2){
+      const tg=g.members[0];
+      return`<div class="mcr sel" id="sp_${tg.id}" onclick="togSpl(this)"><div class="mcico">${tg.ikon}</div><div class="mcnm">${tg.nev}</div><div class="mcbox">✓</div></div>`;
+    }
+    const ids=g.members.map(tg=>tg.id).join(',');
+    const rows=g.members.map(tg=>`<div class="mcr sel mcr-fam" id="sp_${tg.id}" onclick="togSpl(this)"><div class="mcico">${tg.ikon}</div><div class="mcnm">${tg.nev}</div><div class="mcbox">✓</div></div>`).join('');
+    return`<div class="mcr-grp" data-ids="${ids}">
+      <div class="mcr-grp-hdr sel-all" onclick="togSplGroup(this)"><div class="mcico">🏠</div><div class="mcnm">${tx('famGroupAll',{name:g.root.nev})}</div><div class="mcbox">✓</div></div>
+      <div class="mcr-grp-body">${rows}</div>
+    </div>`;
+  }).join('');
+}
 function togSpl(el){
   el.classList.toggle('sel');const box=el.querySelector('.mcbox');if(box)box.textContent=el.classList.contains('sel')?'✓':'';
+  // Ha családtagról van szó, a csoport fejlécét is frissítjük (mind/részben/egyik sem kijelölve)
+  const grp=el.closest('.mcr-grp');
+  if(grp){
+    const hdr=grp.querySelector('.mcr-grp-hdr');
+    const rows=Array.from(grp.querySelectorAll('.mcr-fam'));
+    const selCount=rows.filter(r=>r.classList.contains('sel')).length;
+    if(hdr){
+      const allSel=selCount===rows.length;
+      hdr.classList.toggle('sel-all',allSel);
+      const hb=hdr.querySelector('.mcbox');
+      if(hb)hb.textContent=allSel?'✓':(selCount>0?'–':'');
+    }
+  }
+  calcSplit();calcPerPerson();
+}
+// Egy koppintással az egész család be/ki kapcsolása a "kik között" listán
+function togSplGroup(el){
+  const grp=el.closest('.mcr-grp');if(!grp)return;
+  const newSel=!el.classList.contains('sel-all');
+  el.classList.toggle('sel-all',newSel);
+  const box=el.querySelector('.mcbox');if(box)box.textContent=newSel?'✓':'';
+  grp.querySelectorAll('.mcr-fam').forEach(r=>{
+    r.classList.toggle('sel',newSel);
+    const b=r.querySelector('.mcbox');if(b)b.textContent=newSel?'✓':'';
+  });
   calcSplit();calcPerPerson();
 }
 function showValConv(){
@@ -5582,8 +5833,8 @@ async function updateQaConv(){
   let dispRate=null;
   // 1. Trip arfolyam ha értékes (nem 0, nem 1 különböző valuták közt)
   if(ar>0&&Math.abs(ar-1)>0.001){
-    if(fromVal===tc&&toVal===BASE_CURRENCY){dispRate=1/ar;if(info)info.textContent=`1 ${fromVal} = ${dispRate.toFixed(4)} ${toVal} (utazás árfolyam)`;}
-    else if(fromVal===BASE_CURRENCY&&toVal===tc){dispRate=ar;if(info)info.textContent=`1 ${fromVal} = ${ar.toFixed(4)} ${toVal} (utazás árfolyam)`;}
+    if(fromVal===tc&&toVal===BASE_CURRENCY){dispRate=ar;if(info)info.textContent=`1 ${fromVal} = ${dispRate.toFixed(4)} ${toVal} (utazás árfolyam)`;}
+    else if(fromVal===BASE_CURRENCY&&toVal===tc){dispRate=1/ar;if(info)info.textContent=`1 ${fromVal} = ${dispRate.toFixed(4)} ${toVal} (utazás árfolyam)`;}
   }
   // 2. Szinkron liveRates cross-rate (nincs async várakozás)
   if(!dispRate){
@@ -5617,7 +5868,7 @@ async function updateQaConv(){
   }catch(e){if(!dispRate&&res){res.textContent='—';res.style.color='var(--mut)';}}
   // 4. BASE összeg mentéshez
   if(fromVal===BASE_CURRENCY){window._qaBaseAmt=amt;}
-  else{const br=crossRate(fromVal,BASE_CURRENCY)||_staticCrossRate(fromVal,BASE_CURRENCY)||await fetchRate(BASE_CURRENCY,fromVal).catch(()=>null);if(br)window._qaBaseAmt=parseFloat((amt*br).toFixed(4));else if(ar>0)window._qaBaseAmt=parseFloat((amt/ar).toFixed(4));}
+  else{const br=crossRate(fromVal,BASE_CURRENCY)||_staticCrossRate(fromVal,BASE_CURRENCY)||await fetchRate(BASE_CURRENCY,fromVal).catch(()=>null);if(br)window._qaBaseAmt=parseFloat((amt*br).toFixed(4));else if(ar>0)window._qaBaseAmt=parseFloat((amt*ar).toFixed(4));}
 }
 async function qaSync(fromBase){
   const prevVal=qaSync._prevVal||BASE_CURRENCY;
@@ -5629,7 +5880,7 @@ async function qaSync(fromBase){
     try{
       const rate=await fetchRate(newVal,prevVal).catch(()=>null);
       if(rate){
-        const converted=prevVal===BASE_CURRENCY?Math.round(amt*rate*100)/100:Math.round(amt*rate*100)/100;
+        const converted=Math.round(amt*rate*100)/100;
         const decimals=converted<100?2:0;
         $('qaAmt').value=parseFloat(converted.toFixed(decimals));
         window._qaBaseAmt=null;
@@ -5855,6 +6106,17 @@ function getSelKatId(){
   const m=b.getAttribute('onclick').match(/'([^']+)'/);return m?m[1]:'egyeb';
 }
 function saveExp(){
+  if(saveExp._inProgress)return;
+  saveExp._inProgress=true;
+  const btnSave=$('btnQSave');if(btnSave)btnSave.disabled=true;
+  try{
+    _saveExpInner();
+  }finally{
+    saveExp._inProgress=false;
+    if(btnSave)btnSave.disabled=false;
+  }
+}
+function _saveExpInner(){
   const trip=trips.find(t2=>t2.id===editExpTrId);if(!trip)return;
   const tc=trip.valuta?.toUpperCase()||BASE_CURRENCY;
   const ar=trip.arfolyam||1;
@@ -6151,7 +6413,7 @@ function renderAttBody(id){
   const tr=trips.find(t2=>t2.id===id);if(!tr)return;
   const tgk=tr.tagok||[];
   const legs=tr.legs||[];
-  const sp=(tr.kiadasok||[]).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
+  const sp=myKiadasok(tr).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
   const kr=tr.keret||0;
   const fmt2=(d,tm)=>d?(d+(tm?' '+tm:'')):'–';
   const legCols={plane:'251,191,36',train:'99,179,237',bus:'154,205,50',car:'251,146,60',ship:'99,179,237',other:'180,180,180'};
@@ -6537,7 +6799,7 @@ async function fetchAiTip(trip, containerId){
   if(cached&&cached.date===tod){renderAiTipWidget(c,cached,trip);return;}
   c.innerHTML=`<div class="ai-tip-loading">${t('aiTipLoading')}</div>`;
   const tgk=trip.tagok||[];
-  const sp=(trip.kiadasok||[]).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
+  const sp=myKiadasok(trip).filter(e=>!isPend(e)).reduce((s,e)=>s+e.osszeg,0);
   const now=new Date(),s0=new Date(trip.kezdo);
   const dayNum=Math.max(1,daysElapsedSince(s0,now));
   const weather=await getWeatherForPrompt(trip.cel||trip.nev);
@@ -6634,11 +6896,19 @@ function renderTimelineWidget(trip){
 // ══════════════════════════════════════
 const THEMES=[
   {id:'default', ikon:'🌙', nev:'Midnight'},
-  {id:'tropic',  ikon:'🌴', nev:'Tropic'},
-  {id:'sunset',  ikon:'🌅', nev:'Sunset'},
-  {id:'ocean',   ikon:'🌊', nev:'Ocean'},
+  {id:'paper',   ikon:'☀️', nev:'Paper'},
 ];
-let currentTheme=(()=>{try{return localStorage.getItem('monyk_travel_theme')||'default';}catch(e){return'default';}})();
+function systemPrefersLightTheme(){
+  try{ return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches); }catch(e){ return false; }
+}
+let currentTheme=(()=>{
+  try{
+    const saved=localStorage.getItem('monyk_travel_theme');
+    if(saved) return saved;
+  }catch(e){}
+  // nincs mentett felhasználói választás → a telefon rendszerbeállítása dönt
+  return systemPrefersLightTheme()?'paper':'default';
+})();
 
 function applyTheme(id){
   currentTheme=id;
@@ -6649,6 +6919,20 @@ function applyTheme(id){
   });
   try{localStorage.setItem('monyk_travel_theme',id);}catch(e) { console.warn('[MONYK]', e); }
   renderThemeChips();
+  updateHdrThemeBtn();
+}
+
+function toggleTheme(){
+  const idx=THEMES.findIndex(th=>th.id===currentTheme);
+  const next=THEMES[(idx+1)%THEMES.length];
+  applyTheme(next.id);
+}
+
+function updateHdrThemeBtn(){
+  const btn=$('hdrThemeBtn');if(!btn)return;
+  const th=THEMES.find(t=>t.id===currentTheme)||THEMES[0];
+  btn.textContent=th.ikon;
+  btn.title=th.nev;
 }
 
 function renderThemeChips(){
@@ -6664,6 +6948,7 @@ function openSettings(){
   applyLang();
   renderHomeCurChips();
   renderThemeChips();
+  const pn=$('soProfileInp'); if(pn) pn.value=myProfileName;
   const sel=$('soDefCurSel');
   if(sel) sel.innerHTML=CURRENCIES.map(c=>`<option value="${c.code}">${c.symbol} ${c.code}</option>`).join('');
 
@@ -6733,9 +7018,43 @@ function groqText(data){return data.choices&&data.choices[0]&&data.choices[0].me
 function setLang(l){lang=l;applyLang();closeSettings();}
 function clearData(){showConfirm(t('clearConf'),()=>{trips=[];try{localStorage.removeItem(STORAGE_KEY);}catch(e) { console.warn('[MONYK]', e); }renderAll();closeSettings();});}
 function exitApp(){
-  try{window.parent.postMessage({type:'MONYK_TRAVEL_EXIT'},'*');}catch { console.warn('[MONYK] silent catch'); }
-  document.body.style.opacity='0';document.body.style.transition='opacity .3s';
-  setTimeout(()=>{document.body.style.opacity='1';},600);
+  const embedded = (function(){ try{ return window.parent && window.parent!==window; }catch(e){ return false; } })();
+  if(embedded){
+    try{window.parent.postMessage({type:'MONYK_TRAVEL_EXIT'},'*');}catch { console.warn('[MONYK] silent catch'); }
+    document.body.style.opacity='0';document.body.style.transition='opacity .3s';
+    setTimeout(()=>{document.body.style.opacity='1';},600);
+  }else{
+    // Nincs beágyazó MONYK főalkalmazás (pl. az utazás-app önállóan lett megnyitva) →
+    // ilyenkor a "Ki" gomb egyszerűen visszalép az utazás-dashboardból a listára.
+    if(typeof dashOpenId!=='undefined'&&dashOpenId){ closeTripDash(); }
+  }
+}
+
+// ── Univerzális "vissza" gomb a fejlécben ──
+// Bezárja a legfelső nyitott modalt/panelt; ha semmi sincs nyitva, kilép a főalkalmazásba (MONYK).
+function universalBack(){
+  const closers=[
+    ()=>{if($('lpPopup')?.classList.contains('on')){$('lpPopup').classList.remove('on');return true;}return false;},
+    ()=>{if($('shrMbg')?.classList.contains('on')){closeShareModal();return true;}return false;},
+    ()=>{if($('expViewerOverlay')&&$('expViewerOverlay').style.display==='flex'){closeExpViewer();return true;}return false;},
+    ()=>{if($('mapMbg')?.classList.contains('on')){closeMap();return true;}return false;},
+    ()=>{if($('valMbg')?.classList.contains('on')){closeValuta();return true;}return false;},
+    ()=>{if($('helyMbg')?.classList.contains('on')){closeHely();return true;}return false;},
+    ()=>{if($('tervMbg')?.classList.contains('on')){closeTerv();return true;}return false;},
+    ()=>{if($('packMbg')?.classList.contains('on')){closePackModal();return true;}return false;},
+    ()=>{if($('soPanel')?.classList.contains('open')){closeSettings();return true;}return false;},
+    ()=>{if($('katMbg')?.classList.contains('on')){closeKat();return true;}return false;},
+    ()=>{if($('sumMbg')?.classList.contains('on')){closeSum();return true;}return false;},
+    ()=>{if($('attMbg')?.classList.contains('on')){closeAtt();return true;}return false;},
+    ()=>{if($('pcmBg')?.classList.contains('on')){closePcm();return true;}return false;},
+    ()=>{if($('qaMbg')?.classList.contains('on')){closeQA();return true;}return false;},
+    ()=>{if($('expDetMbg')?.classList.contains('on')){closeExpDet();return true;}return false;},
+    ()=>{if($('tripMbg')?.classList.contains('on')){closeTripModal();return true;}return false;},
+    ()=>{if(typeof dashOpenId!=='undefined'&&dashOpenId){closeTripDash();return true;}return false;},
+  ];
+  for(const fn of closers){ if(fn()) return; }
+  // Semmi nyitva → kilépés a MONYK főalkalmazásba
+  exitApp();
 }
 
 
@@ -6751,7 +7070,7 @@ function buildChart(trip, chartViewMode){
   // chartViewMode: 'total' | 'mine'
   const vm=chartViewMode||repViewMode||'total';
   const tgk=trip.tagok||[];
-  const meId=tgk[0]?.id;
+  const meId=getMyMemberId(trip);
   const allExps=(trip.kiadasok||[]).filter(e=>!isPend(e));
 
   // Ha 'mine': csak azok a kiadások ahol meId részt vesz, az ő arányában
@@ -7093,16 +7412,16 @@ function renderTervEventsOnly(){
     const evsByHour={};
     dayEvs.forEach(e=>{const h=e.ido?parseInt(e.ido.split(':')[0]):null;const key=h!=null&&h>=6&&h<=23?h:'notime';if(!evsByHour[key])evsByHour[key]=[];evsByHour[key].push(e);});
     const noTimeEvs=evsByHour['notime']||[];
-    const hourRows=hours.map(h=>{const hEvs=evsByHour[h]||[];const evRows=hEvs.map(e=>{const icon=e.tip.split(' ')[0];const col=tipCol[icon]||'rgba(255,255,255,.25)';return`<div class="tl-ev" onclick="openTervEdit('${trip.id}','${e.id}')"><div class="tl-ev-line" style="background:${col}"></div><div class="tl-ev-dot" style="background:${col}"></div><div class="tl-ev-inner"><div class="tl-ev-time">${e.ido||'––'}</div><div class="tl-ev-icon">${icon}</div><div class="tl-ev-info"><div class="tl-ev-name">${e.nev}</div>${e.megj?`<div class="tl-ev-note">${e.megj}</div>`:''}</div><div class="tl-ev-acts"><button class="ev-btn" onclick="event.stopPropagation();showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="event.stopPropagation();openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="event.stopPropagation();delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div></div>`;}).join('');return`<div class="tl-hour"><div class="tl-hour-lbl">${String(h).padStart(2,'0')}:00</div><div class="tl-hour-line"></div>${evRows}</div>`;}).join('');
-    const noTimeHtml=noTimeEvs.length?noTimeEvs.map(e=>{const icon=e.tip.split(' ')[0];const col=tipCol[icon]||'rgba(255,255,255,.25)';return`<div class="ev-row"><div class="ev-line" style="background:${col}"></div><div class="ev-time">––:––</div><div class="ev-icon">${icon}</div><div class="ev-info"><div class="ev-name">${e.nev}</div>${e.megj?`<div class="ev-note">${e.megj}</div>`:''}</div><div class="ev-acts"><button class="ev-btn" onclick="showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div>`;}).join(''):'';
+    const hourRows=hours.map(h=>{const hEvs=evsByHour[h]||[];const evRows=hEvs.map(e=>{const icon=e.tip.split(' ')[0];const col=tipCol[icon]||'rgba(255,255,255,.25)';return`<div class="tl-ev" onclick="openTervEdit('${trip.id}','${e.id}')"><div class="tl-ev-line" style="background:${col}"></div><div class="tl-ev-dot" style="background:${col}"></div><div class="tl-ev-inner"><div class="tl-ev-time">${e.ido||'––'}</div><div class="tl-ev-icon">${icon}</div><div class="tl-ev-info"><div class="tl-ev-name">${e.nev}</div>${e.megj?`<div class="tl-ev-note">${e.megj}</div>`:''}${e.ar?`<div class="tl-ev-note" style="color:var(--acc);font-weight:800">${fmtD(e.ar,trip)}</div>`:''}</div><div class="tl-ev-acts">${e.link?`<button class="ev-btn" onclick="event.stopPropagation();window.open('${e.link}','_blank')" title="🔗">🔗</button>`:''}<button class="ev-btn" onclick="event.stopPropagation();showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="event.stopPropagation();openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="event.stopPropagation();delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div></div>`;}).join('');return`<div class="tl-hour"><div class="tl-hour-lbl">${String(h).padStart(2,'0')}:00</div><div class="tl-hour-line"></div>${evRows}</div>`;}).join('');
+    const noTimeHtml=noTimeEvs.length?noTimeEvs.map(e=>{const icon=e.tip.split(' ')[0];const col=tipCol[icon]||'rgba(255,255,255,.25)';return`<div class="ev-row"><div class="ev-line" style="background:${col}"></div><div class="ev-time">––:––</div><div class="ev-icon">${icon}</div><div class="ev-info"><div class="ev-name">${e.nev}</div>${e.megj?`<div class="ev-note">${e.megj}</div>`:''}${e.ar?`<div class="ev-note" style="color:var(--acc);font-weight:800">${fmtD(e.ar,trip)}</div>`:''}</div><div class="ev-acts">${e.link?`<button class="ev-btn" onclick="window.open('${e.link}','_blank')" title="🔗">🔗</button>`:''}<button class="ev-btn" onclick="showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div>`;}).join(''):'';
     evHtml=`${noTimeHtml}<div class="tl-wrap"><div class="tl-axis"></div>${hourRows}</div>`;
   } else {
-    evHtml=dayEvs.length?dayEvs.map(e=>{const icon=e.tip.split(' ')[0];const col=tipCol[icon]||'rgba(255,255,255,.25)';return`<div class="ev-row"><div class="ev-line" style="background:${col}"></div><div class="ev-time">${e.ido||'––'}</div><div class="ev-icon">${icon}</div><div class="ev-info"><div class="ev-name">${e.nev}</div>${e.megj?`<div class="ev-note">${e.megj}</div>`:''}</div><div class="ev-acts"><button class="ev-btn" onclick="moveEv('${trip.id}','${e.id}',-1)" title="${t('tEvMoveUp')}">↑</button><button class="ev-btn" onclick="moveEv('${trip.id}','${e.id}',1)" title="${t('tEvMoveDown')}">↓</button><button class="ev-btn" onclick="showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div>`;}).join(''):`<div style="text-align:center;color:var(--mut);font-size:12px;padding:20px 0">${t('tervEmpty')}</div>`;
+    evHtml=dayEvs.length?dayEvs.map(e=>{const icon=e.tip.split(' ')[0];const col=tipCol[icon]||'rgba(255,255,255,.25)';return`<div class="ev-row"><div class="ev-line" style="background:${col}"></div><div class="ev-time">${e.ido||'––'}</div><div class="ev-icon">${icon}</div><div class="ev-info"><div class="ev-name">${e.nev}</div>${e.megj?`<div class="ev-note">${e.megj}</div>`:''}${e.ar?`<div class="ev-note" style="color:var(--acc);font-weight:800">${fmtD(e.ar,trip)}</div>`:''}</div><div class="ev-acts">${e.link?`<button class="ev-btn" onclick="window.open('${e.link}','_blank')" title="🔗">🔗</button>`:''}<button class="ev-btn" onclick="moveEv('${trip.id}','${e.id}',-1)" title="${t('tEvMoveUp')}">↑</button><button class="ev-btn" onclick="moveEv('${trip.id}','${e.id}',1)" title="${t('tEvMoveDown')}">↓</button><button class="ev-btn" onclick="showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div>`;}).join(''):`<div style="text-align:center;color:var(--mut);font-size:12px;padding:20px 0">${t('tervEmpty')}</div>`;
   }
   evListEl.innerHTML=evHtml;
   // Kiadások frissítése is
   if(expListEl){
-    const dayExps=(trip.kiadasok||[]).filter(e=>!isPend(e)&&e.dat===dat);
+    const dayExps=myKiadasok(trip).filter(e=>!isPend(e)&&e.dat===dat);
     const dayTotal=dayExps.reduce((s,e)=>s+e.osszeg,0);
     const expHtml=dayExps.length?`<div style="margin-top:8px;margin-bottom:4px;font-size:9px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.06em">${t('tDayExps')}</div>`+dayExps.map(e=>{const k=getKat(e.kat);return`<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:4px"><div style="font-size:18px">${k.ikon}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.nev}</div><div style="font-size:10px;color:var(--mut)">${k.nev}${e.fizette?` · ${(trip.tagok||[]).find(tg=>tg.id===e.fizette)?.nev||''}`:''}</div></div><div style="font-size:12px;font-family:'Courier New',monospace;font-weight:800;color:var(--acc)">${fmtD(e.osszeg,trip)}</div></div>`;}).join(''):'';
     const dayTotalBar=dayTotal>0?`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0 2px;margin-top:4px;border-top:1px solid rgba(255,255,255,.06)"><span style="font-size:10px;color:var(--mut)">${t('tDayTotal')}</span><span style="font-size:13px;font-family:'Courier New',monospace;font-weight:800;color:var(--acc)">${fmtD(dayTotal,trip)}</span></div>`:'';
@@ -7135,7 +7454,7 @@ function renderTerv(){
   const dayEvs=events.filter(e=>e.dat===tervSelDat).sort((a,b)=>(a.ido||'99:99').localeCompare(b.ido||'99:99'));
 
   // Napi összesítő fejléc
-  const dayExps=(trip.kiadasok||[]).filter(e=>!isPend(e)&&e.dat===tervSelDat);
+  const dayExps=myKiadasok(trip).filter(e=>!isPend(e)&&e.dat===tervSelDat);
   const dayTotal=dayExps.reduce((s,e)=>s+e.osszeg,0);
   // Időjárás cache-ből (ha van)
   const wxKey=trip.id+'_'+tervSelDat;
@@ -7180,8 +7499,8 @@ function renderTerv(){
           <div class="tl-ev-inner">
             <div class="tl-ev-time">${e.ido||'––'}</div>
             <div class="tl-ev-icon">${icon}</div>
-            <div class="tl-ev-info"><div class="tl-ev-name">${e.nev}</div>${e.megj?`<div class="tl-ev-note">${e.megj}</div>`:''}</div>
-            <div class="tl-ev-acts"><button class="ev-btn" onclick="event.stopPropagation();showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="event.stopPropagation();openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="event.stopPropagation();delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div>
+            <div class="tl-ev-info"><div class="tl-ev-name">${e.nev}</div>${e.megj?`<div class="tl-ev-note">${e.megj}</div>`:''}${e.ar?`<div class="tl-ev-note" style="color:var(--acc);font-weight:800">${fmtD(e.ar,trip)}</div>`:''}</div>
+            <div class="tl-ev-acts">${e.link?`<button class="ev-btn" onclick="event.stopPropagation();window.open('${e.link}','_blank')" title="🔗">🔗</button>`:''}<button class="ev-btn" onclick="event.stopPropagation();showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="event.stopPropagation();openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="event.stopPropagation();delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div>
           </div>
         </div>`;
       }).join('');
@@ -7193,14 +7512,14 @@ function renderTerv(){
     }).join('');
     const noTimeHtml=noTimeEvs.length?noTimeEvs.map(e=>{
       const icon=e.tip.split(' ')[0];const col=tipCol[icon]||'rgba(255,255,255,.25)';
-      return`<div class="ev-row"><div class="ev-line" style="background:${col}"></div><div class="ev-time">––:––</div><div class="ev-icon">${icon}</div><div class="ev-info"><div class="ev-name">${e.nev}</div>${e.megj?`<div class="ev-note">${e.megj}</div>`:''}</div><div class="ev-acts"><button class="ev-btn" onclick="showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div>`;
+      return`<div class="ev-row"><div class="ev-line" style="background:${col}"></div><div class="ev-time">––:––</div><div class="ev-icon">${icon}</div><div class="ev-info"><div class="ev-name">${e.nev}</div>${e.megj?`<div class="ev-note">${e.megj}</div>`:''}${e.ar?`<div class="ev-note" style="color:var(--acc);font-weight:800">${fmtD(e.ar,trip)}</div>`:''}</div><div class="ev-acts">${e.link?`<button class="ev-btn" onclick="window.open('${e.link}','_blank')" title="🔗">🔗</button>`:''}<button class="ev-btn" onclick="showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div>`;
     }).join(''):'';
     evHtml=`${noTimeHtml}<div class="tl-wrap"><div class="tl-axis"></div>${hourRows}</div>`;
   } else {
     // Lista nézet
     evHtml=dayEvs.length?dayEvs.map(e=>{
       const icon=e.tip.split(' ')[0];const col=tipCol[icon]||'rgba(255,255,255,.25)';
-      return`<div class="ev-row"><div class="ev-line" style="background:${col}"></div><div class="ev-time">${e.ido||'––'}</div><div class="ev-icon">${icon}</div><div class="ev-info"><div class="ev-name">${e.nev}</div>${e.megj?`<div class="ev-note">${e.megj}</div>`:''}</div><div class="ev-acts"><button class="ev-btn" onclick="moveEv('${trip.id}','${e.id}',-1)" title="${t('tEvMoveUp')}">↑</button><button class="ev-btn" onclick="moveEv('${trip.id}','${e.id}',1)" title="${t('tEvMoveDown')}">↓</button><button class="ev-btn" onclick="showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div>`;
+      return`<div class="ev-row"><div class="ev-line" style="background:${col}"></div><div class="ev-time">${e.ido||'––'}</div><div class="ev-icon">${icon}</div><div class="ev-info"><div class="ev-name">${e.nev}</div>${e.megj?`<div class="ev-note">${e.megj}</div>`:''}${e.ar?`<div class="ev-note" style="color:var(--acc);font-weight:800">${fmtD(e.ar,trip)}</div>`:''}</div><div class="ev-acts">${e.link?`<button class="ev-btn" onclick="window.open('${e.link}','_blank')" title="🔗">🔗</button>`:''}<button class="ev-btn" onclick="moveEv('${trip.id}','${e.id}',-1)" title="${t('tEvMoveUp')}">↑</button><button class="ev-btn" onclick="moveEv('${trip.id}','${e.id}',1)" title="${t('tEvMoveDown')}">↓</button><button class="ev-btn" onclick="showCopyDay('${trip.id}','${e.id}')" title="${t('tDayCopy')}">📋</button><button class="ev-btn" onclick="openTervEdit('${trip.id}','${e.id}')">✏️</button><button class="ev-btn" style="color:var(--red)" onclick="delTervEsemeny('${trip.id}','${e.id}')">🗑️</button></div></div>`;
     }).join(''):`<div style="text-align:center;color:var(--mut);font-size:12px;padding:20px 0">${t('tervEmpty')}</div>`;
   }
 
@@ -7230,7 +7549,7 @@ function renderTerv(){
 
   c.innerHTML=`${todayBanner}<div class="daystrip">${strip}</div>
   ${summaryHtml}
-  <div class="shdrl"><span class="slbl">📅 ${tervSelDat}</span><div style="display:flex;gap:5px"><button class="abtn" style="font-size:10px;padding:5px 9px;background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.3);color:#a78bfa" onclick="runAiDayPlan('${trip.id}','${tervSelDat}')">${t('tAiDayBtn')}</button><button class="abtn" onclick="openTervNew('${trip.id}','${tervSelDat}')">${t('tAddEvent')}</button></div></div>
+  <div class="shdrl"><span class="slbl">📅 ${tervSelDat}</span><div style="display:flex;gap:5px"><button class="abtn" style="font-size:10px;padding:5px 9px;background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.3);color:#a78bfa" onclick="runAiDayPlan('${trip.id}','${tervSelDat}')">${t('tAiDayBtn')}</button><button class="abtn" style="font-size:10px;padding:5px 9px" onclick="openXlsImport('${trip.id}')">${t('xlsImportBtn')}</button><button class="abtn" onclick="openTervNew('${trip.id}','${tervSelDat}')">${t('tAddEvent')}</button></div></div>
   ${viewToggle}
   ${aiDayHtml}
   <div id="aiDayBox_${trip.id}_${tervSelDat}"></div>
@@ -7538,7 +7857,7 @@ function openTervNew(tid,dat){
   editTervId=null;
   set('tervMttl',t('tervMttlNew'));
   const d=$('tervDat');if(d)d.value=dat||tervSelDat||today();
-  ['tervIdo','tervNev','tervMegj'].forEach(id=>{const e=$(id);if(e)e.value='';});
+  ['tervIdo','tervNev','tervMegj','tervLink','tervAr'].forEach(id=>{const e=$(id);if(e)e.value='';});
   renderTervTipGrd(null);
   $('tervMbg').classList.add('on');
   setTimeout(()=>$('tervNev')?.focus(),220);
@@ -7552,6 +7871,8 @@ function openTervEdit(tid,eid){
   const i=$('tervIdo');if(i)i.value=ev.ido||'';
   const n=$('tervNev');if(n)n.value=ev.nev;
   const m=$('tervMegj');if(m)m.value=ev.megj||'';
+  const l=$('tervLink');if(l)l.value=ev.link||'';
+  const a=$('tervAr');if(a)a.value=ev.ar||'';
   renderTervTipGrd(ev.tip);
   $('tervMbg').classList.add('on');
 }
@@ -7569,18 +7890,20 @@ function saveTervEsemeny(){
   const dat=$('tervDat')?.value||today();
   const ido=$('tervIdo')?.value||'';
   const megj=$('tervMegj')?.value.trim()||'';
+  const link=$('tervLink')?.value.trim()||'';
+  const ar=parseFloat($('tervAr')?.value)||0;
   const tipBtn=$('tervTipGrd')?.querySelector('.cbtn.on');
   const tip=tipBtn?tipBtn.textContent:'📝 Egyéb';
   const trip=getActiveTrip();if(!trip)return;
   if(!trip.events)trip.events=[];
-  if(editTervId){const ev=trip.events.find(e=>e.id===editTervId);if(ev)Object.assign(ev,{nev,dat,ido,megj,tip});}
-  else{trip.events.push({id:genId(),nev,dat,ido,megj,tip});}
-  tervSelDat=dat;closeTerv();renderTerv();toast('✅ '+t('tervSaved'));
+  if(editTervId){const ev=trip.events.find(e=>e.id===editTervId);if(ev)Object.assign(ev,{nev,dat,ido,megj,link,ar,tip});}
+  else{trip.events.push({id:genId(),nev,dat,ido,megj,link,ar,tip});}
+  tervSelDat=dat;closeTerv();saveTrips();renderTerv();toast('✅ '+t('tervSaved'));
 }
 function delTervEsemeny(tid,eid){
   showConfirm(t('tervDelConf'),()=>{
     const trip=trips.find(t2=>t2.id===tid);if(!trip)return;
-    trip.events=(trip.events||[]).filter(e=>e.id!==eid);renderTerv();toast('🗑️ '+t('tervDeled'));
+    trip.events=(trip.events||[]).filter(e=>e.id!==eid);saveTrips();renderTerv();toast('🗑️ '+t('tervDeled'));
   });
 }
 function togglePack(tid,pid){
@@ -7829,6 +8152,7 @@ function renderHelyek(){
           <div class="place-info" style="${isDone?'opacity:.5':''}" >
             <div class="place-name" style="${isDone?'text-decoration:line-through':''}">${p.nev}</div>
             <div class="place-sub">${[p.cim,p.megj].filter(Boolean).join(' · ')}</div>
+            ${p.ar?`<div class="place-sub" style="color:var(--acc);font-weight:800">${fmtD(p.ar,trip)}</div>`:''}
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
             <div class="place-prio ${p.prio}">${prioLbl[p.prio]||''}</div>
@@ -7847,14 +8171,14 @@ function renderHelyek(){
     const lbls=[t('fc0'),prioLbl.must,prioLbl.want,prioLbl.maybe];
     return`<button class="fchip${helyFilter===f?' on':''}" onclick="helyFilter='${f}';renderHelyek()">${lbls[i]}</button>`;
   }).join('');
-  c.innerHTML=`<div class="shdrl"><span class="slbl">📍 ${trip.cel||trip.nev}</span><div style="display:flex;gap:6px"><button class="abtn" style="font-size:10px;padding:5px 10px;background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.35);color:#a78bfa" onclick="openAiPlaceSuggest('${trip.id}')">${t('aiPlaceBtn')}</button><button class="abtn" onclick="openHelyNew('${trip.id}')">${t('hMttlNew')}</button></div></div>
+  c.innerHTML=`<div class="shdrl"><span class="slbl">📍 ${trip.cel||trip.nev}</span><div style="display:flex;gap:6px"><button class="abtn" style="font-size:10px;padding:5px 10px;background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.35);color:#a78bfa" onclick="openAiPlaceSuggest('${trip.id}')">${t('aiPlaceBtn')}</button><button class="abtn" style="font-size:10px;padding:5px 10px" onclick="openXlsImport('${trip.id}')">${t('xlsImportBtn')}</button><button class="abtn" onclick="openHelyNew('${trip.id}')">${t('hMttlNew')}</button></div></div>
   <div id="aiPlaceBox_${trip.id}"></div>
   <div class="place-filter">${fchips}</div>${sorted.length?progressBar+cards:`<div style="text-align:center;padding:40px 20px"><div style="font-size:40px;margin-bottom:12px">📍</div><div style="font-size:14px;font-weight:800;margin-bottom:6px">${t('hEmpty')}</div><div style="font-size:12px;color:var(--mut)">${t('hEmptyD')}</div></div>`}<div style="height:20px"></div>`;
 }
 function openHelyNew(tid){
   editHelyId=null;
   set('helyMttl',t('hMttlNew'));
-  ['hNev','hCim','hLink'].forEach(id=>{const e=$(id);if(e)e.value='';});
+  ['hNev','hCim','hLink','hAr'].forEach(id=>{const e=$(id);if(e)e.value='';});
   const m=$('hMegj');if(m)m.value='';
   renderHelyTipGrd(null);renderHelyPrioRow('must');
   $('helyMbg').classList.add('on');
@@ -7869,6 +8193,7 @@ function openHelyEdit(tid,hid){
   const c=$('hCim');if(c)c.value=h.cim||'';
   const m=$('hMegj');if(m)m.value=h.megj||'';
   const l=$('hLink');if(l)l.value=h.link||'';
+  const a=$('hAr');if(a)a.value=h.ar||'';
   renderHelyTipGrd(h.tip);renderHelyPrioRow(h.prio);
   $('helyMbg').classList.add('on');
 }
@@ -7894,20 +8219,21 @@ function saveHely(){
   const cim=$('hCim')?.value.trim()||'';
   const megj=$('hMegj')?.value.trim()||'';
   const link=$('hLink')?.value.trim()||'';
+  const ar=parseFloat($('hAr')?.value)||0;
   const tipBtn=$('helyTipGrd')?.querySelector('.cbtn.on');
   const tip=tipBtn?tipBtn.textContent:t('hTypes').split(',')[0];
   const prioBtn=$('helyPrioRow')?.querySelector('.pchip.on');
   const prio=prioBtn?prioBtn.getAttribute('data-prio'):'maybe';
   const trip=getActiveTrip();if(!trip)return;
   if(!trip.places)trip.places=[];
-  if(editHelyId){const h=trip.places.find(p=>p.id===editHelyId);if(h)Object.assign(h,{nev,cim,megj,link,tip,prio});}
-  else{trip.places.push({id:genId(),nev,cim,megj,link,tip,prio});}
-  closeHely();renderHelyek();toast('✅ '+t('hSaved'));
+  if(editHelyId){const h=trip.places.find(p=>p.id===editHelyId);if(h)Object.assign(h,{nev,cim,megj,link,ar,tip,prio});}
+  else{trip.places.push({id:genId(),nev,cim,megj,link,ar,tip,prio});}
+  closeHely();saveTrips();renderHelyek();toast('✅ '+t('hSaved'));
 }
 function delHely(tid,hid){
   showConfirm(t('hDelConf'),()=>{
     const trip=trips.find(t2=>t2.id===tid);if(!trip)return;
-    trip.places=(trip.places||[]).filter(p=>p.id!==hid);renderHelyek();toast('🗑️ '+t('hDeled'));
+    trip.places=(trip.places||[]).filter(p=>p.id!==hid);saveTrips();renderHelyek();toast('🗑️ '+t('hDeled'));
   });
 }
 function toggleHely(tid,hid){
@@ -7915,6 +8241,189 @@ function toggleHely(tid,hid){
   const p=(trip.places||[]).find(x=>x.id===hid);if(!p)return;
   p.done=!p.done;saveTrips();renderHelyek();
   if(p.done)toast('✅ '+p.nev+' – '+t('hDoneToast'));
+}
+
+// ══════════════════════════════════════
+// EXCEL IMPORT (Napi program + Helyek)
+// ══════════════════════════════════════
+function normHead(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
+
+function quickHeaderDetect(headers){
+  const map={dat:null,ido:null,nev:null,link:null,ar:null};
+  headers.forEach((h,i)=>{
+    const n=normHead(h);
+    if(!n)return;
+    if(map.dat==null&&['datum','date','nap','day'].some(k=>n.includes(k))){map.dat=i;return;}
+    if(map.ido==null&&['ido','time','ora'].some(k=>n.includes(k))){map.ido=i;return;}
+    if(map.link==null&&['link','url','maps','weboldal','website'].some(k=>n.includes(k))){map.link=i;return;}
+    if(map.ar==null&&['ar','price','cost','osszeg','koltseg','amount'].some(k=>n===k||n.includes(k))){map.ar=i;return;}
+    if(map.nev==null&&['nev','helyszin','esemeny','event','name','title','hely','place','location','program'].some(k=>n.includes(k))){map.nev=i;return;}
+  });
+  return map;
+}
+
+async function aiHeaderFallback(headers,sampleRows){
+  const prompt=`Analyze these Excel/CSV column headers for a travel itinerary import and map them to fields.
+Headers (0-indexed array): ${JSON.stringify(headers)}
+Sample rows: ${JSON.stringify(sampleRows)}
+
+Fields to map (use the column index number, or null if the column doesn't exist):
+- dat: date column
+- ido: time column
+- nev: name of the place/event (REQUIRED – pick the most descriptive text column if unsure)
+- link: URL / maps link column
+- ar: price / cost column
+
+Reply ONLY with JSON, no explanation: {"dat":null,"ido":null,"nev":0,"link":null,"ar":null}`;
+  const resp=await fetch(getAiUrl(),{method:'POST',headers:getAiHeaders(),body:groqBody(prompt,300)});
+  const data=await resp.json();
+  if(data.error)throw new Error(data.error.message||'AI error');
+  const raw=groqText(data).trim();
+  const clean=raw.replace(/```json|```/g,'').trim();
+  const jsonMatch=clean.match(/\{[\s\S]*\}/);
+  if(!jsonMatch)throw new Error('no JSON');
+  const parsed=JSON.parse(jsonMatch[0]);
+  return {dat:parsed.dat??null,ido:parsed.ido??null,nev:parsed.nev??null,link:parsed.link??null,ar:parsed.ar??null};
+}
+
+function xlsParseDate(val){
+  if(val==null||val==='')return '';
+  if(typeof val==='number'){
+    const utcDays=Math.floor(val-25569);
+    const d=new Date(utcDays*86400*1000);
+    return isNaN(d.getTime())?'':d.toISOString().slice(0,10);
+  }
+  const s=String(val).trim();
+  let m=s.match(/^(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
+  if(m)return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
+  m=s.match(/^(\d{1,2})[.\-\/](\d{1,2})[.\-\/](\d{4})/);
+  if(m)return `${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`;
+  const d2=new Date(s);
+  return isNaN(d2.getTime())?'':d2.toISOString().slice(0,10);
+}
+function xlsParseTime(val){
+  if(val==null||val==='')return '';
+  if(typeof val==='number'){
+    const totalMin=Math.round(val*24*60);
+    const h=Math.floor(totalMin/60)%24,m=totalMin%60;
+    return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+  }
+  const s=String(val).trim();
+  const m=s.match(/^(\d{1,2}):(\d{2})/);
+  return m?String(m[1]).padStart(2,'0')+':'+m[2]:'';
+}
+
+function openXlsImport(tid){
+  xlsImportTripId=tid;
+  xlsPreviewItems=[];
+  const inp=$('xlsImportFile');
+  if(inp){inp.value='';inp.click();}
+}
+function closeXlsImport(){
+  const mb=$('xlsMbg');if(mb)mb.classList.remove('on');
+  xlsPreviewItems=[];
+}
+function showXlsLoading(msg){
+  const mb=$('xlsMbg');if(mb)mb.classList.add('on');
+  set('xlsMttl',t('xlsImportTitle'));
+  setH('xlsMbdy',`<div style="text-align:center;padding:30px 10px;color:var(--mut);font-size:12px"><div style="width:22px;height:22px;border:2px solid var(--acc);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>${msg}</div>`);
+  setH('xlsMft','');
+}
+function renderXlsError(msg){
+  const mb=$('xlsMbg');if(mb)mb.classList.add('on');
+  set('xlsMttl',t('xlsImportTitle'));
+  setH('xlsMbdy',`<div style="text-align:center;padding:24px 10px;color:var(--red);font-size:12px">⚠️ ${msg}</div>`);
+  setH('xlsMft',`<button class="btns" style="flex:1" onclick="closeXlsImport()">${t('xlsImportCancel')}</button>`);
+}
+
+async function handleXlsFile(inputEl){
+  const file=inputEl.files&&inputEl.files[0];
+  if(!file)return;
+  showXlsLoading(t('xlsImportLoading'));
+  try{
+    const buf=await file.arrayBuffer();
+    const wb=XLSX.read(buf,{type:'array'});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:true});
+    inputEl.value='';
+    if(!rows||rows.length<2){renderXlsError(t('xlsImportEmpty'));return;}
+    await processXlsRows(rows);
+  }catch(e){
+    console.warn('[MONYK xls import]',e);
+    renderXlsError(t('xlsImportError'));
+  }
+}
+
+async function processXlsRows(rows){
+  const headers=rows[0];
+  const dataRows=rows.slice(1).filter(r=>(r||[]).some(c=>String(c||'').trim()!==''));
+  let map=quickHeaderDetect(headers);
+  if(map.nev==null){
+    showXlsLoading(t('xlsImportAiLoading'));
+    try{
+      const aiMap=await aiHeaderFallback(headers,dataRows.slice(0,3));
+      if(aiMap&&aiMap.nev!=null)map=aiMap;
+    }catch(e){ console.warn('[MONYK xls import] AI fallback failed',e); }
+  }
+  if(map.nev==null){ renderXlsError(t('xlsImportNoName')); return; }
+  xlsPreviewItems=dataRows.map(r=>{
+    const nev=String(r[map.nev]??'').trim();
+    if(!nev)return null;
+    const dat=map.dat!=null?xlsParseDate(r[map.dat]):'';
+    const ido=map.ido!=null?xlsParseTime(r[map.ido]):'';
+    const link=map.link!=null?String(r[map.link]??'').trim():'';
+    const arRaw=map.ar!=null?r[map.ar]:'';
+    const ar=parseFloat(String(arRaw??'').toString().replace(',','.'))||0;
+    return {sel:true,nev,dat,ido,link,ar,target:dat?'event':'place'};
+  }).filter(Boolean);
+  if(!xlsPreviewItems.length){ renderXlsError(t('xlsImportEmpty')); return; }
+  renderXlsPreview();
+}
+
+function renderXlsPreview(){
+  const mb=$('xlsMbg');if(mb)mb.classList.add('on');
+  set('xlsMttl',t('xlsImportTitle'));
+  const trip=trips.find(t2=>t2.id===xlsImportTripId);
+  const selCount=xlsPreviewItems.filter(i=>i.sel).length;
+  const rowsHtml=xlsPreviewItems.map((it,idx)=>{
+    const targetLbl=it.target==='event'?t('xlsPreviewEvent'):t('xlsPreviewPlace');
+    const sub=[it.dat?it.dat+(it.ido?' '+it.ido:''):'',it.ar?fmtD(it.ar,trip):'',it.link?'🔗':''].filter(Boolean).join(' · ');
+    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <input type="checkbox" ${it.sel?'checked':''} onchange="toggleXlsItem(${idx})" style="width:16px;height:16px;flex-shrink:0">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(it.nev)}</div>
+        <div style="font-size:10px;color:var(--mut)">${sub||'–'}</div>
+      </div>
+      <button onclick="toggleXlsTarget(${idx})" title="${t('xlsImportSwitch')}" style="font-size:9px;font-weight:800;padding:3px 8px;border-radius:8px;border:1.5px solid rgba(139,92,246,.35);background:rgba(139,92,246,.08);color:#a78bfa;cursor:pointer;white-space:nowrap">${targetLbl}</button>
+    </div>`;
+  }).join('');
+  setH('xlsMbdy',`<div style="font-size:10px;color:var(--mut);margin-bottom:8px">${xlsPreviewItems.length} ${t('xlsImportCount')}</div>${rowsHtml}`);
+  setH('xlsMft',`<button class="btns" onclick="closeXlsImport()">${t('xlsImportCancel')}</button><button class="btnp" onclick="commitXlsImport()">${t('xlsImportConfirm')} (${selCount})</button>`);
+}
+
+function toggleXlsItem(idx){ const it=xlsPreviewItems[idx];if(!it)return; it.sel=!it.sel; renderXlsPreview(); }
+function toggleXlsTarget(idx){ const it=xlsPreviewItems[idx];if(!it)return; it.target=it.target==='event'?'place':'event'; renderXlsPreview(); }
+
+function commitXlsImport(){
+  const trip=trips.find(t2=>t2.id===xlsImportTripId);if(!trip)return;
+  const sel=xlsPreviewItems.filter(i=>i.sel);
+  if(!sel.length){ closeXlsImport(); return; }
+  if(!trip.places)trip.places=[];
+  if(!trip.events)trip.events=[];
+  let evCount=0,plCount=0;
+  sel.forEach(it=>{
+    if(it.target==='event'){
+      trip.events.push({id:genId(),nev:it.nev,dat:it.dat||today(),ido:it.ido||'',megj:'',link:it.link||'',ar:it.ar||0,tip:'📝 Egyéb'});
+      evCount++;
+    }else{
+      trip.places.push({id:genId(),nev:it.nev,cim:'',megj:'',link:it.link||'',ar:it.ar||0,tip:t('hTypes').split(',')[0],prio:'maybe'});
+      plCount++;
+    }
+  });
+  saveTrips(); // localStorage mentés + felhő reconcile (places/events) egy lépésben
+  renderHelyek();renderTerv();
+  closeXlsImport();
+  toast(`✅ ${sel.length} ${t('xlsImportSuccess')} (📅${evCount} · 📍${plCount})`);
 }
 
 
@@ -8358,9 +8867,8 @@ function _buildPopularTargets(fromCur){
 }
 
 let valTarget='EUR';
-let _valRateFetchTs=0;
 
-function openValuta(){
+async function openValuta(){
   const trip=getActiveTrip();
   const fromCur=(trip?.valuta||BASE_CURRENCY).toUpperCase();
   // Ha az utazás valutája === home, alapból HOME→USD konverzió
@@ -8375,10 +8883,14 @@ function openValuta(){
     sel.value=fromCur;
   }
   buildValToList(fromCur);
-  buildRateList();
-  calcVal();
   $('valMbg').classList.add('on');
   setTimeout(()=>$('valAmt')?.focus(),200);
+  // Azonnal jelenítsük meg a (esetleg gyorsítótárazott) árfolyamot, majd frissítsünk élőben
+  buildRateList();
+  calcVal();
+  await fetchLiveRates('EUR',{force:true});
+  buildRateList();
+  calcVal();
 }
 function closeValuta(){$('valMbg').classList.remove('on');}
 
@@ -8419,58 +8931,53 @@ async function buildRateList(){
   ].forEach(c=>priority.add(c));
   const targets=[...priority].filter(c=>c!==fromCur).slice(0,30);
 
-  el.innerHTML='<div style="font-size:11px;color:var(--mut);padding:6px 0">⏳ '+t('rLoad')+'…</div>';
+  if(!el.dataset.filled) el.innerHTML='<div style="font-size:11px;color:var(--mut);padding:6px 0">⏳ '+t('rLoad')+'…</div>';
 
-  // Fetch minden szükséges árfolyamot egyszerre (1 API hívás EUR-base-vel)
-  let euroRates={};
-  try{
-    // Frankfurter: ha fromCur===EUR, közvetlen; egyébként EUR-bázisból cross-rate
-    const base='EUR';
-    const now=Date.now();
-    if(!liveRates||(now-(_valRateFetchTs||0))>3600000){
-      const r=await fetch(`https://api.frankfurter.app/latest?base=${base}`,{cache:'no-store'});
-      if(r.ok){const d=await r.json();liveRates={base:d.base,rates:d.rates};_valRateFetchTs=now;}
-    }
-    if(liveRates?.rates) euroRates=liveRates.rates;
-  }catch { console.warn('[MONYK] silent catch'); }
+  // Fetch minden szükséges árfolyamot egyszerre (1 API hívás EUR-base-vel), max. 1 óránként újra
+  const res=await fetchLiveRates('EUR');
+  const euroRates=res?.rates||{};
 
-  // Cross-rate: from→to via EUR
+  // Cross-rate: from→to via EUR, ha nincs élő adat, statikus becslésre esünk vissza
   function crossRate(from,to){
-    if(from===to) return 1;
-    if(from==='EUR') return euroRates[to]||null;
-    if(to==='EUR'){const r=euroRates[from];return r?1/r:null;}
-    const rFrom=euroRates[from], rTo=euroRates[to];
-    if(rFrom&&rTo) return rTo/rFrom;
+    if(from===to) return {rate:1,live:true};
+    if(from==='EUR'&&euroRates[to]) return {rate:euroRates[to],live:true};
+    if(to==='EUR'&&euroRates[from]) return {rate:1/euroRates[from],live:true};
+    if(euroRates[from]&&euroRates[to]) return {rate:euroRates[to]/euroRates[from],live:true};
     // fallback: trip árfolyam
     if(trip?.arfolyam>0){
       const tv=(trip.valuta||'EUR').toUpperCase();
-      if(from===tv&&to===BASE_CURRENCY) return trip.arfolyam;
-      if(from===BASE_CURRENCY&&to===tv) return 1/trip.arfolyam;
+      if(from===tv&&to===BASE_CURRENCY) return {rate:trip.arfolyam,live:false};
+      if(from===BASE_CURRENCY&&to===tv) return {rate:1/trip.arfolyam,live:false};
     }
-    return null;
+    // végső fallback: statikus (nem élő) árfolyamtábla
+    const sr=_staticCrossRate(from,to);
+    return sr?{rate:sr,live:false}:null;
   }
 
   const isLive=Object.keys(euroRates).length>0;
   const rows=[];
   for(const to of targets){
-    const rate=crossRate(fromCur,to);
-    if(!rate) continue;
+    const cr=crossRate(fromCur,to);
+    if(!cr) continue;
     const cur=CURRENCIES.find(c=>c.code===to)||{symbol:to,name:to};
     // Okos megjelenítés: kis értéknél több tizedes
-    const fmt=rate>=100?rate.toFixed(2):rate>=1?rate.toFixed(4):rate.toFixed(6);
+    const fmt=cr.rate>=100?cr.rate.toFixed(2):cr.rate>=1?cr.rate.toFixed(4):cr.rate.toFixed(6);
     const isTrip=to===(trip?.valuta||'').toUpperCase();
     const isHome=homeCurrencies.includes(to);
     const badge=isTrip?'✈️ ':isHome?'🏠 ':'';
     rows.push(`<div class="rate-row" style="${isTrip||isHome?'background:rgba(245,200,66,.07);border-radius:8px;':''}">
-      <span class="rate-lbl">${badge}1 ${fromCur} → ${cur.symbol} ${to}</span>
+      <span class="rate-lbl">${badge}1 ${fromCur} → ${cur.symbol} ${to}${cr.live?'':' *'}</span>
       <span class="rate-val">${fmt}</span>
     </div>`);
   }
 
+  const ageMin=_valRateFetchTs?Math.max(0,Math.round((Date.now()-_valRateFetchTs)/60000)):null;
+  const ageTxt=ageMin===null?'':ageMin<1?' · '+t('rOk').replace('✅ ','')+' most':' · '+ageMin+' perce frissítve';
   const srcLabel=isLive
-    ? `✅ Live · <a href="https://frankfurter.app" target="_blank" style="color:var(--mut);text-decoration:none">frankfurter.app</a> (ECB)`
-    : '⚠️ Offline – becsült árfolyam';
+    ? `✅ Live · <a href="https://frankfurter.app" target="_blank" style="color:var(--mut);text-decoration:none">frankfurter.app</a> (ECB)${ageTxt}`
+    : '⚠️ Offline – becsült árfolyam (*)';
 
+  el.dataset.filled='1';
   el.innerHTML=rows.length
     ? rows.join('')+`<div style="font-size:9px;color:var(--mut);margin-top:8px;text-align:right">${srcLabel}</div>`
     : `<div style="font-size:11px;color:var(--mut);padding:6px">${t('rErr')}</div>`;
@@ -8483,23 +8990,17 @@ async function calcVal(){
   if(amt<=0){if(resEl)resEl.style.display='none';return;}
   if(resEl){resEl.style.display='';const val=$('valResVal');if(val)val.textContent='…';}
 
-  let rate=null;
-  try{
-    if(from===to){rate=1;}
-    else{
-      // EUR-alapú cross-rate (1 API hívás elegendő)
-      let euroRates=liveRates?.rates||{};
-      if(!liveRates){
-        const r=await fetch(`https://api.frankfurter.app/latest?base=EUR`,{cache:'no-store'});
-        if(r.ok){const d=await r.json();liveRates={base:'EUR',rates:d.rates};euroRates=d.rates;_valRateFetchTs=Date.now();}
-      }
-      if(from==='EUR') rate=euroRates[to]||null;
-      else if(to==='EUR'){const r=euroRates[from];rate=r?1/r:null;}
-      else{const rF=euroRates[from],rT=euroRates[to];if(rF&&rT)rate=rT/rF;}
-    }
-  }catch { console.warn('[MONYK] silent catch'); }
+  let rate=null,isLive=false;
+  if(from===to){rate=1;isLive=true;}
+  else{
+    const res=await fetchLiveRates('EUR');
+    const euroRates=res?.rates||{};
+    if(from==='EUR'&&euroRates[to]){rate=euroRates[to];isLive=true;}
+    else if(to==='EUR'&&euroRates[from]){rate=1/euroRates[from];isLive=true;}
+    else if(euroRates[from]&&euroRates[to]){rate=euroRates[to]/euroRates[from];isLive=true;}
+  }
 
-  // Fallback: trip árfolyam
+  // Fallback: trip árfolyam, majd statikus becslés – de sosem hamis 1:1 arány
   if(!rate){
     const trip=getActiveTrip();
     if(trip?.arfolyam>0){
@@ -8507,18 +9008,29 @@ async function calcVal(){
       if(from===tv&&to===BASE_CURRENCY)rate=trip.arfolyam;
       else if(from===BASE_CURRENCY&&to===tv)rate=1/trip.arfolyam;
     }
-    if(!rate)rate=1;
+    if(!rate)rate=_staticCrossRate(from,to);
+  }
+
+  if(!rate){
+    // Se élő, se becsült árfolyam nem elérhető erre a devizapárra – ne mutassunk félrevezető eredményt
+    if(resEl){
+      const lbl=$('valResLbl'),val=$('valResVal'),sub=$('valResSub');
+      if(lbl)lbl.textContent=amt.toLocaleString('hu-HU')+' '+from+' =';
+      if(val)val.textContent='—';
+      if(sub){sub.textContent=t('rErr');sub.style.color='var(--red)';}
+    }
+    buildRateList();
+    return;
   }
 
   const result=amt*rate;
   const toSym=(CURRENCIES.find(c=>c.code===to)||{symbol:to}).symbol;
-  const isLive=liveRates&&Object.keys(liveRates.rates||{}).length>0;
   const fmtRate=rate>=100?rate.toFixed(2):rate>=1?rate.toFixed(4):rate.toFixed(6);
   if(resEl){
     const lbl=$('valResLbl'),val=$('valResVal'),sub=$('valResSub');
     if(lbl)lbl.textContent=amt.toLocaleString('hu-HU')+' '+from+' =';
     if(val)val.textContent=result.toLocaleString('hu-HU',{maximumFractionDigits:4})+' '+toSym;
-    if(sub)sub.textContent='1 '+from+' = '+fmtRate+' '+to+(isLive?' · live':'· becsült');
+    if(sub){sub.style.color='';sub.textContent='1 '+from+' = '+fmtRate+' '+to+(isLive?' · live':' · becsült');}
   }
   // Árfolyamtáblát is frissítsük ha megváltozott a from
   buildRateList();
@@ -8822,6 +9334,7 @@ window.addEventListener('message', function(ev){
 document.addEventListener('DOMContentLoaded',async()=>{
   applyTheme(currentTheme);
   applyLang();
+  populateTValutaOptions();
 
   // Fix: --nh frissítése resize és orientation change esetén (Android navigációs sáv)
   function updateNavHeight(){
@@ -8919,6 +9432,62 @@ document.addEventListener('DOMContentLoaded',async()=>{
     db.enablePersistence({synchronizeTabs:true}).catch(e=>console.warn('[MONYK sync] persistence',e.code));
   }catch(e){ console.warn('[MONYK sync] init failed',e); }
 
+  // ── Push értesítések (Firebase Cloud Messaging) ──
+  // A tényleges küldés (repülő/vonat visszaszámláló, "kérek friss pozíciót")
+  // egy Cloud Functions-ből történik; itt csak feliratkozunk és elmentjük a
+  // tokent a trip alá, hogy a function tudja kinek küldjön.
+  // FONTOS: a VAPID_KEY-t a Firebase Console → Project settings → Cloud
+  // Messaging → Web Push certificates alatt kell legenerálni és ide bemásolni.
+  const VAPID_KEY='dZZi-r2dFkljFtNPsvVlIrMzQMRYxzoFjOQv7c5-rlc';
+  let messaging=null, swReg=null;
+  const pushSupported=('Notification' in window)&&('serviceWorker' in navigator)&&('PushManager' in window);
+  const _lastLiveReq={};
+
+  async function monykInitPush(){
+    if(!pushSupported) return false;
+    try{
+      swReg=await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      messaging=firebase.messaging();
+      messaging.onMessage(function(payload){
+        // előtérben lévő appnál nem natív push-ot mutatunk, hanem toast-ot
+        const title=(payload.notification&&payload.notification.title)||'MONYK';
+        const body=(payload.notification&&payload.notification.body)||'';
+        toast(`🔔 ${title}${body?': '+body:''}`);
+      });
+      return true;
+    }catch(e){ console.warn('[MONYK push] init failed',e); return false; }
+  }
+
+  async function monykSaveToken(token){
+    const trip=getActiveTrip();
+    if(!db||!trip||!trip.kod||!token) return;
+    try{
+      await db.collection('trips').doc(trip.kod).collection('pushTokens').doc(token).set({
+        token, memberName: myProfileName||'Ismeretlen', updatedAt: Date.now()
+      });
+    }catch(e){ console.warn('[MONYK push] token save failed',e); }
+  }
+
+  window.monykEnableNotifications=async function(){
+    if(!pushSupported){ toast('❌ Az értesítések ezen a böngészőn nem támogatottak'); return; }
+    const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+    const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+    if(isIOS&&!isStandalone){
+      toast('📲 iPhone-on előbb add hozzá a kezdőképernyőhöz (Megosztás → Kezdőképernyőhöz adás), és onnan nyisd meg az appot');
+      return;
+    }
+    if(!getActiveTrip()||!getActiveTrip().kod){ toast('Ehhez egy megosztott (csoportos) utazás szükséges'); return; }
+    try{
+      const perm=await Notification.requestPermission();
+      if(perm!=='granted'){ toast('❌ Engedély nélkül nem tudunk értesítést küldeni'); return; }
+      const ok=await monykInitPush();
+      if(!ok){ toast('❌ Nem sikerült előkészíteni az értesítéseket'); return; }
+      const token=await messaging.getToken({vapidKey:VAPID_KEY, serviceWorkerRegistration:swReg});
+      if(token){ await monykSaveToken(token); toast('✅ Értesítések bekapcsolva'); }
+      else{ toast('❌ Nem sikerült tokent kérni'); }
+    }catch(e){ console.warn('[MONYK push] enable failed',e); toast('❌ Hiba az értesítések bekapcsolásakor'); }
+  };
+
   // ── kód generálás ──
   const CODE_CHARS='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 0/O/1/I kihagyva
   function genShareCode(){
@@ -8927,7 +9496,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   }
   function sanitize(obj){ try{ return JSON.parse(JSON.stringify(obj)); }catch(e){ return obj; } }
 
-  const META_KEYS=['nev','cel','kezdo','veg','keret','valuta','arfolyam','viDat','viIdo','szNev','szCim','szBe','szKi','megj','tagok','legs'];
+  const META_KEYS=['nev','cel','kezdo','veg','keret','valuta','arfolyam','viDat','viIdo','szNev','szCim','szBe','szKi','megj','tagok','legs','emergencyCard','flightStatus','polls','liveShare'];
   function metaOf(trip){
     const m={}; META_KEYS.forEach(k=>{ m[k]=(trip[k]!==undefined?trip[k]:null); });
     return sanitize(m);
@@ -8943,7 +9512,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   //    írásokat és a végtelen "ping-pong"-ot helyi módosítás és beérkező
   //    snapshot között ──
   const _cache={};
-  function cacheFor(code){ return _cache[code]||(_cache[code]={meta:null,exp:{},set:{}}); }
+  function cacheFor(code){ return _cache[code]||(_cache[code]={meta:null,exp:{},set:{},chat:{},plc:{},evt:{}}); }
 
   async function pushTripMeta(trip){
     if(!db||!trip.kod) return;
@@ -8958,7 +9527,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   async function reconcileCollection(code,name,items,stripFn){
     if(!db) return;
-    const bucketKey=name==='expenses'?'exp':'set';
+    const bucketKey=name==='expenses'?'exp':(name==='settlements'?'set':(name==='places'?'plc':(name==='events'?'evt':'chat')));
     const c=cacheFor(code)[bucketKey];
     const seen=new Set();
     for(const raw of (items||[])){
@@ -8987,6 +9556,9 @@ document.addEventListener('DOMContentLoaded',async()=>{
       pushTripMeta(trip);
       reconcileCollection(trip.kod,'expenses',trip.kiadasok||[],stripExpForCloud);
       reconcileCollection(trip.kod,'settlements',(typeof getSettlements==='function'?getSettlements(trip.id):[]));
+      reconcileCollection(trip.kod,'chat',trip.chat||[]);
+      reconcileCollection(trip.kod,'places',trip.places||[]);
+      reconcileCollection(trip.kod,'events',trip.events||[]);
     });
   }
 
@@ -9004,6 +9576,16 @@ document.addEventListener('DOMContentLoaded',async()=>{
       const tr=trips.find(t2=>t2.kod===code);
       if(tr){ META_KEYS.forEach(k=>{ if(data[k]!==undefined) tr[k]=data[k]; }); }
       cacheFor(code).meta=JSON.stringify(metaOf(tr||data));
+      // ── bejövő "oszd meg a pozíciód" kérés jelzése (előtér esetén) ──
+      // a tényleges push-t (ha az app zárva van) a Cloud Function küldi,
+      // ez itt csak a nyitott app UI-jában mutat toast-ot
+      if(data.liveShare&&data.liveShare.requestedAt&&data.liveShare.requestedBy!==(myProfileName||'')){
+        const seen=_lastLiveReq[code]||0;
+        if(data.liveShare.requestedAt>seen){
+          _lastLiveReq[code]=data.liveShare.requestedAt;
+          toast(`📍 ${data.liveShare.requestedBy} kéri, hogy oszd meg a pozíciód`);
+        }
+      }
       renderAll();
     },err=>console.warn('[MONYK sync] meta listen',err)));
 
@@ -9036,8 +9618,140 @@ document.addEventListener('DOMContentLoaded',async()=>{
       renderAll();
     },err=>console.warn('[MONYK sync] settlements listen',err)));
 
+    // ── csoportos chat: valós idejű üzenetfigyelő ──
+    // (ugyanaz a reconcile/cache minta, mint a kiadásoknál; a legutolsó
+    // 200 üzenetet tartjuk meg helyben, és "első betöltés"-nél nem toast-olunk)
+    unsubs.push((function(){
+      let first=true;
+      return db.collection('trips').doc(code).collection('chat').onSnapshot(snap=>{
+        const tr=trips.find(t2=>t2.kod===code); if(!tr) return;
+        tr.chat=tr.chat||[];
+        const cache=cacheFor(code).chat;
+        const fresh=[];
+        snap.docChanges().forEach(ch=>{
+          const d=ch.doc.data();
+          if(ch.type==='removed'){
+            tr.chat=tr.chat.filter(m=>m.id!==d.id);
+            delete cache[d.id];
+          }else{
+            const wasCached=!!cache[d.id];
+            cache[d.id]=JSON.stringify(d);
+            const idx=tr.chat.findIndex(m=>m.id===d.id);
+            if(idx>=0){ tr.chat[idx]=d; } else { tr.chat.push(d); }
+            if(!wasCached&&!first) fresh.push(d);
+          }
+        });
+        tr.chat.sort((a,b)=>a.ts-b.ts);
+        if(tr.chat.length>200) tr.chat=tr.chat.slice(tr.chat.length-200);
+        saveTrips();
+        if(fresh.length){
+          const others=fresh.filter(d=>d.sender!==chatSenderFor(code));
+          if(others.length&&window.etoChatOpenCode!==code){
+            const last=others[others.length-1];
+            toast(`💬 ${last.sender}: ${(last.text||'').slice(0,60)}`);
+          }
+        }
+        first=false;
+        if(typeof window.etoOnChatUpdate==='function') window.etoOnChatUpdate(code);
+        if(typeof window.refreshHeaderChatBadge==='function') window.refreshHeaderChatBadge();
+        renderAll();
+      },err=>console.warn('[MONYK sync] chat listen',err));
+    })());
+
+    unsubs.push(db.collection('trips').doc(code).collection('places').onSnapshot(snap=>{
+      const tr=trips.find(t2=>t2.kod===code); if(!tr) return;
+      tr.places=tr.places||[];
+      const cache=cacheFor(code).plc;
+      snap.docChanges().forEach(ch=>{
+        const d=ch.doc.data();
+        if(ch.type==='removed'){
+          tr.places=tr.places.filter(p=>p.id!==d.id);
+          delete cache[d.id];
+        }else{
+          cache[d.id]=JSON.stringify(d);
+          const idx=tr.places.findIndex(p=>p.id===d.id);
+          if(idx>=0){ tr.places[idx]={...tr.places[idx],...d}; }
+          else{ tr.places.push(d); }
+        }
+      });
+      renderAll();
+    },err=>console.warn('[MONYK sync] places listen',err)));
+
+    unsubs.push(db.collection('trips').doc(code).collection('events').onSnapshot(snap=>{
+      const tr=trips.find(t2=>t2.kod===code); if(!tr) return;
+      tr.events=tr.events||[];
+      const cache=cacheFor(code).evt;
+      snap.docChanges().forEach(ch=>{
+        const d=ch.doc.data();
+        if(ch.type==='removed'){
+          tr.events=tr.events.filter(e=>e.id!==d.id);
+          delete cache[d.id];
+        }else{
+          cache[d.id]=JSON.stringify(d);
+          const idx=tr.events.findIndex(e=>e.id===d.id);
+          if(idx>=0){ tr.events[idx]={...tr.events[idx],...d}; }
+          else{ tr.events.push(d); }
+        }
+      });
+      renderAll();
+    },err=>console.warn('[MONYK sync] events listen',err)));
+
     _listeners[code]=unsubs;
   }
+
+  // ── chat üzenet küldése (optimista helyi mentés + felhő írás) ──
+  window.sendChatMessage=async function(text,code){
+    const trip=code?trips.find(t2=>t2.kod===code):getActiveTrip();
+    if(!trip||!trip.kod){ toast('Ehhez egy megosztott (csoportos) utazás szükséges'); return false; }
+    const t=(text||'').trim();
+    if(!t) return false;
+    const msg={id:genId(),sender:chatSenderFor(trip.kod),text:t.slice(0,1000),ts:Date.now()};
+    trip.chat=trip.chat||[];
+    trip.chat.push(msg);
+    if(trip.chat.length>200) trip.chat=trip.chat.slice(trip.chat.length-200);
+    saveTrips();
+    cacheFor(trip.kod).chat[msg.id]=JSON.stringify(sanitize(msg));
+    if(db){
+      try{ await db.collection('trips').doc(trip.kod).collection('chat').doc(msg.id).set(sanitize(msg)); }
+      catch(e){ console.warn('[MONYK sync] chat write',e); }
+    }
+    return true;
+  };
+
+  // ── chat előzmények törlése (helyben és a felhőben is) ──
+  window.clearChatHistory=async function(code){
+    const trip=code?trips.find(t2=>t2.kod===code):getActiveTrip(); if(!trip) return;
+    trip.chat=[];
+    saveTrips();
+    if(db&&trip.kod){
+      try{
+        const snap=await db.collection('trips').doc(trip.kod).collection('chat').get();
+        const batch=db.batch();
+        snap.docs.forEach(d=>batch.delete(d.ref));
+        await batch.commit();
+        cacheFor(trip.kod).chat={};
+      }catch(e){ console.warn('[MONYK sync] chat clear',e); }
+    }
+  };
+
+  // ── saját korábbi üzenetek átcímkézése új becenévre (helyben és a felhőben is) ──
+  window.relabelMyChatMessages=async function(code,oldName,newName){
+    if(!code||!oldName||!newName||oldName===newName) return;
+    const trip=trips.find(t2=>t2.kod===code); if(!trip) return;
+    trip.chat=trip.chat||[];
+    const changed=trip.chat.filter(m=>m.sender===oldName);
+    if(!changed.length) return;
+    changed.forEach(m=>{ m.sender=newName; });
+    saveTrips();
+    const cache=cacheFor(code).chat;
+    changed.forEach(m=>{ cache[m.id]=JSON.stringify(sanitize(m)); });
+    if(db){
+      for(const m of changed){
+        try{ await db.collection('trips').doc(code).collection('chat').doc(m.id).set(sanitize(m)); }
+        catch(e){ console.warn('[MONYK sync] chat relabel',e); }
+      }
+    }
+  };
 
   // ── megosztás indítása egy utazáshoz ──
   async function shareTrip(tripId){
@@ -9049,6 +9763,9 @@ document.addEventListener('DOMContentLoaded',async()=>{
       await pushTripMeta(trip);
       await reconcileCollection(trip.kod,'expenses',trip.kiadasok||[],stripExpForCloud);
       await reconcileCollection(trip.kod,'settlements',(typeof getSettlements==='function'?getSettlements(trip.id):[]));
+      await reconcileCollection(trip.kod,'chat',trip.chat||[]);
+      await reconcileCollection(trip.kod,'places',trip.places||[]);
+      await reconcileCollection(trip.kod,'events',trip.events||[]);
       attachTripListeners(trip);
     }
     openShareModal(trip);
@@ -9066,12 +9783,28 @@ document.addEventListener('DOMContentLoaded',async()=>{
       const data=snap.data();
       const expSnap=await db.collection('trips').doc(code).collection('expenses').get();
       const setSnap=await db.collection('trips').doc(code).collection('settlements').get();
-      const trip={id:genId(),kod:code,aktiv:false,terv:[],helyek:[],csomagol:[],kiadasok:[]};
+      const chatSnap=await db.collection('trips').doc(code).collection('chat').get();
+      const plcSnap=await db.collection('trips').doc(code).collection('places').get();
+      const evtSnap=await db.collection('trips').doc(code).collection('events').get();
+      const trip={id:genId(),kod:code,aktiv:false,terv:[],helyek:[],csomagol:[],kiadasok:[],chat:[],places:[],events:[]};
       META_KEYS.forEach(k=>{ if(data[k]!==undefined) trip[k]=data[k]; });
       trip.kiadasok=expSnap.docs.map(d=>({...d.data(),atts:[]}));
+      trip.chat=chatSnap.docs.map(d=>d.data()).sort((a,b)=>a.ts-b.ts);
+      trip.places=plcSnap.docs.map(d=>d.data());
+      trip.events=evtSnap.docs.map(d=>d.data());
+      if(myProfileName){
+        const already=(trip.tagok||[]).some(tg=>(tg.nev||'').trim().toLowerCase()===myProfileName.trim().toLowerCase());
+        if(!already){
+          trip.tagok=[...(trip.tagok||[]),{id:genId(),nev:myProfileName,ikon:'🧑'}];
+          await pushTripMeta(trip);
+        }
+      }
       const c=cacheFor(code);
       c.meta=JSON.stringify(metaOf(trip));
       trip.kiadasok.forEach(e=>{ c.exp[e.id]=JSON.stringify({...e,atts:undefined}); });
+      trip.chat.forEach(m=>{ c.chat[m.id]=JSON.stringify(m); });
+      trip.places.forEach(p=>{ c.plc[p.id]=JSON.stringify(p); });
+      trip.events.forEach(e=>{ c.evt[e.id]=JSON.stringify(e); });
       trips.unshift(trip);
       setSnap.docs.forEach(d=>{ const s=d.data(); c.set[s.id]=JSON.stringify(s); if(typeof saveSettlement==='function') saveSettlement(s); });
       attachTripListeners(trip);
@@ -9107,6 +9840,17 @@ document.addEventListener('DOMContentLoaded',async()=>{
         </div>
         <div class="mft"><button class="btnp" style="width:100%" onclick="joinTripByCode($('joinInp').value)">Csatlakozás</button></div>
       </div>
+    </div>
+    <div class="mbg" id="profMbg" onclick="if(event.target===this)closeProfileModal()">
+      <div class="modal">
+        <div class="dpill"></div>
+        <div class="mhdr"><span class="mttl">👋 Hogy szólítsunk?</span><button class="mcls" onclick="closeProfileModal()">✕</button></div>
+        <div class="mbdy" style="padding-top:6px">
+          <div style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5">Ez a neved lesz alapértelmezve, amikor csatlakozol egy megosztott utazáshoz, és amikor új tételt rögzítesz. Bármikor módosítható a ⚙️ Beállításokban.</div>
+          <input id="profInp" class="fi" maxlength="24" style="width:100%;text-align:center;font-weight:800;padding:14px" placeholder="pl. Réka">
+        </div>
+        <div class="mft"><button class="btnp" style="width:100%" onclick="saveProfileModal()">✅ Mentés</button></div>
+      </div>
     </div>`);
   }
 
@@ -9127,6 +9871,22 @@ document.addEventListener('DOMContentLoaded',async()=>{
   };
   window.openJoinModal=function(){ ensureModals(); document.getElementById('joinInp').value=''; document.getElementById('joinMbg').classList.add('on'); };
   window.closeJoinModal=function(){ const m=document.getElementById('joinMbg'); if(m) m.classList.remove('on'); };
+  window.openProfileModal=function(){
+    ensureModals();
+    const inp=document.getElementById('profInp');
+    if(inp) inp.value=myProfileName||'';
+    document.getElementById('profMbg').classList.add('on');
+    setTimeout(()=>inp?.focus(),200);
+  };
+  window.closeProfileModal=function(){ const m=document.getElementById('profMbg'); if(m) m.classList.remove('on'); };
+  window.saveProfileModal=function(){
+    const v=(document.getElementById('profInp')?.value||'').trim();
+    if(!v){ toast('⚠️ Adj meg egy nevet'); return; }
+    setProfileName(v);
+    const pn=document.getElementById('soProfileInp'); if(pn) pn.value=v;
+    closeProfileModal();
+    toast('✓ Profil mentve: '+v);
+  };
 
   window.shareTrip=shareTrip;
   window.joinTripByCode=joinTripByCode;
@@ -9140,7 +9900,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
     }
     const params=new URLSearchParams(location.search);
     const joinCode=params.get('join');
-    if(joinCode){ ensureModals(); document.getElementById('joinInp').value=joinCode.toUpperCase().replace(/[^A-Z0-9]/g,''); openJoinModal(); }
+    if(joinCode){ ensureModals(); openJoinModal(); document.getElementById('joinInp').value=joinCode.toUpperCase().replace(/[^A-Z0-9]/g,''); }
+    else if(!myProfileName){ setTimeout(()=>{ ensureModals(); openProfileModal(); }, 350); }
   }
   if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',initSync); }
   else{ initSync(); }
@@ -9270,6 +10031,877 @@ document.addEventListener('DOMContentLoaded',async()=>{
   </div>
   <button class="lp-popup-cancel" onclick="lpClose()">Mégse</button>
 </div>
+
+<!-- ══ EXTRA ESZKÖZÖK OVERLAY ══ -->
+<div class="eto-bg" id="etoBg">
+  <div class="eto-hdr">
+    <button class="eto-back" id="etoBackBtn" onclick="etoBack()" style="display:none">←</button>
+    <span class="eto-ttl" id="etoTitle">🧰 Extra eszközök</span>
+    <button class="eto-back" onclick="closeExtraTools()">✕</button>
+  </div>
+  <div class="eto-body" id="etoBody"></div>
+</div>
+
+<script>
+(function(){
+  let etoDocsUnlocked=false;
+  let etoFlightTimer=null;
+  let etoWakeLock=null;
+  // ── melyik utazásra vonatkozik most az Extra eszközök panel ──
+  // ha a Trip Dash-ből nyitották (adott utazás alól), erre az utazásra scope-olva marad;
+  // ha a régi, globális belépési ponton keresztül nyílt meg, az aktív utazásra esik vissza
+  window.etoScopeTripId=null;
+  function etoCurrentTrip(){
+    if(window.etoScopeTripId){
+      const t=trips.find(x=>x.id===window.etoScopeTripId);
+      if(t) return t;
+    }
+    return getActiveTrip();
+  }
+
+  async function etoAcquireWakeLock(){
+    if(!('wakeLock' in navigator))return;
+    try{
+      etoWakeLock=await navigator.wakeLock.request('screen');
+    }catch(e){ /* pl. ha az app épp nincs előtérben, ez elutasítódik – nem gond */ }
+  }
+  function etoReleaseWakeLock(){
+    if(etoWakeLock){ etoWakeLock.release().catch(()=>{}); etoWakeLock=null; }
+  }
+
+  // ── IndexedDB tárolás a dokumentumfotóknak és napi emlékfotóknak ──
+  // (a localStorage ~5-10MB-os korlátja miatt a képek NEM a trips JSON-ban,
+  // hanem külön IndexedDB adatbázisban élnek; a trip objektumban csak egy
+  // könnyű 'idbKey' hivatkozás marad)
+  const ETO_DB_NAME='monykMedia';
+  const ETO_DB_STORE='photos';
+  let etoDbPromise=null;
+  function etoDb(){
+    if(etoDbPromise)return etoDbPromise;
+    etoDbPromise=new Promise((resolve,reject)=>{
+      try{
+        const req=indexedDB.open(ETO_DB_NAME,1);
+        req.onupgradeneeded=function(){
+          const db=req.result;
+          if(!db.objectStoreNames.contains(ETO_DB_STORE))db.createObjectStore(ETO_DB_STORE,{keyPath:'key'});
+        };
+        req.onsuccess=function(){resolve(req.result);};
+        req.onerror=function(){reject(req.error);};
+      }catch(e){reject(e);}
+    });
+    return etoDbPromise;
+  }
+  function etoIdbPut(key,blob){
+    return etoDb().then(db=>new Promise((resolve,reject)=>{
+      const tx=db.transaction(ETO_DB_STORE,'readwrite');
+      tx.objectStore(ETO_DB_STORE).put({key,blob});
+      tx.oncomplete=()=>resolve();
+      tx.onerror=()=>reject(tx.error);
+    }));
+  }
+  function etoIdbGet(key){
+    return etoDb().then(db=>new Promise((resolve,reject)=>{
+      const tx=db.transaction(ETO_DB_STORE,'readonly');
+      const req=tx.objectStore(ETO_DB_STORE).get(key);
+      req.onsuccess=()=>resolve(req.result?req.result.blob:null);
+      req.onerror=()=>reject(req.error);
+    }));
+  }
+  function etoIdbDelete(key){
+    return etoDb().then(db=>new Promise((resolve,reject)=>{
+      const tx=db.transaction(ETO_DB_STORE,'readwrite');
+      tx.objectStore(ETO_DB_STORE).delete(key);
+      tx.oncomplete=()=>resolve();
+      tx.onerror=()=>reject(tx.error);
+    }).catch(()=>{}));
+  }
+  function etoDataUrlToBlob(dataUrl){
+    const parts=dataUrl.split(',');
+    const mimeMatch=parts[0].match(/:(.*?);/);
+    const mime=mimeMatch?mimeMatch[1]:'image/jpeg';
+    const bin=atob(parts[1]);
+    const arr=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+    return new Blob([arr],{type:mime});
+  }
+  const etoObjUrlCache={};
+  function etoObjUrl(key,blob){
+    if(etoObjUrlCache[key])return etoObjUrlCache[key];
+    const u=URL.createObjectURL(blob);
+    etoObjUrlCache[key]=u;
+    return u;
+  }
+  // ── Megosztott dokumentumtár (minden utazás között közös, nem trip-hez kötött) ──
+  // Ugyanolyan elem-forma, mint a trip.docVault: {id,name,mime,idbKey,ts}.
+  // A fájlok ugyanabban az IndexedDB store-ban élnek, mint a trip-es dokumentumok,
+  // csak a kulcs mintája más: docvault_shared_<docId> (ld. etoIdbPut/etoIdbGet).
+  // Ugyanaz a PIN (monyk_docvault_pin) védi, mint a trip-es vault-ot.
+  const ETO_SHARED_VAULT_KEY='monyk_shared_docvault';
+  function etoSharedVaultGet(){
+    try{ const raw=JSON.parse(localStorage.getItem(ETO_SHARED_VAULT_KEY)||'[]'); return Array.isArray(raw)?raw:[]; }
+    catch(e){ return []; }
+  }
+  function etoSharedVaultSave(list){
+    try{ localStorage.setItem(ETO_SHARED_VAULT_KEY, JSON.stringify(list||[])); }
+    catch(e){ console.warn('[MONYK]', e); }
+  }
+  function etoSharedVaultAdd(item){
+    const list=etoSharedVaultGet();
+    list.push(item);
+    etoSharedVaultSave(list);
+    return list;
+  }
+  function etoSharedVaultRemove(id){
+    const list=etoSharedVaultGet().filter(x=>x.id!==id);
+    etoSharedVaultSave(list);
+    return list;
+  }
+  // egyszeri migráció: régi dataUrl-es fotók átköltöztetése IndexedDB-be,
+  // hogy a localStorage-ban ne maradjon base64 kép
+  let etoMigrated=false;
+  function etoMigrateOldPhotos(){
+    if(etoMigrated)return Promise.resolve();
+    etoMigrated=true;
+    const jobs=[];
+    (typeof trips!=='undefined'?trips:[]).forEach(trip=>{
+      (trip.docVault||[]).forEach(d=>{
+        if(d.dataUrl && !d.idbKey){
+          const key='doc_'+d.id;
+          jobs.push(etoIdbPut(key,etoDataUrlToBlob(d.dataUrl)).then(()=>{ d.idbKey=key; delete d.dataUrl; }).catch(()=>{}));
+        }
+      });
+      (trip.dailyPhotos||[]).forEach(d=>{
+        if(d.dataUrl && !d.idbKey){
+          const key='diary_'+trip.id+'_'+d.date;
+          jobs.push(etoIdbPut(key,etoDataUrlToBlob(d.dataUrl)).then(()=>{ d.idbKey=key; delete d.dataUrl; }).catch(()=>{}));
+        }
+      });
+    });
+    if(!jobs.length)return Promise.resolve();
+    return Promise.all(jobs).then(()=>{ try{saveTrips();}catch(e){} });
+  }
+
+  window.openExtraTools=function(){
+    const bg=document.getElementById('etoBg');
+    if(!bg)return;
+    window.etoScopeTripId=null;
+    bg.classList.add('on');
+    etoShowMenu();
+  };
+  // ── Trip Dash-ből nyitva: az adott utazásra scope-olva ──
+  window.openExtraToolsForTrip=function(tripId){
+    const bg=document.getElementById('etoBg');
+    if(!bg)return;
+    window.etoScopeTripId=tripId||null;
+    bg.classList.add('on');
+    etoShowMenu();
+  };
+  // ── fejléc 💬 gomb: egyenesen a chatre ugrik, kihagyva az Extra eszközök menüt ──
+  window.openChatDirect=function(){
+    const bg=document.getElementById('etoBg');
+    if(!bg)return;
+    bg.classList.add('on');
+    etoShowChat();
+  };
+  // ── fejléc chat-badge frissítése (összes megosztott utazás olvasatlan üzenete) ──
+  window.refreshHeaderChatBadge=function(){
+    const el=document.getElementById('hdrChatBadge');
+    if(!el) return;
+    const n=totalChatUnread();
+    if(n>0){ el.textContent=n>99?'99+':String(n); el.style.display='flex'; }
+    else{ el.style.display='none'; }
+  };
+  window.closeExtraTools=function(){
+    const bg=document.getElementById('etoBg');
+    if(bg)bg.classList.remove('on');
+    if(etoFlightTimer){clearInterval(etoFlightTimer);etoFlightTimer=null;}
+    etoDocsUnlocked=false;
+    etoReleaseWakeLock();
+    window.etoChatOpenCode=null;
+    window.etoScopeTripId=null;
+  };
+  window.etoBack=function(){ etoReleaseWakeLock(); window.etoChatOpenCode=null; etoShowMenu(); };
+
+  function etoSetTitle(txt){ const el=document.getElementById('etoTitle'); if(el)el.textContent=txt; }
+  function etoSetBack(show){ const b=document.getElementById('etoBackBtn'); if(b)b.style.display=show?'flex':'none'; }
+  function etoBody(){ return document.getElementById('etoBody'); }
+
+  function etoShowMenu(){
+    etoSetBack(false);
+    etoSetTitle('🧰 Extra eszközök');
+    if(etoFlightTimer){clearInterval(etoFlightTimer);etoFlightTimer=null;}
+    const cards=[
+      {ico:'📁',lbl:'Dokumentumtár',fn:'etoShowDocs'},
+      {ico:'🆘',lbl:'Vészhelyzeti kártya',fn:'etoShowEmergency'},
+      {ico:'✈️',lbl:'Repülő/vonat státusz',fn:'etoShowFlight'},
+      {ico:'📏',lbl:'Mérték-/hőátváltó',fn:'etoShowConverter'},
+      {ico:'⚡',lbl:'Gyors kiegyenlítés',fn:'etoShowPay'},
+      {ico:'🗳️',lbl:'Csoportos szavazás',fn:'etoShowPoll'},
+      {ico:'📍',lbl:'Élő helyzetmegosztás',fn:'etoShowLive'},
+      {ico:'📸',lbl:'Napi emlékfotó napló',fn:'etoShowDiary'}
+    ];
+    etoBody().innerHTML=`<div class="eto-grid">${cards.map(c=>`<button class="eto-card" onclick="${c.fn}()"><span class="ic">${c.ico}</span><span class="lbl">${c.lbl}</span></button>`).join('')}</div>`;
+  }
+
+  function etoNoTrip(){
+    return `<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">🧳</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">Nincs aktív utazás</div><div style="font-size:12px">Aktiválj egy utazást a funkció használatához.</div></div>`;
+  }
+
+  // ── 1) DOKUMENTUMTÁR ──
+  // preferTab: opcionális ('trip'|'shared') – globális belépési pontoknál ('shared')
+  // nem kötelező, hogy legyen aktuális utazás.
+  window.etoShowDocs=function(preferTab){
+    etoSetBack(true); etoSetTitle('📁 Dokumentumtár');
+    const tab=preferTab||'trip';
+    window.etoDocVaultTab=tab;
+    const trip=etoCurrentTrip();
+    if(tab==='trip'&&!trip){ etoBody().innerHTML=etoDocVaultTabBar(tab)+etoNoTrip(); return; }
+    let pin=null; try{pin=localStorage.getItem('monyk_docvault_pin');}catch(e){}
+    if(!pin){
+      etoBody().innerHTML=`<div style="text-align:center;padding:20px 6px">
+        <div style="font-size:34px;margin-bottom:10px">🔒</div>
+        <div style="font-weight:800;margin-bottom:14px">Állíts be egy 4 jegyű PIN kódot a dokumentumtár védelméhez</div>
+        <div class="fld"><div class="flbl">ÚJ PIN</div><input class="fi" id="etoNewPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px"></div>
+        <div class="fld"><div class="flbl">PIN MÉGEGYSZER</div><input class="fi" id="etoNewPinConfirm" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px"></div>
+        <button class="btnp" style="width:100%;margin-top:6px" onclick="etoSetDocPin()">PIN beállítása</button>
+      </div>`;
+      return;
+    }
+    if(!etoDocsUnlocked){
+      etoBody().innerHTML=`<div style="text-align:center;padding:20px 6px">
+        <div style="font-size:34px;margin-bottom:10px">🔒</div>
+        <div style="font-weight:800;margin-bottom:10px">Add meg a PIN kódot</div>
+        <input class="fi" id="etoEnterPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px;margin-bottom:10px">
+        <button class="btnp" style="width:100%" onclick="etoCheckDocPin()">Feloldás</button>
+      </div>`;
+      return;
+    }
+    etoRenderDocsList();
+  };
+  // ── Globális belépési pont a fejlécből: egyenesen a megosztott dokumentumokra,
+  // nem kötött egyetlen utazáshoz sem, bármikor elérhető ──
+  window.etoShowSharedDocsGlobal=function(){
+    const bg=document.getElementById('etoBg');
+    if(!bg)return;
+    window.etoScopeTripId=null;
+    bg.classList.add('on');
+    etoShowDocs('shared');
+  };
+  window.etoSetDocPin=function(){
+    const v=(document.getElementById('etoNewPin')||{}).value||'';
+    const v2=(document.getElementById('etoNewPinConfirm')||{}).value||'';
+    if(!/^\d{4}$/.test(v)){ toast('Adj meg 4 számjegyet'); return; }
+    if(v!==v2){ toast('❌ A két PIN nem egyezik, próbáld újra'); return; }
+    try{localStorage.setItem('monyk_docvault_pin',v);}catch(e){}
+    etoDocsUnlocked=true; etoRenderDocsList();
+  };
+  window.etoCheckDocPin=function(){
+    const v=(document.getElementById('etoEnterPin')||{}).value||'';
+    let pin=null; try{pin=localStorage.getItem('monyk_docvault_pin');}catch(e){}
+    if(v===pin){ etoDocsUnlocked=true; etoRenderDocsList(); }
+    else toast('❌ Hibás PIN');
+  };
+  window.etoSwitchDocVaultTab=function(tab){
+    window.etoDocVaultTab=tab;
+    if(tab==='trip'&&!etoCurrentTrip()){
+      etoSetTitle('📁 Dokumentumtár');
+      etoBody().innerHTML=etoDocVaultTabBar(tab)+etoNoTrip();
+      return;
+    }
+    etoRenderDocsList();
+  };
+  function etoDocVaultTabBar(tab){
+    const on='border:1.5px solid var(--acc);background:var(--adim);color:var(--acc)';
+    const off='border:1.5px solid var(--brd);background:transparent;color:var(--mut)';
+    return `<div style="display:flex;gap:6px;margin-bottom:12px">
+      <button onclick="etoSwitchDocVaultTab('trip')" style="flex:1;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;${tab==='trip'?on:off}">Ehhez az utazáshoz</button>
+      <button onclick="etoSwitchDocVaultTab('shared')" style="flex:1;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;${tab==='shared'?on:off}">🌍 Megosztott dokumentumok</button>
+    </div>`;
+  }
+  function etoRenderDocsList(){
+    const tab=window.etoDocVaultTab||'trip';
+    const trip=etoCurrentTrip();
+    if(tab==='trip'&&!trip)return; // etoShowDocs/etoSwitchDocVaultTab már lekezelte ezt az esetet
+    if(trip&&!trip.docVault)trip.docVault=[];
+    etoMigrateOldPhotos().then(()=>{
+      const trip2=etoCurrentTrip();
+      if(tab==='trip'&&!trip2)return;
+      const items=tab==='shared'?etoSharedVaultGet():(trip2.docVault||[]);
+      etoBody().innerHTML=`
+        <input type="file" accept="image/*" capture="environment" id="etoDocFile" style="display:none" onchange="etoAddDoc(this)">
+        <input type="file" accept="image/*,application/pdf" id="etoDocFilePdf" style="display:none" onchange="etoAddDoc(this)">
+        ${etoDocVaultTabBar(tab)}
+        <div class="frow" style="margin-bottom:14px">
+          <button class="abtn" style="flex:1;justify-content:center" onclick="document.getElementById('etoDocFile').click()">📷 Fotózás</button>
+          <button class="abtn" style="flex:1;justify-content:center" onclick="document.getElementById('etoDocFilePdf').click()">📄 Kép/PDF feltöltése</button>
+        </div>
+        <div id="etoDocList">${items.length?items.map(d=>{
+          const isPdf=(d.mime||'').indexOf('pdf')>=0;
+          return `<div class="eto-doc">${isPdf?`<div class="picn" onclick="etoViewDoc('${d.id}')">📄</div>`:`<img id="etoDocImg_${d.id}" onclick="etoViewDoc('${d.id}')">`}<span class="nm">${d.name}</span><button class="rm" style="background:none;border:none;color:var(--red);font-size:16px;cursor:pointer;padding:4px" onclick="etoRemoveDoc('${d.id}')">🗑️</button></div>`;
+        }).join(''):`<div style="text-align:center;color:var(--mut);padding:20px;font-size:13px">${tab==='shared'?'A megosztott dokumentumtár üres.<br>Ide olyan fájlokat érdemes feltölteni, amik minden utazásodnál kellenek (pl. oltási igazolás, útlevélmásolat).':'A dokumentumtár üres.<br>Fotózz le vagy tölts fel útlevelet, vízumot, jegyet, PDF-et.'}</div>`}</div>
+        <div class="eto-note">${tab==='shared'?'🌍 Ezek a dokumentumok minden utazásod Dokumentumtárában megjelennek – törléskor is mindenhonnan eltűnnek. 🔒 A PIN csak ezen a készüléken véd, a fájlok nem kerülnek felhőbe.':'🔒 A PIN csak ezen a készüléken véd. A dokumentumok nem kerülnek felhőbe.'}</div>`;
+      items.forEach(d=>{
+        if((d.mime||'').indexOf('pdf')>=0)return; // PDF-hez nincs img thumbnail
+        const key=d.idbKey||(tab==='shared'?('docvault_shared_'+d.id):('doc_'+d.id));
+        etoIdbGet(key).then(blob=>{
+          if(!blob)return;
+          const url=etoObjUrl(key,blob);
+          const img=document.getElementById('etoDocImg_'+d.id);
+          if(img)img.src=url;
+        }).catch(()=>{});
+      });
+    });
+  }
+  window.etoAddDoc=function(inp){
+    const file=inp.files&&inp.files[0]; if(!file)return;
+    const tab=window.etoDocVaultTab||'trip';
+    const trip=etoCurrentTrip();
+    if(tab==='trip'&&!trip){inp.value='';return;}
+    const isPdf=(file.type||'').indexOf('pdf')>=0;
+    const name=prompt('Dokumentum neve (pl. Útlevél, Vízum, Jegy):',isPdf?'PDF dokumentum':'Dokumentum')||'Dokumentum';
+    const id=genId();
+    const key=tab==='shared'?('docvault_shared_'+id):('doc_'+id);
+    etoIdbPut(key,file).then(()=>{
+      if(tab==='shared'){
+        etoSharedVaultAdd({id,name,idbKey:key,mime:file.type||'',ts:Date.now()});
+      }else{
+        if(!trip.docVault)trip.docVault=[];
+        trip.docVault.push({id,name,idbKey:key,mime:file.type||'',ts:Date.now()});
+        saveTrips();
+      }
+      etoRenderDocsList(); toast('✅ Elmentve');
+    }).catch(()=>{ toast('❌ Nem sikerült elmenteni a fájlt'); });
+    inp.value='';
+  };
+  window.etoRemoveDoc=function(id){
+    const tab=window.etoDocVaultTab||'trip';
+    if(tab==='shared'){
+      if(!confirm('Törlöd ezt a megosztott dokumentumot?\nEz MINDEN utazásod Dokumentumtárából eltünteti.'))return;
+      const d=etoSharedVaultGet().find(x=>x.id===id);
+      etoSharedVaultRemove(id);
+      etoRenderDocsList();
+      if(d){
+        const key=d.idbKey||('docvault_shared_'+id);
+        etoIdbDelete(key);
+        if(etoObjUrlCache[key]){URL.revokeObjectURL(etoObjUrlCache[key]); delete etoObjUrlCache[key];}
+      }
+      return;
+    }
+    const trip=etoCurrentTrip(); if(!trip)return;
+    if(!confirm('Törlöd ezt a dokumentumot?'))return;
+    const d=(trip.docVault||[]).find(x=>x.id===id);
+    trip.docVault=(trip.docVault||[]).filter(x=>x.id!==id);
+    saveTrips(); etoRenderDocsList();
+    if(d){
+      const key=d.idbKey||('doc_'+id);
+      etoIdbDelete(key);
+      if(etoObjUrlCache[key]){URL.revokeObjectURL(etoObjUrlCache[key]); delete etoObjUrlCache[key];}
+    }
+  };
+  window.etoViewDoc=function(id){
+    const tab=window.etoDocVaultTab||'trip';
+    let d=null;
+    if(tab==='shared'){
+      d=etoSharedVaultGet().find(x=>x.id===id);
+    }else{
+      const trip=etoCurrentTrip(); if(!trip)return;
+      d=(trip.docVault||[]).find(x=>x.id===id);
+    }
+    if(!d)return;
+    const key=d.idbKey||(tab==='shared'?('docvault_shared_'+id):('doc_'+id));
+    const isPdf=(d.mime||'').indexOf('pdf')>=0;
+    etoIdbGet(key).then(blob=>{
+      if(!blob)return;
+      const url=etoObjUrl(key,blob);
+      if(isPdf){
+        // PDF-nél hagyjuk, hogy a böngésző saját nézője/letöltése kezelje
+        window.open(url,'_blank');
+      }else{
+        const w=window.open('');
+        if(w)w.document.write(`<html><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh"><img src="${url}" style="max-width:100%;max-height:100vh"></body></html>`);
+      }
+    }).catch(()=>{});
+  };
+
+  // ── 2) VÉSZHELYZETI KÁRTYA ──
+  window.etoShowEmergency=function(){
+    etoSetBack(true); etoSetTitle('🆘 Vészhelyzeti kártya');
+    const trip=etoCurrentTrip();
+    if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
+    const ec=trip.emergencyCard||{};
+    etoBody().innerHTML=`
+      <div class="fld"><div class="flbl">VÉRCSOPORT</div><input class="fi" id="etoEcBlood" value="${ec.blood||''}" placeholder="pl. A+"></div>
+      <div class="fld"><div class="flbl">ALLERGIA / GYÓGYSZER</div><input class="fi" id="etoEcAllergy" value="${ec.allergy||''}" placeholder="pl. penicillin allergia"></div>
+      <div class="fld"><div class="flbl">VÉSZHELYZETI KONTAKT NÉV</div><input class="fi" id="etoEcName" value="${ec.contactName||''}" placeholder="Név"></div>
+      <div class="fld"><div class="flbl">VÉSZHELYZETI KONTAKT TELEFON</div><input class="fi" id="etoEcPhone" value="${ec.contactPhone||''}" placeholder="+36…" type="tel"></div>
+      <div class="fld"><div class="flbl">NAGYKÖVETSÉGI SZÁM</div><input class="fi" id="etoEcEmbassy" value="${ec.embassy||''}" placeholder="+…" type="tel"></div>
+      <div class="fld"><div class="flbl">BALESETBIZTOSÍTÁSI SZÁM</div><input class="fi" id="etoEcInsurance" value="${ec.insurance||''}" placeholder="Kötvényszám / segélyhívó"></div>
+      <button class="btnp" style="width:100%;margin-top:6px" onclick="etoSaveEmergency()">Mentés</button>
+      ${(ec.blood||ec.contactName||ec.insurance)?`<button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoShareEmergency()">📤 Megosztás</button>`:''}
+      <div class="eto-note">Csoportos utazásnál ez a kártya az útitársakkal is szinkronizálódik.</div>`;
+  };
+  window.etoSaveEmergency=function(){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    trip.emergencyCard={
+      blood:$('etoEcBlood').value.trim(),
+      allergy:$('etoEcAllergy').value.trim(),
+      contactName:$('etoEcName').value.trim(),
+      contactPhone:$('etoEcPhone').value.trim(),
+      embassy:$('etoEcEmbassy').value.trim(),
+      insurance:$('etoEcInsurance').value.trim()
+    };
+    saveTrips(); toast('✅ Mentve'); window.etoShowEmergency();
+  };
+  window.etoShareEmergency=function(){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    const ec=trip.emergencyCard||{};
+    const txt=`🆘 VÉSZHELYZETI KÁRTYA\nVércsoport: ${ec.blood||'-'}\nAllergia: ${ec.allergy||'-'}\nKontakt: ${ec.contactName||'-'} (${ec.contactPhone||'-'})\nNagykövetség: ${ec.embassy||'-'}\nBalesetbiztosítás: ${ec.insurance||'-'}`;
+    if(navigator.share){ navigator.share({title:'Vészhelyzeti kártya',text:txt}).catch(()=>{}); }
+    else if(navigator.clipboard){ navigator.clipboard.writeText(txt); toast('📋 Vágólapra másolva'); }
+  };
+
+  // ── 3) REPÜLŐ/VONAT STÁTUSZ ──
+  window.etoShowFlight=function(){
+    etoSetBack(true); etoSetTitle('✈️ Repülő/vonat státusz');
+    const trip=etoCurrentTrip();
+    if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
+    const fs=trip.flightStatus||{};
+    etoBody().innerHTML=`
+      <div class="frow" style="margin-bottom:14px">
+        <button class="fchip ${(!fs.type||fs.type==='flight')?'on':''}" onclick="etoSetFlightType('flight')">✈️ Repülő</button>
+        <button class="fchip ${fs.type==='train'?'on':''}" onclick="etoSetFlightType('train')">🚆 Vonat</button>
+      </div>
+      <div class="fld"><div class="flbl">JÁRAT/VONATSZÁM</div><input class="fi" id="etoFlCode" value="${fs.code||''}" placeholder="pl. LH1234"></div>
+      <div class="fld"><div class="flbl">HONNAN</div><input class="fi" id="etoFlFrom" value="${fs.from||''}" placeholder="Indulási hely"></div>
+      <div class="fld"><div class="flbl">HOVÁ</div><input class="fi" id="etoFlTo" value="${fs.to||''}" placeholder="Érkezési hely"></div>
+      <div class="fld"><div class="flbl">INDULÁS IDŐPONTJA</div><input class="fi" id="etoFlDt" type="datetime-local" value="${fs.dt||''}"></div>
+      <div class="fld"><div class="flbl">KAPU / VÁGÁNY</div><input class="fi" id="etoFlGate" value="${fs.gate||''}" placeholder="pl. B12"></div>
+      <button class="btnp" style="width:100%;margin-bottom:10px" onclick="etoSaveFlight()">Mentés</button>
+      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="monykEnableNotifications()">🔔 Emlékeztető értesítések bekapcsolása</button>
+      <div id="etoFlCountdown"></div>
+      <div class="eto-note">A visszaszámláló csak nyitott appnál frissül élőben; az emlékeztető push (indulás előtt 3h / 1h) zárt app esetén is megérkezik, ha bekapcsoltad az értesítéseket.</div>`;
+    etoTickFlight();
+    if(etoFlightTimer)clearInterval(etoFlightTimer);
+    etoFlightTimer=setInterval(etoTickFlight,30000);
+  };
+  window.etoSetFlightType=function(type){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    trip.flightStatus=trip.flightStatus||{}; trip.flightStatus.type=type; saveTrips(); window.etoShowFlight();
+  };
+  window.etoSaveFlight=function(){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    trip.flightStatus={
+      type:(trip.flightStatus&&trip.flightStatus.type)||'flight',
+      code:$('etoFlCode').value.trim(), from:$('etoFlFrom').value.trim(), to:$('etoFlTo').value.trim(),
+      dt:$('etoFlDt').value, gate:$('etoFlGate').value.trim()
+    };
+    saveTrips(); toast('✅ Mentve'); etoTickFlight();
+  };
+  function etoTickFlight(){
+    const trip=etoCurrentTrip(); const el=document.getElementById('etoFlCountdown'); if(!trip||!el)return;
+    const fs=trip.flightStatus||{};
+    if(!fs.dt){ el.innerHTML=''; return; }
+    const target=new Date(fs.dt).getTime(); const now=Date.now(); const diff=target-now;
+    const ico=fs.type==='train'?'🚆':'✈️';
+    if(diff<=0){
+      el.innerHTML=`<div class="eto-flight-card"><div style="font-size:28px">${ico}</div><div style="font-weight:800;margin-top:6px">Indulás megtörtént</div></div>`;
+      return;
+    }
+    const h=Math.floor(diff/3600000), d=Math.floor(h/24), hh=h%24, m=Math.floor((diff%3600000)/60000);
+    el.innerHTML=`<div class="eto-flight-card">
+      <div style="font-size:28px">${ico}</div>
+      <div style="font-size:12px;color:var(--mut);margin-top:4px">${fs.code||''} ${fs.from?fs.from+' → '+fs.to:''}</div>
+      <div class="eto-flight-big" style="margin-top:8px">${d>0?d+'n ':''}${hh}ó ${m}p</div>
+      <div style="font-size:11px;color:var(--mut);margin-top:4px">indulásig${fs.gate?' • Kapu/vágány: '+fs.gate:''}</div>
+    </div>`;
+  }
+
+  // ── 4) MÉRTÉK-/HŐMÉRSÉKLET-ÁTVÁLTÓ ──
+  const ETO_UNITS={
+    temp:[['C','°C'],['F','°F']],
+    len:[['km','km'],['mi','mi'],['m','m'],['ft','ft']],
+    wt:[['kg','kg'],['lb','lb']],
+    vol:[['l','liter'],['gal','gallon (US)']]
+  };
+  window.etoShowConverter=function(){
+    etoSetBack(true); etoSetTitle('📏 Mérték-/hőátváltó');
+    etoBody().innerHTML=`
+      <div class="frow" id="etoConvCats" style="margin-bottom:14px">
+        <button class="fchip on" onclick="etoConvCat(this,'temp')">🌡️ Hőmérséklet</button>
+        <button class="fchip" onclick="etoConvCat(this,'len')">📏 Hossz</button>
+        <button class="fchip" onclick="etoConvCat(this,'wt')">⚖️ Súly</button>
+        <button class="fchip" onclick="etoConvCat(this,'vol')">🧴 Térfogat</button>
+      </div>
+      <div class="eto-conv-row">
+        <input class="fi" id="etoConvA" type="number" inputmode="decimal" placeholder="0" oninput="etoConvCalc()">
+        <select class="fi" id="etoConvAU" onchange="etoConvCalc()" style="max-width:120px;flex-shrink:0"></select>
+      </div>
+      <div style="text-align:center;font-size:18px;color:var(--mut);margin:4px 0">⇅</div>
+      <div class="eto-conv-row">
+        <input class="fi" id="etoConvB" type="number" inputmode="decimal" placeholder="0" readonly>
+        <select class="fi" id="etoConvBU" onchange="etoConvCalc()" style="max-width:120px;flex-shrink:0"></select>
+      </div>`;
+    etoConvCat(document.querySelector('#etoConvCats .fchip'),'temp');
+  };
+  window.etoConvCat=function(btn,cat){
+    document.querySelectorAll('#etoConvCats .fchip').forEach(b=>b.classList.remove('on'));
+    if(btn)btn.classList.add('on');
+    window.__etoConvCat=cat;
+    const us=ETO_UNITS[cat];
+    const a=document.getElementById('etoConvAU'), b=document.getElementById('etoConvBU');
+    a.innerHTML=us.map((u,i)=>`<option value="${u[0]}" ${i===0?'selected':''}>${u[1]}</option>`).join('');
+    b.innerHTML=us.map((u,i)=>`<option value="${u[0]}" ${i===1?'selected':''}>${u[1]}</option>`).join('');
+    etoConvCalc();
+  };
+  function etoConvVal(cat,val,from,to){
+    if(from===to)return val;
+    if(cat==='temp'){
+      if(from==='C'&&to==='F')return val*9/5+32;
+      if(from==='F'&&to==='C')return (val-32)*5/9;
+    }
+    const toBase={
+      len:{km:1000,m:1,mi:1609.344,ft:0.3048},
+      wt:{kg:1,lb:0.45359237},
+      vol:{l:1,gal:3.785411784}
+    };
+    if(toBase[cat]) return val*toBase[cat][from]/toBase[cat][to];
+    return val;
+  }
+  window.etoConvCalc=function(){
+    const cat=window.__etoConvCat||'temp';
+    const av=parseFloat(document.getElementById('etoConvA').value);
+    const au=document.getElementById('etoConvAU').value, bu=document.getElementById('etoConvBU').value;
+    const bEl=document.getElementById('etoConvB');
+    if(isNaN(av)){ bEl.value=''; return; }
+    bEl.value=Math.round(etoConvVal(cat,av,au,bu)*100)/100;
+  };
+
+  // ── 6) GYORS KIEGYENLÍTÉS FIZETÉSI LINKKEL ──
+  window.etoShowPay=function(){
+    etoSetBack(true); etoSetTitle('⚡ Gyors kiegyenlítés');
+    let h={}; try{h=JSON.parse(localStorage.getItem('monyk_pay_handles')||'{}');}catch(e){}
+    etoBody().innerHTML=`
+      <div class="fld"><div class="flbl">ÖSSZEG</div><input class="fi" id="etoPayAmt" type="number" inputmode="decimal" placeholder="0"></div>
+      <div class="fld"><div class="flbl">PÉNZNEM</div><input class="fi" id="etoPayCur" value="${h.cur||'EUR'}" placeholder="EUR"></div>
+      <div class="fld"><div class="flbl">MEGJEGYZÉS</div><input class="fi" id="etoPayNote" placeholder="pl. vacsora"></div>
+      <div class="secdiv">FOGADÓ FELHASZNÁLÓNEVEK</div>
+      <div class="fld"><div class="flbl">REVOLUT.ME</div><input class="fi" id="etoPayRev" value="${h.revolut||''}" placeholder="felhasznalonev"></div>
+      <div class="fld"><div class="flbl">PAYPAL.ME</div><input class="fi" id="etoPayPp" value="${h.paypal||''}" placeholder="felhasznalonev"></div>
+      <div class="fld"><div class="flbl">WISE</div><input class="fi" id="etoPayWise" value="${h.wise||''}" placeholder="felhasznalonev"></div>
+      <button class="btnp" style="width:100%;margin-bottom:14px" onclick="etoGenPayLinks()">Link generálása</button>
+      <div id="etoPayLinks"></div>`;
+  };
+  window.etoGenPayLinks=function(){
+    const amt=parseFloat($('etoPayAmt').value)||0;
+    const cur=($('etoPayCur').value||'EUR').trim().toUpperCase();
+    const note=$('etoPayNote').value.trim();
+    const rev=$('etoPayRev').value.trim(), pp=$('etoPayPp').value.trim(), wise=$('etoPayWise').value.trim();
+    try{localStorage.setItem('monyk_pay_handles',JSON.stringify({cur,revolut:rev,paypal:pp,wise}));}catch(e){}
+    const amtStr=amt?amt.toFixed(2):'';
+    let html='';
+    if(rev){ html+=etoPayBtn('Revolut',`https://revolut.me/${rev}${amtStr?'/'+amtStr+cur:''}`); }
+    if(pp){ html+=etoPayBtn('PayPal',`https://paypal.me/${pp}${amtStr?'/'+amtStr+cur:''}`); }
+    if(wise){ html+=etoPayBtn('Wise (add meg az összeget kézzel)',`https://wise.com/pay/r/${wise}`); }
+    if(!html) html='<div style="color:var(--mut);font-size:13px;text-align:center;padding:14px">Adj meg legalább egy felhasználónevet.</div>';
+    else html+=`<button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoCopyPaySummary('${amtStr}','${cur}',${JSON.stringify(note)})">📋 Szöveg másolása</button>`;
+    document.getElementById('etoPayLinks').innerHTML=html;
+  };
+  function etoPayBtn(label,link){
+    return `<button class="abtn" style="width:100%;justify-content:center;margin-bottom:8px" onclick="window.open('${link}','_blank')">💳 ${label} megnyitása</button>`;
+  }
+  window.etoCopyPaySummary=function(amt,cur,note){
+    const txt=`Kérlek utald el: ${amt} ${cur}${note?' — '+note:''}`;
+    if(navigator.clipboard){ navigator.clipboard.writeText(txt); toast('📋 Vágólapra másolva'); }
+  };
+
+  // ── 7) CSOPORTOS SZAVAZÁS ──
+  window.etoShowPoll=function(){
+    etoSetBack(true); etoSetTitle('🗳️ Csoportos szavazás');
+    const trip=etoCurrentTrip();
+    if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
+    if(!trip.polls)trip.polls=[];
+    etoBody().innerHTML=`
+      <div class="fld"><div class="flbl">ÚJ KÉRDÉS</div><input class="fi" id="etoPollQ" placeholder="pl. Hova menjünk ma?"></div>
+      <div class="fld"><div class="flbl">OPCIÓK (vesszővel elválasztva)</div><input class="fi" id="etoPollOpts" placeholder="pl. Étterem, Strand, Múzeum"></div>
+      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="etoAddPoll()">+ Szavazás létrehozása</button>
+      <div id="etoPollList">${etoPollListHtml(trip)}</div>`;
+  };
+  function etoPollListHtml(trip){
+    const polls=trip.polls||[];
+    if(!polls.length) return `<div style="text-align:center;color:var(--mut);padding:16px;font-size:13px">Még nincs szavazás.</div>`;
+    return polls.slice().reverse().map(p=>{
+      const total=p.options.reduce((s,o)=>s+o.votes,0)||1;
+      return `<div class="eto-sec"><div style="font-weight:800;margin-bottom:8px">${p.q}</div>
+        ${p.options.map((o,i)=>`<div class="eto-poll-opt" onclick="etoVotePoll('${p.id}',${i})"><span>${o.text}</span><b style="color:var(--acc)">${o.votes}</b></div><div class="eto-poll-bar"><div class="eto-poll-fil" style="width:${Math.round(o.votes/total*100)}%"></div></div>`).join('')}
+        <button style="color:var(--red);background:none;border:none;font-size:11px;margin-top:6px;cursor:pointer;font-family:inherit" onclick="etoDeletePoll('${p.id}')">🗑️ Szavazás törlése</button>
+        </div>`;
+    }).join('');
+  }
+  window.etoAddPoll=function(){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    const q=$('etoPollQ').value.trim(); const optsRaw=$('etoPollOpts').value.trim();
+    if(!q||!optsRaw){ toast('Adj meg kérdést és opciókat'); return; }
+    const opts=optsRaw.split(',').map(s=>s.trim()).filter(Boolean).slice(0,6);
+    if(opts.length<2){ toast('Legalább 2 opció kell'); return; }
+    if(!trip.polls)trip.polls=[];
+    trip.polls.push({id:genId(),q,options:opts.map(t=>({text:t,votes:0})),ts:Date.now()});
+    saveTrips(); window.etoShowPoll();
+  };
+  window.etoVotePoll=function(pid,idx){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    const p=(trip.polls||[]).find(x=>x.id===pid); if(!p)return;
+    p.options[idx].votes++; saveTrips();
+    document.getElementById('etoPollList').innerHTML=etoPollListHtml(trip);
+  };
+  window.etoDeletePoll=function(pid){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    trip.polls=(trip.polls||[]).filter(p=>p.id!==pid); saveTrips();
+    document.getElementById('etoPollList').innerHTML=etoPollListHtml(trip);
+  };
+
+  // ── 8) ÉLŐ HELYZETMEGOSZTÁS ──
+  window.etoShowLive=function(){
+    etoSetBack(true); etoSetTitle('📍 Élő helyzetmegosztás');
+    const trip=etoCurrentTrip();
+    if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
+    const ls=trip.liveShare||{enabled:false};
+    etoBody().innerHTML=`
+      <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:14px;padding:14px;margin-bottom:14px">
+        <div><div style="font-weight:800">Helyzetmegosztás</div><div style="font-size:11px;color:var(--mut)">A csapat láthatja, hol jársz</div></div>
+        <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0">
+          <input type="checkbox" id="etoLiveToggle" ${ls.enabled?'checked':''} onchange="etoToggleLive(this.checked)" style="opacity:0;width:0;height:0">
+          <span style="position:absolute;inset:0;background:${ls.enabled?'var(--acc)':'rgba(255,255,255,.15)'};border-radius:26px;transition:.2s;pointer-events:none"></span>
+          <span style="position:absolute;top:3px;left:${ls.enabled?'23px':'3px'};width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s;pointer-events:none"></span>
+        </label>
+      </div>
+      <button class="btnp" style="width:100%;margin-bottom:10px" onclick="etoShareLocationNow()">📍 Pozíció megosztása most</button>
+      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="etoRequestLocation()">🙋 Frissítést kérek a csapattól</button>
+      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="monykEnableNotifications()">🔔 Értesítések bekapcsolása ezen a készüléken</button>
+      <div id="etoLiveLast" class="eto-note" style="margin-top:0">${ls.lastLink?`Utoljára megosztva: ${new Date(ls.lastTs).toLocaleString()}`:'Még nem osztottál meg pozíciót.'}</div>
+      <div class="eto-note">A kapcsoló jelzi a csapatnak, hogy elérhető vagy — a valós pozíció frissítéséhez nyomd meg a gombot, amikor meg szeretnéd osztani, hol vagy. Amíg ez a képernyő nyitva van, a telefon nem alszik el; háttérbe/zárt appra váltva a frissítés szünetel, de a "Frissítést kérek" gomb push értesítést küld a társaidnak, hogy nyissák meg és osszák meg friss pozíciójukat.</div>`;
+    if(ls.enabled) etoAcquireWakeLock();
+  };
+  window.etoToggleLive=function(checked){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    trip.liveShare=trip.liveShare||{}; trip.liveShare.enabled=checked; saveTrips(); window.etoShowLive();
+  };
+  window.etoShareLocationNow=function(){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    if(!navigator.geolocation){ toast('A helymeghatározás nem elérhető'); return; }
+    navigator.geolocation.getCurrentPosition(function(pos){
+      const latitude=pos.coords.latitude, longitude=pos.coords.longitude;
+      const link=`https://maps.google.com/?q=${latitude},${longitude}`;
+      trip.liveShare=trip.liveShare||{}; trip.liveShare.lastLink=link; trip.liveShare.lastTs=Date.now();
+      saveTrips();
+      if(navigator.share){ navigator.share({title:'Az én pozícióm',text:'Itt vagyok most:',url:link}).catch(()=>{}); }
+      else if(navigator.clipboard){ navigator.clipboard.writeText(link); toast('📋 Link a vágólapon'); }
+      window.etoShowLive();
+    },function(){ toast('❌ Nem sikerült lekérni a pozíciót'); },{enableHighAccuracy:true,timeout:10000});
+  };
+  // "Frissítést kérek" – ezt a meglévő trip-metaadat szinkron (liveShare)
+  // viszi át a többiekhez; nyitott appnál toast jelzi, zárt appnál a Cloud
+  // Function küld push értesítést a mentett tokenek alapján.
+  window.etoRequestLocation=function(){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    if(!trip.kod){ toast('Ehhez egy megosztott (csoportos) utazás szükséges'); return; }
+    trip.liveShare=trip.liveShare||{};
+    trip.liveShare.requestedAt=Date.now();
+    trip.liveShare.requestedBy=myProfileName||'Valaki';
+    saveTrips();
+    toast('📤 Kérés elküldve a csapatnak');
+  };
+
+  // ── CSOPORTOS CHAT: olvasatlan üzenetek követése (csak ezen az eszközön) ──
+  function chatLastReadTs(code){ try{ return parseInt(localStorage.getItem('monyk_chat_read_'+code)||'0',10)||0; }catch(e){ return 0; } }
+  function chatMarkRead(code){ try{ localStorage.setItem('monyk_chat_read_'+code,String(Date.now())); }catch(e){} if(typeof window.refreshHeaderChatBadge==='function') window.refreshHeaderChatBadge(); }
+  function chatUnreadCount(trip){
+    if(!trip||!trip.kod) return 0;
+    const lastTs=chatLastReadTs(trip.kod);
+    return (trip.chat||[]).filter(m=>m.ts>lastTs&&m.sender!==chatSenderFor(trip.kod)).length;
+  }
+  // ── összesített olvasatlan üzenetszám az összes megosztott utazásra (menü badge-hez) ──
+  function totalChatUnread(){
+    return trips.filter(t=>t.kod).reduce((sum,t)=>sum+chatUnreadCount(t),0);
+  }
+  function chatEsc(s){ const d=document.createElement('div'); d.textContent=s==null?'':String(s); return d.innerHTML; }
+
+  window.etoChatOpenCode=null;
+
+  // ── 11) CSOPORTOS CHAT ──
+  window.etoShowChat=function(code){
+    etoSetBack(true); etoSetTitle('💬 Csoportos chat');
+    const shared=trips.filter(t=>t.kod);
+    if(!shared.length){
+      window.etoChatOpenCode=null;
+      etoBody().innerHTML=`<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">💬</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">Csak megosztott utazásnál</div><div style="font-size:12px">Oszd meg egy utazásodat útitársaiddal (🔗), hogy tudjatok csevegni.</div></div>`;
+      return;
+    }
+    const active=getActiveTrip();
+    // sorrend: aktív elöl, utána a többi (tervezési fázisú) utazás
+    const ordered=shared.slice().sort((a,b)=>(a===active?-1:0)-(b===active?-1:0));
+    let trip=code?shared.find(t=>t.kod===code):null;
+    if(!trip){
+      const scoped=etoCurrentTrip();
+      trip=(window.etoChatOpenCode&&shared.find(t=>t.kod===window.etoChatOpenCode))||active||(shared.includes(scoped)?scoped:null)||ordered[0];
+    }
+    trip.chat=trip.chat||[];
+    window.etoChatOpenCode=trip.kod;
+    chatMarkRead(trip.kod);
+    const selector=ordered.length>1?`<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:2px" id="etoChatTripSel">${ordered.map(t=>{
+      const isActive=t===active;
+      const sel=t.kod===trip.kod;
+      const unread=chatUnreadCount(t);
+      return `<button onclick="etoShowChat('${t.kod}')" style="flex:0 0 auto;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid var(--bd,#e5e7eb);background:${sel?'var(--acc,#6366f1)':'transparent'};color:${sel?'#fff':'var(--txt)'};white-space:nowrap;cursor:pointer;font-family:inherit">${isActive?'🟢':'📝'} ${chatEsc(t.nev||t.cel||'Utazás')}${(unread&&!sel)?` <span style="display:inline-block;min-width:16px;padding:1px 5px;border-radius:9px;background:var(--red,#ef4444);color:#fff;font-size:10px;margin-left:4px">${unread>99?'99+':unread}</span>`:''}</button>`;
+    }).join('')}</div>`:'';
+    etoBody().innerHTML=`
+      <div class="eto-chat-wrap">
+        ${selector}
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--mut);margin-bottom:8px">
+          <span>Itt így látszol: <b style="color:var(--txt)">${chatEsc(chatSenderFor(trip.kod))}</b></span>
+          <button onclick="etoEditChatNick('${trip.kod}')" style="border:none;background:none;color:var(--acc,#6366f1);font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">✏️ Becenév</button>
+        </div>
+        <div class="eto-chat-list" id="etoChatList"></div>
+        <div class="eto-chat-inputrow">
+          <input id="etoChatInp" class="fi" placeholder="Írj üzenetet…" maxlength="1000" autocomplete="off">
+          <button class="btnp" onclick="etoSendChat()">➤</button>
+        </div>
+        <button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoClearChatConfirm()">🗑️ Előzmények törlése</button>
+        <div class="eto-note">Csak szöveges üzenetek – fotót inkább a Dokumentumtárba tölts fel. Az utolsó 200 üzenet marad meg.${trip!==active?' Ez egy tervezési fázisú utazás chatje.':''}</div>
+      </div>`;
+    const inp=document.getElementById('etoChatInp');
+    if(inp) inp.addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); etoSendChat(); } });
+    etoRenderChatMessages(trip);
+  };
+
+  function etoRenderChatMessages(trip){
+    const list=document.getElementById('etoChatList'); if(!list) return;
+    const msgs=trip.chat||[];
+    if(!msgs.length){
+      list.innerHTML=`<div style="text-align:center;color:var(--mut);padding:24px 10px;font-size:13px">Még nincs üzenet. Írd meg az elsőt! 👋</div>`;
+      return;
+    }
+    const nearBottom=(list.scrollTop+list.clientHeight)>=(list.scrollHeight-60);
+    list.innerHTML=msgs.map(m=>{
+      const mine=m.sender===chatSenderFor(trip.kod);
+      const time=new Date(m.ts).toLocaleTimeString('hu-HU',{hour:'2-digit',minute:'2-digit'});
+      return `<div class="eto-chat-msg${mine?' mine':''}">${mine?'':`<div class="eto-chat-sender">${chatEsc(m.sender)}</div>`}<div class="eto-chat-bubble">${chatEsc(m.text)}</div><div class="eto-chat-time">${time}</div></div>`;
+    }).join('');
+    if(nearBottom||msgs.length<=1) list.scrollTop=list.scrollHeight;
+  }
+
+  window.etoEditChatNick=function(code){
+    if(!code) return;
+    const cur=chatNickFor(code);
+    const oldName=chatSenderFor(code);
+    const val=prompt('Milyen néven jelenj meg ennek az utazásnak a chatjében?\n(Üresen hagyva a profilneved lesz használva.)',cur||myProfileName||'');
+    if(val===null) return;
+    setChatNick(code,val);
+    const newName=chatSenderFor(code);
+    if(typeof window.relabelMyChatMessages==='function') window.relabelMyChatMessages(code,oldName,newName);
+    if(window.etoChatOpenCode===code) etoShowChat(code);
+  };
+
+  window.etoSendChat=async function(){
+    const inp=document.getElementById('etoChatInp'); if(!inp) return;
+    const text=inp.value;
+    if(!text||!text.trim()) return;
+    const code=window.etoChatOpenCode;
+    inp.value='';
+    if(typeof window.sendChatMessage==='function') await window.sendChatMessage(text,code);
+    const trip=trips.find(t=>t.kod===code);
+    if(trip){ chatMarkRead(code); etoRenderChatMessages(trip); }
+    inp.focus();
+  };
+
+  window.etoClearChatConfirm=function(){
+    if(!confirm('Törlöd az összes chatüzenetet? Ez mindenkinél törlődik.')) return;
+    const code=window.etoChatOpenCode;
+    if(typeof window.clearChatHistory==='function') window.clearChatHistory(code);
+    const trip=trips.find(t=>t.kod===code);
+    if(trip) etoRenderChatMessages(trip);
+    toast('🗑️ Chat előzmények törölve');
+  };
+
+  // a valós idejű figyelő (index.html sync szekció) hívja ezt minden megosztott
+  // utazásra, amikor új üzenet érkezik – ha épp az a chat van nyitva, azonnal
+  // frissül az üzenetlista; ha másik (pl. tervezési fázisú) utazásé, csak a
+  // fülsáv olvasatlan-badge-e frissül a legközelebbi megnyitáskor/menübe lépéskor
+  window.etoOnChatUpdate=function(code){
+    if(window.etoChatOpenCode!==code) return;
+    const trip=trips.find(t=>t.kod===code);
+    if(trip){ chatMarkRead(code); etoRenderChatMessages(trip); }
+  };
+
+  // ── 12) NAPI EMLÉKFOTÓ NAPLÓ ──
+  window.etoShowDiary=function(){
+    etoSetBack(true); etoSetTitle('📸 Napi emlékfotó napló');
+    const trip=etoCurrentTrip();
+    if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
+    if(!trip.dailyPhotos)trip.dailyPhotos=[];
+    etoMigrateOldPhotos().then(()=>{
+      const trip2=etoCurrentTrip(); if(!trip2)return;
+      etoRenderDiary(trip2);
+    });
+  };
+  function etoRenderDiary(trip){
+    const today=new Date().toISOString().slice(0,10);
+    const already=(trip.dailyPhotos||[]).find(d=>d.date===today);
+    etoBody().innerHTML=`
+      <input type="file" accept="image/*" capture="environment" id="etoDiaryFile" style="display:none" onchange="etoAddDiary(this)">
+      ${already?'':`<button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="document.getElementById('etoDiaryFile').click()">📸 Mai emlékfotó hozzáadása</button>`}
+      <div id="etoDiaryList"></div>`;
+    etoFillDiaryList(trip);
+  }
+  function etoFillDiaryList(trip){
+    const list=document.getElementById('etoDiaryList'); if(!list)return;
+    const items=(trip.dailyPhotos||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+    if(!items.length){
+      list.innerHTML=`<div style="text-align:center;color:var(--mut);padding:16px;font-size:13px">Még nincs emlékfotó. Készíts egyet minden napról!</div>`;
+      return;
+    }
+    list.innerHTML=items.map(d=>`<div class="eto-diary-item"><img id="etoDiaryImg_${d.date}"><div style="font-weight:800;font-size:12px;margin-bottom:4px">${d.date}</div>${d.note?`<div style="font-size:12px;color:var(--mut)">${d.note}</div>`:''}<button style="color:var(--red);background:none;border:none;font-size:11px;margin-top:6px;cursor:pointer;font-family:inherit" onclick="etoRemoveDiary('${d.date}')">🗑️ Törlés</button></div>`).join('');
+    items.forEach(d=>{
+      const key=d.idbKey||('diary_'+trip.id+'_'+d.date);
+      etoIdbGet(key).then(blob=>{
+        if(!blob)return;
+        const url=etoObjUrl(key,blob);
+        const img=document.getElementById('etoDiaryImg_'+d.date);
+        if(img)img.src=url;
+      }).catch(()=>{});
+    });
+  }
+  window.etoAddDiary=function(inp){
+    const file=inp.files&&inp.files[0]; if(!file)return;
+    const trip=etoCurrentTrip(); if(!trip){inp.value='';return;}
+    const today=new Date().toISOString().slice(0,10);
+    const note=prompt('Rövid emlék a mai napról (opcionális):','')||'';
+    const key='diary_'+trip.id+'_'+today;
+    etoIdbPut(key,file).then(()=>{
+      if(!trip.dailyPhotos)trip.dailyPhotos=[];
+      trip.dailyPhotos=trip.dailyPhotos.filter(d=>d.date!==today);
+      trip.dailyPhotos.push({date:today,idbKey:key,note});
+      saveTrips(); etoRenderDiary(trip); toast('✅ Emlék elmentve');
+    }).catch(()=>{ toast('❌ Nem sikerült elmenteni a fotót'); });
+    inp.value='';
+  };
+  window.etoRemoveDiary=function(date){
+    const trip=etoCurrentTrip(); if(!trip)return;
+    if(!confirm('Törlöd ezt az emléket?'))return;
+    const d=(trip.dailyPhotos||[]).find(x=>x.date===date);
+    trip.dailyPhotos=(trip.dailyPhotos||[]).filter(x=>x.date!==date);
+    saveTrips(); etoRenderDiary(trip);
+    if(d){
+      const key=d.idbKey||('diary_'+trip.id+'_'+date);
+      etoIdbDelete(key);
+      if(etoObjUrlCache[key]){URL.revokeObjectURL(etoObjUrlCache[key]); delete etoObjUrlCache[key];}
+    }
+  };
+
+  // ── induláskor is mutassuk a fejléc chat-badge-et a helyi (cache-elt) adatokból ──
+  refreshHeaderChatBadge();
+
+})();
+</script>
 
 </body>
 </html>
