@@ -10575,7 +10575,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     etoSetTitle('🧰 Extra eszközök');
     if(etoFlightTimer){clearInterval(etoFlightTimer);etoFlightTimer=null;}
     const cards=[
-      {ico:'💱',lbl:'Valutaváltó',fn:'openValuta'},
+      {ico:'💱',lbl:'Valutaváltó',onclick:'closeExtraTools();openValuta()'},
       {ico:'📁',lbl:'Dokumentumtár',fn:'etoShowDocs'},
       {ico:'🆘',lbl:'Vészhelyzeti kártya',fn:'etoShowEmergency'},
       {ico:'✈️',lbl:'Repülő/vonat státusz',fn:'etoShowFlight'},
@@ -10585,7 +10585,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
       {ico:'📍',lbl:'Élő helyzetmegosztás',fn:'etoShowLive'},
       {ico:'📸',lbl:'Napi emlékfotó napló',fn:'etoShowDiary'}
     ];
-    etoBody().innerHTML=`<div class="eto-grid">${cards.map(c=>`<button class="eto-card" onclick="${c.fn}()"><span class="ic">${c.ico}</span><span class="lbl">${c.lbl}</span></button>`).join('')}</div>`;
+    etoBody().innerHTML=`<div class="eto-grid">${cards.map(c=>`<button class="eto-card" onclick="${c.onclick||(c.fn+'()')}"><span class="ic">${c.ico}</span><span class="lbl">${c.lbl}</span></button>`).join('')}</div>`;
   }
 
   function etoNoTrip(){
