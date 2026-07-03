@@ -217,7 +217,7 @@ body.theme-paper{background:#f6f5f1}
 .swipe-hint-lbl{font-size:9px;color:rgba(255,255,255,.18);text-align:center;padding:4px 0 8px;letter-spacing:.05em}
 .exp-filter-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 12px;font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;font-family:inherit;color:var(--txt)}
 .exp-filter-btn.active{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.4);color:var(--acc)}
-.td-hdr-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 10px;font-size:15px;cursor:pointer;transition:all .15s;color:var(--mut);flex-shrink:0}
+.td-hdr-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 8px;font-size:15px;cursor:pointer;transition:all .15s;color:var(--mut);flex-shrink:0}
 .td-hdr-btn:active{background:rgba(255,255,255,.12)}
 .td-hdr-btn-close{font-size:13px;font-weight:800}
 .exp-filter-panel{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px 14px;margin-bottom:12px;animation:fadeIn .18s ease}
@@ -618,7 +618,7 @@ textarea.fi{resize:none}
   padding:0 16px 10px;
   padding-top:max(10px,env(safe-area-inset-top));
 }
-.td-hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.td-hdr-top{display:flex;align-items:center;gap:6px;margin-bottom:10px}
 .td-back{display:none}
 .td-trip-info{flex:1;min-width:0}
 .td-trip-name{font-size:17px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1547,7 +1547,8 @@ textarea.fi{resize:none}
         <div class="td-trip-name" id="tdTripName">–</div>
         <div class="td-trip-dest" id="tdTripDest"></div>
       </div>
-      <button class="td-hdr-btn" onclick="openValuta()" title="Valutaváltó">💱</button>
+      <button class="td-hdr-btn" onclick="dashOpenId&&openTripChat(dashOpenId)" title="Csoportos chat">💬</button>
+      <button class="td-hdr-btn" onclick="dashOpenId&&openTripMembers(dashOpenId)" title="Résztvevők">👥</button>
       <button class="td-hdr-btn" onclick="dashOpenId&&openExtraToolsForTrip(dashOpenId)" title="Extra eszközök">🧰</button>
       <button class="td-hdr-btn td-hdr-btn-close" onclick="dashOpenId&&openSum(dashOpenId)" id="tdCloseBtn" title="Lezárás">🔒</button>
       <button class="td-hdr-btn" onclick="closeTripDash()" title="Vissza az utazáslistához" style="background:rgba(255,255,255,.06);border:1.5px solid var(--brd);color:var(--txt);font-size:11px;font-weight:900;padding:6px 10px;border-radius:9px;" id="tdExitBtn">← Vissza</button>
@@ -1825,6 +1826,10 @@ textarea.fi{resize:none}
         <div class="sors" id="soProfileHint">A neved — ezzel csatlakozol be a megosztott utazásokhoz, és ez lesz az alapértelmezett fizető új tételnél (mindig módosítható).</div>
         <input class="fi" id="soProfileInp" type="text" maxlength="24" placeholder="pl. Réka" style="width:100%" oninput="setProfileName(this.value)">
       </div>
+    </div>
+    <div class="sosec">
+      <div class="soscl">🔗 <span id="soShareLbl">App megosztása</span></div>
+      <div class="sorow" onclick="openAppShareModal()"><div class="sorinf"><div class="sorl" id="soShareRL">App linkjének küldése</div><div class="sors" id="soShareRS">Küldd el valakinek, hogy megnyithassa/telepíthesse a MONYK-ot — utazás és kód nélkül is</div></div><span class="sorchv">›</span></div>
     </div>
     <div class="sosec"><div class="soscl" id="soSLang"></div><div class="lchips" id="langChips"></div></div>
     <div class="sosec">
@@ -9570,12 +9575,26 @@ document.addEventListener('DOMContentLoaded',async()=>{
     if(!code||_listeners[code]) return;
     const unsubs=[];
 
+    let _metaFirstSnap=true;
     unsubs.push(db.collection('trips').doc(code).onSnapshot(snap=>{
       if(!snap.exists) return;
       const data=snap.data();
       const tr=trips.find(t2=>t2.kod===code);
+      const oldTagIds=tr?(tr.tagok||[]).map(x=>x.id):[];
       if(tr){ META_KEYS.forEach(k=>{ if(data[k]!==undefined) tr[k]=data[k]; }); }
       cacheFor(code).meta=JSON.stringify(metaOf(tr||data));
+      // ── új tag csatlakozásának jelzése (csak a listener felcsatolása UTÁNI valódi csatlakozásoknál,
+      //    az első snapshot a már meglévő állapotot hozza, azt nem jelezzük) ──
+      if(tr&&!_metaFirstSnap){
+        const joined=(tr.tagok||[]).filter(m=>!oldTagIds.includes(m.id));
+        joined.forEach(m=>{
+          if((m.nev||'').trim().toLowerCase()!==(myProfileName||'').trim().toLowerCase()){
+            toast(`👋 ${m.nev} csatlakozott az utazáshoz`);
+          }
+        });
+      }
+      _metaFirstSnap=false;
+      if(shrActiveTrip&&shrActiveTrip.kod===code) renderShareMembers(tr||shrActiveTrip);
       // ── bejövő "oszd meg a pozíciód" kérés jelzése (előtér esetén) ──
       // a tényleges push-t (ha az app zárva van) a Cloud Function küldi,
       // ez itt csak a nyitott app UI-jában mutat toast-ot
@@ -9815,22 +9834,34 @@ document.addEventListener('DOMContentLoaded',async()=>{
   }
 
   // ── UI: share / join modálok (dinamikusan beszúrva, a meglévő .mbg/.modal stílust használva) ──
+  // FONTOS: z-index:1000 inline, mert a .so (beállítások képernyő) z-index-e 300,
+  // enélkül a modal alul jelenne meg a beállítások mögött, ha onnan nyitjuk.
   function ensureModals(){
     if(document.getElementById('shrMbg')) return;
     document.body.insertAdjacentHTML('beforeend', `
-    <div class="mbg" id="shrMbg" onclick="if(event.target===this)closeShareModal()">
+    <div class="mbg" id="shrMbg" style="z-index:1000" onclick="if(event.target===this)closeShareModal()">
       <div class="modal">
         <div class="dpill"></div>
         <div class="mhdr"><span class="mttl">🔗 Utazás megosztása</span><button class="mcls" onclick="closeShareModal()">✕</button></div>
         <div class="mbdy" style="text-align:center;padding-top:6px">
-          <div style="font-size:12px;color:var(--mut);margin-bottom:16px;line-height:1.5">Ezt a kódot vagy QR-t oszd meg útitársaiddal. Miután beírják vagy beolvassák, minden költés valós időben szinkronizál mindenki telefonján.</div>
+          <div style="font-size:12px;color:var(--mut);margin-bottom:16px;line-height:1.5">Aki melletted van, olvassa be a QR-t – rögtön csatlakozik. Aki távol van, annak küldd el külön az app linkjét, ő telepítse/nyissa meg, majd add meg neki a kódot.</div>
           <div id="shrQr" style="display:flex;justify-content:center;margin-bottom:16px"></div>
-          <div id="shrCode" style="font-family:'Courier New',monospace;font-size:32px;font-weight:900;letter-spacing:6px;color:var(--acc);margin-bottom:14px"></div>
-          <button class="btnp" style="width:100%" onclick="copyShareCode()">📋 Kód másolása</button>
+          <div id="shrCode" style="font-family:'Courier New',monospace;font-size:32px;font-weight:900;letter-spacing:6px;color:var(--acc);margin-bottom:16px"></div>
+          <div style="height:1px;background:var(--bd);margin:4px 0 16px"></div>
+          <div style="font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:left">1. Küldd el neki az app linkjét</div>
+          <button class="btnp" style="width:100%;margin-bottom:14px" onclick="shareAppLink()">📱 App linkjének küldése</button>
+          <div style="font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:left">2. Aztán a csatlakozási kódot</div>
+          <div style="display:flex;gap:8px">
+            <button class="btnp" style="flex:1" onclick="shareCodeText()">📤 Kód küldése</button>
+            <button class="btnp" style="flex:1;background:transparent;border:1px solid var(--bd);color:var(--txt)" onclick="copyShareCode()">📋 Másolás</button>
+          </div>
+          <div style="height:1px;background:var(--bd);margin:18px 0 14px"></div>
+          <div style="font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:left">👥 Csoport tagjai</div>
+          <div id="shrMembers" style="display:flex;flex-direction:column;gap:6px;text-align:left"></div>
         </div>
       </div>
     </div>
-    <div class="mbg" id="joinMbg" onclick="if(event.target===this)closeJoinModal()">
+    <div class="mbg" id="joinMbg" style="z-index:1000" onclick="if(event.target===this)closeJoinModal()">
       <div class="modal">
         <div class="dpill"></div>
         <div class="mhdr"><span class="mttl">🔗 Csatlakozás kóddal</span><button class="mcls" onclick="closeJoinModal()">✕</button></div>
@@ -9841,7 +9872,19 @@ document.addEventListener('DOMContentLoaded',async()=>{
         <div class="mft"><button class="btnp" style="width:100%" onclick="joinTripByCode($('joinInp').value)">Csatlakozás</button></div>
       </div>
     </div>
-    <div class="mbg" id="profMbg" onclick="if(event.target===this)closeProfileModal()">
+    <div class="mbg" id="appShrMbg" style="z-index:1000" onclick="if(event.target===this)closeAppShareModal()">
+      <div class="modal">
+        <div class="dpill"></div>
+        <div class="mhdr"><span class="mttl">📱 App megosztása</span><button class="mcls" onclick="closeAppShareModal()">✕</button></div>
+        <div class="mbdy" style="text-align:center;padding-top:6px">
+          <div style="font-size:12px;color:var(--mut);margin-bottom:16px;line-height:1.5">Olvastassa be vele a QR-t, vagy küldd el neki a linket — ezzel csak magát az appot nyitja meg, utazáshoz vagy kódhoz nem csatlakozik automatikusan.</div>
+          <div id="appShrQr" style="display:flex;justify-content:center;margin-bottom:16px"></div>
+          <button class="btnp" style="width:100%;margin-bottom:10px" onclick="shareAppLink()">📤 Link küldése</button>
+          <button class="btnp" style="width:100%;background:transparent;border:1px solid var(--bd);color:var(--txt)" onclick="copyAppLink()">🔗 Link másolása</button>
+        </div>
+      </div>
+    </div>
+    <div class="mbg" id="profMbg" style="z-index:1000" onclick="if(event.target===this)closeProfileModal()">
       <div class="modal">
         <div class="dpill"></div>
         <div class="mhdr"><span class="mttl">👋 Hogy szólítsunk?</span><button class="mcls" onclick="closeProfileModal()">✕</button></div>
@@ -9854,20 +9897,80 @@ document.addEventListener('DOMContentLoaded',async()=>{
     </div>`);
   }
 
+  // ── csoport tagjainak megjelenítése a megosztás modálban (élőben frissül, ha valaki csatlakozik) ──
+  function renderShareMembers(trip){
+    const box=document.getElementById('shrMembers'); if(!box) return;
+    const tgk=(trip&&trip.tagok)||[];
+    box.innerHTML=tgk.length?tgk.map(tg=>{
+      const isMe=(tg.nev||'').trim().toLowerCase()===(myProfileName||'').trim().toLowerCase();
+      return `<div style="display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:8px 12px">
+        <div style="font-size:16px">${tg.ikon||'🧑'}</div>
+        <div style="flex:1;font-size:13px;font-weight:700">${tg.nev}${isMe?' <span style="color:var(--acc);font-weight:800">(Te)</span>':''}</div>
+      </div>`;
+    }).join(''):`<div style="font-size:12px;color:var(--mut)">Még nincs más tag – oszd meg a kódot!</div>`;
+  }
+
+  let shrActiveTrip=null;
   function openShareModal(trip){
     ensureModals();
+    shrActiveTrip=trip;
     document.getElementById('shrCode').textContent=trip.kod;
     const url=location.origin+location.pathname+'?join='+trip.kod;
     const qrBox=document.getElementById('shrQr'); qrBox.innerHTML='';
     if(window.QRCode){
       new QRCode(qrBox,{text:url,width:180,height:180,colorDark:'#0a0e1a',colorLight:'#f5c842',correctLevel:QRCode.CorrectLevel.M});
     }
+    renderShareMembers(trip);
     document.getElementById('shrMbg').classList.add('on');
   }
-  window.closeShareModal=function(){ const m=document.getElementById('shrMbg'); if(m) m.classList.remove('on'); };
+  window.closeShareModal=function(){ const m=document.getElementById('shrMbg'); if(m) m.classList.remove('on'); shrActiveTrip=null; };
   window.copyShareCode=function(){
     const code=document.getElementById('shrCode')?.textContent; if(!code) return;
     (navigator.clipboard?.writeText(code)||Promise.reject()).then(()=>toast('✓ Kód másolva')).catch(()=>{});
+  };
+  // ── csak az app linkjének elküldése (kód nélkül) – annak, aki még nem telepítette/nyitotta meg az appot ──
+  window.shareAppLink=function(){
+    const appUrl=location.origin+location.pathname;
+    const title='MONYK';
+    const text='Nyisd meg a MONYK appot, hogy tudjunk közösen egy utazást vezetni:';
+    if(navigator.share){
+      navigator.share({title,text,url:appUrl}).catch(()=>{});
+    }else{
+      (navigator.clipboard?.writeText(appUrl)||Promise.reject())
+        .then(()=>toast('✓ App linkje másolva'))
+        .catch(()=>toast(appUrl));
+    }
+  };
+  window.openAppShareModal=function(){
+    ensureModals();
+    const appUrl=location.origin+location.pathname;
+    const qrBox=document.getElementById('appShrQr'); qrBox.innerHTML='';
+    if(window.QRCode){
+      new QRCode(qrBox,{text:appUrl,width:180,height:180,colorDark:'#0a0e1a',colorLight:'#f5c842',correctLevel:QRCode.CorrectLevel.M});
+    }
+    document.getElementById('appShrMbg').classList.add('on');
+  };
+  window.closeAppShareModal=function(){ const m=document.getElementById('appShrMbg'); if(m) m.classList.remove('on'); };
+  window.copyAppLink=function(){
+    const appUrl=location.origin+location.pathname;
+    (navigator.clipboard?.writeText(appUrl)||Promise.reject())
+      .then(()=>toast('✓ App linkje másolva'))
+      .catch(()=>toast(appUrl));
+  };
+  // ── csak a csatlakozási kód elküldése szövegként (nem link) – bármelyik üzenetküldőben beírható ──
+  window.shareCodeText=function(){
+    const trip=shrActiveTrip;
+    const code=document.getElementById('shrCode')?.textContent; if(!code) return;
+    const tripName=trip?.nev?(' ("'+trip.nev+'")'):'';
+    const title='MONYK csatlakozási kód';
+    const text='Csatlakozási kódom a MONYK appban'+tripName+': '+code;
+    if(navigator.share){
+      navigator.share({title,text}).catch(()=>{});
+    }else{
+      (navigator.clipboard?.writeText(text)||Promise.reject())
+        .then(()=>toast('✓ Kód másolva'))
+        .catch(()=>toast(text));
+    }
   };
   window.openJoinModal=function(){ ensureModals(); document.getElementById('joinInp').value=''; document.getElementById('joinMbg').classList.add('on'); };
   window.closeJoinModal=function(){ const m=document.getElementById('joinMbg'); if(m) m.classList.remove('on'); };
@@ -10196,6 +10299,28 @@ document.addEventListener('DOMContentLoaded',async()=>{
     bg.classList.add('on');
     etoShowMenu();
   };
+  // ── Trip Dash fejléc 💬 gomb: az adott utazás chatjére ugrik közvetlenül ──
+  window.openTripChat=function(tripId){
+    const trip=trips.find(t2=>t2.id===tripId); if(!trip)return;
+    const bg=document.getElementById('etoBg'); if(!bg)return;
+    window.etoScopeTripId=tripId;
+    bg.classList.add('on');
+    if(trip.kod){ etoShowChat(trip.kod); }
+    else{
+      etoSetBack(true); etoSetTitle('💬 Csoportos chat');
+      etoBody().innerHTML=`<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">💬</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">Csak megosztott utazásnál</div><div style="font-size:12px">Oszd meg ezt az utazást útitársaiddal (🔗), hogy tudjatok csevegni.</div></div>`;
+    }
+  };
+  // ── Trip Dash fejléc 👥 gomb: az adott utazás résztvevőinek listája ──
+  window.openTripMembers=function(tripId){
+    const trip=trips.find(t2=>t2.id===tripId); if(!trip)return;
+    const bg=document.getElementById('etoBg'); if(!bg)return;
+    window.etoScopeTripId=tripId;
+    bg.classList.add('on');
+    etoSetBack(true); etoSetTitle('👥 Résztvevők');
+    const tgk=trip.tagok||[];
+    etoBody().innerHTML=`<div class="eto-sec">${tgk.length?tgk.map(tg=>`<div class="eto-doc"><div class="picn" style="background:rgba(255,255,255,.06);border-color:var(--brd);font-size:20px">${tg.ikon||'🧑'}</div><span class="nm">${chatEsc(tg.nev||'')}</span></div>`).join(''):'<div style="text-align:center;color:var(--mut);padding:24px 10px">Nincsenek résztvevők.</div>'}</div>`;
+  };
   // ── fejléc 💬 gomb: egyenesen a chatre ugrik, kihagyva az Extra eszközök menüt ──
   window.openChatDirect=function(){
     const bg=document.getElementById('etoBg');
@@ -10231,6 +10356,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     etoSetTitle('🧰 Extra eszközök');
     if(etoFlightTimer){clearInterval(etoFlightTimer);etoFlightTimer=null;}
     const cards=[
+      {ico:'💱',lbl:'Valutaváltó',fn:'openValuta'},
       {ico:'📁',lbl:'Dokumentumtár',fn:'etoShowDocs'},
       {ico:'🆘',lbl:'Vészhelyzeti kártya',fn:'etoShowEmergency'},
       {ico:'✈️',lbl:'Repülő/vonat státusz',fn:'etoShowFlight'},
