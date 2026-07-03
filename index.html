@@ -3227,9 +3227,16 @@ function renderAll(){
 function renderTrips(){
   const c=$('tripList');if(!c)return;
   if(!trips.length){
-    c.innerHTML=`<div class="emp"><div class="empico">🗺️</div><div class="empttl">${t('empTrip')}</div><div class="empdsc">${t('empTripD')}</div><button onclick="openNewTrip()" style="margin-top:16px;padding:12px 24px;background:var(--acc);border:none;border-radius:12px;font-size:14px;font-weight:700;color:#07111f;cursor:pointer;font-family:inherit;">+ ${t('btnNT')||'Új utazás'}</button></div>`;
-    // Automatikusan megnyitjuk az új utazás formot ha első indítás
-    if(!localStorage.getItem('monyk_trips_seen')){
+    c.innerHTML=`<div class="emp"><div class="empico">🗺️</div><div class="empttl">${t('empTrip')}</div><div class="empdsc">${t('empTripD')}</div><button onclick="openNewTrip()" style="margin-top:16px;padding:12px 24px;background:var(--acc);border:none;border-radius:12px;font-size:14px;font-weight:700;color:#07111f;cursor:pointer;font-family:inherit;">+ ${t('btnNT')||'Új utazás'}</button>
+      <div onclick="openJoinModal()" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;cursor:pointer;margin-top:14px">
+        <span style="font-size:15px">🔗</span>
+        <span style="font-size:12px;font-weight:800;color:var(--acc)">Csatlakozás megosztott utazáshoz kóddal</span>
+      </div>
+    </div>`;
+    // Automatikusan megnyitjuk az új utazás formot ha első indítás – de ne akkor, ha éppen
+    // egy ?join= linkről érkezünk, mert akkor a csatlakozás modal nyílik meg helyette
+    const cameFromJoinLink=new URLSearchParams(location.search).has('join');
+    if(!localStorage.getItem('monyk_trips_seen')&&!cameFromJoinLink){
       localStorage.setItem('monyk_trips_seen','1');
       setTimeout(()=>{ if(typeof openNewTrip==='function') openNewTrip(); },600);
     }
@@ -9932,7 +9939,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   window.shareAppLink=function(){
     const appUrl=location.origin+location.pathname;
     const title='MONYK';
-    const text='Nyisd meg a MONYK appot, hogy tudjunk közösen egy utazást vezetni:';
+    const text='Nyisd meg a MONYK appot, hogy tudjunk közösen egy utazást tervezni:';
     if(navigator.share){
       navigator.share({title,text,url:appUrl}).catch(()=>{});
     }else{
