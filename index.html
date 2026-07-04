@@ -2067,7 +2067,7 @@ const AIRPORTS=[
 // ══════════════════════════════════════
 const I18N={
 hu:{
-  nav0:'Utak',nav1:'Kiadás',nav2:'Riport',nav3:'Terv',nav4:'Helyek',nav5:'Csomag',nav6:'Büdzsé',
+  nav0:'Utak',nav1:'Kiadás',nav2:'Riport',nav3:'Napirend',nav4:'Bakancslista',nav5:'Csomag',nav6:'Büdzsé',
   badge:'TRAVEL',exit:'Ki',
   grafNoData:'Nincs elég adat a grafikonhoz',
   hNew:'+ Hely',hEdit:'Hely szerkesztése',
@@ -2375,7 +2375,7 @@ hu:{
   soPwaLbl:'Telepítés',soPwaRL:'App telepítése a kezdőképernyőre',soPwaRS:'Android és iPhone útmutató',
 },
 de:{
-  nav0:'Reisen',nav1:'Ausgaben',nav2:'Bericht',nav3:'Plan',nav4:'Orte',nav5:'Gepäck',nav6:'Budget',
+  nav0:'Reisen',nav1:'Ausgaben',nav2:'Bericht',nav3:'Tagesplan',nav4:'Bucketliste',nav5:'Gepäck',nav6:'Budget',
   badge:'TRAVEL',exit:'Beenden',
   grafNoData:'Nicht genug Daten für Grafik',
   hNew:'+ Ort',hEdit:'Ort bearbeiten',
@@ -2678,7 +2678,7 @@ de:{
   soPwaLbl:'Installation',soPwaRL:'App auf dem Startbildschirm installieren',soPwaRS:'Anleitung für Android und iPhone',
 },
 en:{
-  nav0:'Trips',nav1:'Expenses',nav2:'Report',nav3:'Plan',nav4:'Places',nav5:'Pack',nav6:'Budget',
+  nav0:'Trips',nav1:'Expenses',nav2:'Report',nav3:'Schedule',nav4:'Bucket List',nav5:'Pack',nav6:'Budget',
   badge:'TRAVEL',exit:'Exit',
   grafNoData:'Not enough data for chart',
   hNew:'+ Place',hEdit:'Edit place',
@@ -3780,6 +3780,22 @@ function renderTrips(){
             <div class="tc-stat2-div"></div>
             <div class="tc-stat2"><div class="tc-stat2-l">${t('cardStatDays')}</div><div class="tc-stat2-v" style="color:rgba(255,255,255,.7)">${td?el+'/'+td:el}</div></div>
           </div>
+          ${(()=>{
+            const nEv=getNextEvent(tr);
+            if(!nEv)return'';
+            const icon=(nEv.tip||'📝').split(' ')[0];
+            const isToday=nEv.dat===todayStr;
+            const whenLbl=isToday?(lang==='hu'?'Ma':lang==='de'?'Heute':'Today'):nEv.dat;
+            return`<div style="pointer-events:all;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:12px;padding:10px 12px;margin-top:10px;cursor:pointer" onclick="event.stopPropagation();openTripSub('${tr.id}',document.getElementById('tc_${tr.id}'),0)">
+              <div style="font-size:9px;font-weight:800;color:var(--blu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">▶ ${lang==='hu'?'Következő program':lang==='de'?'Nächster Programmpunkt':'Next up'}</div>
+              <div style="font-size:13px;font-weight:800;margin-bottom:2px">${icon} ${esc(nEv.nev)}</div>
+              <div style="font-size:10px;color:var(--mut);font-weight:600">${whenLbl}${nEv.ido?', '+nEv.ido:''}</div>
+            </div>`;
+          })()}
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;pointer-events:all" onclick="event.stopPropagation()">
+            ${(tr.tagok||[]).length>1?`<div style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:5px 11px;font-size:10px;font-weight:700">👥 <b style="color:var(--acc)">${tr.tagok.length}</b> ${lang==='hu'?'utazó':lang==='de'?'Reisende':'travellers'}</div>`:''}
+            ${tr.kod?(()=>{const un=(typeof chatUnreadCount==='function')?chatUnreadCount(tr):0;return`<div style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:5px 11px;font-size:10px;font-weight:700;cursor:pointer" onclick="etoShowChat('${tr.kod}')">💬 ${un>0?`<b style="color:var(--red)">${un}</b> ${lang==='hu'?'új üzenet':lang==='de'?'neue':'new'}`:(lang==='hu'?'Chat':lang==='de'?'Chat':'Chat')}</div>`;})():''}
+          </div>
           ${cardWidget!=='none'?`<div id="widget_${tr.id}" style="margin-top:8px;position:relative;z-index:1"></div>`:''}
         </div>
         <div class="tcft" style="pointer-events:all;background:rgba(245,200,66,.05);position:relative;z-index:1" onclick="event.stopPropagation()">
@@ -3827,6 +3843,40 @@ function renderTrips(){
         </div>
         `:''}
         ${countdownHTML}
+        ${isTerv?(()=>{
+          const pk=tr.csomagol||[];
+          const pdone=pk.filter(i=>i.done).length;
+          const ptotal=pk.length;
+          const ppct=ptotal>0?Math.round(pdone/ptotal*100):0;
+          if(ptotal===0){
+            return`<div style="display:flex;align-items:center;gap:10px;background:rgba(139,92,246,.07);border:1px dashed rgba(139,92,246,.3);border-radius:12px;padding:11px 12px;margin-top:10px;pointer-events:all;flex-wrap:wrap" onclick="event.stopPropagation()">
+              <div style="font-size:22px;flex-shrink:0">🧳</div>
+              <div style="flex:1;min-width:120px">
+                <div style="font-size:12px;font-weight:800;margin-bottom:1px">${lang==='hu'?'Még nincs csomaglistád':lang==='de'?'Noch keine Packliste':'No packing list yet'}</div>
+                <div style="font-size:9px;color:var(--mut);font-weight:600">${lang==='hu'?'Hozz létre egyet indulás előtt':lang==='de'?'Erstelle eine vor der Abreise':'Create one before you leave'}</div>
+              </div>
+              <div style="display:flex;gap:6px;width:100%">
+                <button style="flex:1;padding:7px 8px;border-radius:9px;border:1px solid rgba(139,92,246,.4);background:rgba(139,92,246,.16);color:#a78bfa;font-size:10px;font-weight:800;font-family:inherit;cursor:pointer" onclick="openTripSub('${tr.id}',document.getElementById('tc_${tr.id}'),2);setTimeout(()=>openAiPackSuggest('${tr.id}'),80)">✨ ${lang==='hu'?'AI javaslat':lang==='de'?'KI-Vorschlag':'AI suggest'}</button>
+                <button style="flex:1;padding:7px 8px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--txt);font-size:10px;font-weight:800;font-family:inherit;cursor:pointer" onclick="openTripSub('${tr.id}',document.getElementById('tc_${tr.id}'),2);setTimeout(()=>openPackModal(),80)">+ ${lang==='hu'?'Kézzel':lang==='de'?'Manuell':'Manually'}</button>
+              </div>
+            </div>`;
+          }
+          return`<div style="background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.2);border-radius:12px;padding:10px 12px;margin-top:10px;pointer-events:all;cursor:pointer" onclick="event.stopPropagation();openTripSub('${tr.id}',document.getElementById('tc_${tr.id}'),2)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <div style="font-size:9px;font-weight:800;color:var(--acc);letter-spacing:.06em">🧳 ${lang==='hu'?'CSOMAGOLÁS':lang==='de'?'PACKEN':'PACKING'}</div>
+              <div style="font-size:12px;font-weight:900;color:${ppct===100?'var(--grn)':'var(--acc)'};font-family:'Courier New',monospace">${ppct}%</div>
+            </div>
+            <div style="height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-bottom:6px"><div style="height:100%;width:${ppct}%;border-radius:3px;background:${ppct===100?'var(--grn)':'linear-gradient(90deg,var(--acc),var(--acc2))'}"></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:10px;color:var(--mut);font-weight:600">${pdone}/${ptotal} ${lang==='hu'?'tétel':lang==='de'?'Artikel':'items'}</span>
+              <span style="font-size:10px;color:var(--acc);font-weight:800">${lang==='hu'?'Lista →':lang==='de'?'Liste →':'List →'}</span>
+            </div>
+          </div>`;
+        })():''}
+        ${isTerv?`<div style="display:flex;gap:8px;margin-top:10px;pointer-events:all" onclick="event.stopPropagation()">
+          <button style="flex:1;padding:9px 6px;border-radius:10px;border:1px solid rgba(56,189,248,.3);background:rgba(56,189,248,.08);color:var(--blu);font-size:11px;font-weight:800;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;pointer-events:all" onclick="openTripSub('${tr.id}',document.getElementById('tc_${tr.id}'),0)">📅 ${lang==='hu'?'Napirend':lang==='de'?'Tagesplan':'Schedule'}</button>
+          <button style="flex:1;padding:9px 6px;border-radius:10px;border:1px solid rgba(245,200,66,.3);background:rgba(245,200,66,.08);color:var(--acc);font-size:11px;font-weight:800;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;pointer-events:all" onclick="openTripSub('${tr.id}',document.getElementById('tc_${tr.id}'),1)">📍 ${lang==='hu'?'Bakancslista':lang==='de'?'Bucketliste':'Bucket List'}</button>
+        </div>`:''}
       </div>
       <div class="tcft" style="pointer-events:all" onclick="event.stopPropagation()">
         <button class="tf" onclick="openAtt('${tr.id}')">📋</button>
@@ -3888,6 +3938,17 @@ function renderTrips(){
   });
 }
 
+
+// Legközelebbi (ma vagy jövőbeli) esemény megkeresése a napirendből
+function getNextEvent(tr){
+  const evs=tr.events||[];
+  if(!evs.length)return null;
+  const nowD=new Date();
+  const cand=evs.filter(e=>e.dat).map(e=>({...e,_dt:new Date(e.dat+'T'+(e.ido||'23:59'))}))
+    .filter(e=>e._dt>=nowD)
+    .sort((a,b)=>a._dt-b._dt);
+  return cand[0]||null;
+}
 
 function buildCountdown(tr,s0,now){
   const daysLeft=Math.ceil((s0-now)/86400000);
@@ -3980,6 +4041,12 @@ function openTripDash(id, cardEl, instant){
 
   // Swipe-down to close
   setupTdSwipe(dash);
+}
+
+// Gyors elérés: dashboard megnyitása egyenesen egy adott Terv-al-fülre (Napirend/Bakancslista/stb.)
+function openTripSub(id, cardEl, sub){
+  openTripDash(id, cardEl);
+  setTimeout(()=>{ tdGoTab(2); tdGoTervSub(sub); },0);
 }
 
 function closeTripDash(){
@@ -11756,6 +11823,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const lastTs=chatLastReadTs(trip.kod);
     return (trip.chat||[]).filter(m=>m.ts>lastTs&&m.sender!==chatSenderFor(trip.kod)).length;
   }
+  window.chatUnreadCount=chatUnreadCount;
   // ── összesített olvasatlan üzenetszám az összes megosztott utazásra (menü badge-hez) ──
   function totalChatUnread(){
     return trips.filter(t=>t.kod).reduce((sum,t)=>sum+chatUnreadCount(t),0);
