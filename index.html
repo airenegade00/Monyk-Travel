@@ -2243,6 +2243,11 @@ hu:{
   etoNoTripTitle:'Nincs aktív utazás',etoNoTripDesc:'Aktiválj egy utazást a funkció használatához.',
   etoToastCopied:'📋 Vágólapra másolva',etoToastSaved:'✅ Elmentve',etoToastSavedPlain:'✅ Mentve',
   etoMembersEmpty:'Nincsenek résztvevők.',
+  etoMembersYou:'Te',etoMembersAddBtn:'Új résztvevő hozzáadása',etoMembersNamePh:'Résztvevő neve',
+  etoMembersAddConfirm:'✅ Hozzáadás',etoMembersNameReq:'⚠️ Adj meg egy nevet!',etoMembersAdded:'Résztvevő hozzáadva',
+  etoMembersInviteBtn:'Meghívás kóddal',etoMembersRemoved:'Résztvevő eltávolítva',
+  etoMembersRemoveConfirmPrefix:'Biztosan eltávolítod: ',etoMembersRemoveConfirmSuffix:'?',
+  etoMembersAddHint:'Olyan résztvevőt is hozzáadhatsz, aki nem használja az appot – ő csak a közös elszámolásban fog megjelenni.',
   etoChatOnlyTitle:'Csak megosztott utazásnál',etoChatOnlyDesc:'Oszd meg ezt az utazást útitársaiddal (🔗), hogy tudjatok csevegni.',
   // Extra eszközök – Dokumentumtár
   etoDocsPinSetupMsg:'Állíts be egy 4 jegyű PIN kódot a dokumentumtár védelméhez',
@@ -2541,6 +2546,11 @@ de:{
   etoNoTripTitle:'Keine aktive Reise',etoNoTripDesc:'Aktiviere eine Reise, um diese Funktion zu nutzen.',
   etoToastCopied:'📋 In die Zwischenablage kopiert',etoToastSaved:'✅ Gespeichert',etoToastSavedPlain:'✅ Gespeichert',
   etoMembersEmpty:'Keine Teilnehmer.',
+  etoMembersYou:'Du',etoMembersAddBtn:'Neuen Teilnehmer hinzufügen',etoMembersNamePh:'Name des Teilnehmers',
+  etoMembersAddConfirm:'✅ Hinzufügen',etoMembersNameReq:'⚠️ Bitte einen Namen eingeben!',etoMembersAdded:'Teilnehmer hinzugefügt',
+  etoMembersInviteBtn:'Per Code einladen',etoMembersRemoved:'Teilnehmer entfernt',
+  etoMembersRemoveConfirmPrefix:'Wirklich entfernen: ',etoMembersRemoveConfirmSuffix:'?',
+  etoMembersAddHint:'Du kannst auch einen Teilnehmer hinzufügen, der die App nicht nutzt – er erscheint dann nur in der gemeinsamen Abrechnung.',
   etoChatOnlyTitle:'Nur bei geteilten Reisen',etoChatOnlyDesc:'Teile diese Reise mit deinen Mitreisenden (🔗), damit ihr chatten könnt.',
   // Extra Tools – Dokumentenablage
   etoDocsPinSetupMsg:'Lege einen 4-stelligen PIN-Code zum Schutz der Dokumentenablage fest',
@@ -2840,6 +2850,11 @@ en:{
   etoNoTripTitle:'No active trip',etoNoTripDesc:'Activate a trip to use this feature.',
   etoToastCopied:'📋 Copied to clipboard',etoToastSaved:'✅ Saved',etoToastSavedPlain:'✅ Saved',
   etoMembersEmpty:'No members.',
+  etoMembersYou:'You',etoMembersAddBtn:'Add new participant',etoMembersNamePh:'Participant name',
+  etoMembersAddConfirm:'✅ Add',etoMembersNameReq:'⚠️ Please enter a name!',etoMembersAdded:'Participant added',
+  etoMembersInviteBtn:'Invite with code',etoMembersRemoved:'Participant removed',
+  etoMembersRemoveConfirmPrefix:'Are you sure you want to remove: ',etoMembersRemoveConfirmSuffix:'?',
+  etoMembersAddHint:'You can also add a participant who doesn\'t use the app – they\'ll only appear in the shared expense split.',
   etoChatOnlyTitle:'Shared trips only',etoChatOnlyDesc:'Share this trip with your travel companions (🔗) so you can chat.',
   // Extra Tools – Document vault
   etoDocsPinSetupMsg:'Set a 4-digit PIN to protect the document vault',
@@ -7172,6 +7187,13 @@ function applyEmoji(em){
   const {type,idx}=emjTgt;
   if(type==='m'&&idx>=0){editMems[idx].ikon=em;renderMembers();}
   else if(type==='k'&&idx>=0){editKats[idx].ikon=em;renderKatList();}
+  else if(type==='tm'){
+    window.etoNewMemberIkon=em;
+    if(window.etoScopeTripId&&typeof window.renderTripMembersScreen==='function'){
+      window.renderTripMembersScreen(window.etoScopeTripId);
+      const inp=document.getElementById('etoNewMemberName'); if(inp) inp.focus();
+    }
+  }
   $('emjPick')?.remove();
 }
 
@@ -10100,7 +10122,17 @@ document.addEventListener('DOMContentLoaded',async()=>{
   }
   function sanitize(obj){ try{ return JSON.parse(JSON.stringify(obj)); }catch(e){ return obj; } }
 
-  const META_KEYS=['nev','cel','kezdo','veg','keret','valuta','arfolyam','viDat','viIdo','szNev','szCim','szBe','szKi','megj','tagok','legs','emergencyCard','flightStatus','polls','liveShare'];
+  // ── FONTOS: a 'tagok' (résztvevők) SZÁNDÉKOSAN NINCS a META_KEYS-ben ──
+  // Korábban a tagok is a meta-dokumentum része volt, amit pushTripMeta()
+  // egyben, teljes tömbként írt felül. Ez race conditiont okozott: ha egy
+  // eszköz még nem kapta meg egy másik eszközön történt csatlakozás
+  // valós idejű frissítését, a saját (elavult, hiányos) tagok-tömbjével
+  // felülírta a felhőben lévő teljes listát bármely más helyi mentésnél
+  // (pl. egy új kiadás rögzítésekor) — így tűnt el időnként egy-egy tag.
+  // A tagok ezért most külön Firestore subcollection-ként ('members'),
+  // elem-szintű (id alapú) reconcile-lal szinkronizálódik, ugyanúgy mint
+  // az 'expenses'/'chat'/stb. — ez kizárja a teljes tömb felülírását.
+  const META_KEYS=['nev','cel','kezdo','veg','keret','valuta','arfolyam','viDat','viIdo','szNev','szCim','szBe','szKi','megj','legs','emergencyCard','flightStatus','polls','liveShare'];
   function metaOf(trip){
     const m={}; META_KEYS.forEach(k=>{ m[k]=(trip[k]!==undefined?trip[k]:null); });
     return sanitize(m);
@@ -10116,7 +10148,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   //    írásokat és a végtelen "ping-pong"-ot helyi módosítás és beérkező
   //    snapshot között ──
   const _cache={};
-  function cacheFor(code){ return _cache[code]||(_cache[code]={meta:null,exp:{},set:{},chat:{},plc:{},evt:{}}); }
+  function cacheFor(code){ return _cache[code]||(_cache[code]={meta:null,exp:{},set:{},chat:{},plc:{},evt:{},tag:{}}); }
 
   async function pushTripMeta(trip){
     if(!db||!trip.kod) return;
@@ -10131,7 +10163,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   async function reconcileCollection(code,name,items,stripFn){
     if(!db) return;
-    const bucketKey=name==='expenses'?'exp':(name==='settlements'?'set':(name==='places'?'plc':(name==='events'?'evt':'chat')));
+    const bucketKey=name==='expenses'?'exp':(name==='settlements'?'set':(name==='places'?'plc':(name==='events'?'evt':(name==='members'?'tag':'chat'))));
     const c=cacheFor(code)[bucketKey];
     const seen=new Set();
     for(const raw of (items||[])){
@@ -10158,6 +10190,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     (typeof trips!=='undefined'?trips:[]).forEach(trip=>{
       if(!trip.kod) return;
       pushTripMeta(trip);
+      reconcileCollection(trip.kod,'members',trip.tagok||[]);
       reconcileCollection(trip.kod,'expenses',trip.kiadasok||[],stripExpForCloud);
       reconcileCollection(trip.kod,'settlements',(typeof getSettlements==='function'?getSettlements(trip.id):[]));
       reconcileCollection(trip.kod,'chat',trip.chat||[]);
@@ -10179,19 +10212,11 @@ document.addEventListener('DOMContentLoaded',async()=>{
       if(!snap.exists) return;
       const data=snap.data();
       const tr=trips.find(t2=>t2.kod===code);
-      const oldTagIds=tr?(tr.tagok||[]).map(x=>x.id):[];
       if(tr){ META_KEYS.forEach(k=>{ if(data[k]!==undefined) tr[k]=data[k]; }); }
       cacheFor(code).meta=JSON.stringify(metaOf(tr||data));
-      // ── új tag csatlakozásának jelzése (csak a listener felcsatolása UTÁNI valódi csatlakozásoknál,
-      //    az első snapshot a már meglévő állapotot hozza, azt nem jelezzük) ──
-      if(tr&&!_metaFirstSnap){
-        const joined=(tr.tagok||[]).filter(m=>!oldTagIds.includes(m.id));
-        joined.forEach(m=>{
-          if((m.nev||'').trim().toLowerCase()!==(myProfileName||'').trim().toLowerCase()){
-            toast(`👋 ${m.nev} csatlakozott az utazáshoz`);
-          }
-        });
-      }
+      // (a tagok csatlakozásának jelzése mostantól a külön 'members'
+      //  subcollection listenerben történik, lásd lentebb — a tagok
+      //  már nem része ennek a meta-dokumentumnak)
       _metaFirstSnap=false;
       if(shrActiveTrip&&shrActiveTrip.kod===code) renderShareMembers(tr||shrActiveTrip);
       // ── bejövő "oszd meg a pozíciód" kérés jelzése (előtér esetén) ──
@@ -10206,6 +10231,40 @@ document.addEventListener('DOMContentLoaded',async()=>{
       }
       renderAll();
     },err=>console.warn('[MONYK sync] meta listen',err)));
+
+    // ── résztvevők (tagok) valós idejű, ELEM-SZINTŰ figyelője ──
+    // Fontos: ez a subcollection soha nem íródik felül egyben, csak
+    // dokumentumonként (id szerint) — így egy elavult helyi másolat nem
+    // tud törölni olyan tagot, amelyről az adott eszköz még nem tudott.
+    unsubs.push((function(){
+      let first=true;
+      return db.collection('trips').doc(code).collection('members').onSnapshot(snap=>{
+        const tr=trips.find(t2=>t2.kod===code); if(!tr) return;
+        tr.tagok=tr.tagok||[];
+        const cache=cacheFor(code).tag;
+        snap.docChanges().forEach(ch=>{
+          const d=ch.doc.data();
+          if(ch.type==='removed'){
+            tr.tagok=tr.tagok.filter(m=>m.id!==d.id);
+            delete cache[d.id];
+          }else{
+            const wasCached=!!cache[d.id];
+            cache[d.id]=JSON.stringify(d);
+            const idx=tr.tagok.findIndex(m=>m.id===d.id);
+            if(idx>=0){ tr.tagok[idx]={...tr.tagok[idx],...d}; }
+            else{ tr.tagok.push(d); }
+            // ── új tag csatlakozásának jelzése (nem az első betöltésnél,
+            //    és nem a saját magunk hozzáadásakor) ──
+            if(!wasCached&&!first&&(d.nev||'').trim().toLowerCase()!==(myProfileName||'').trim().toLowerCase()){
+              toast(`👋 ${d.nev} csatlakozott az utazáshoz`);
+            }
+          }
+        });
+        first=false;
+        if(shrActiveTrip&&shrActiveTrip.kod===code) renderShareMembers(tr);
+        renderAll();
+      },err=>console.warn('[MONYK sync] members listen',err));
+    })());
 
     unsubs.push(db.collection('trips').doc(code).collection('expenses').onSnapshot(snap=>{
       const tr=trips.find(t2=>t2.kod===code); if(!tr) return;
@@ -10379,6 +10438,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
       trip.kod=genShareCode();
       renderAll();
       await pushTripMeta(trip);
+      await reconcileCollection(trip.kod,'members',trip.tagok||[]);
       await reconcileCollection(trip.kod,'expenses',trip.kiadasok||[],stripExpForCloud);
       await reconcileCollection(trip.kod,'settlements',(typeof getSettlements==='function'?getSettlements(trip.id):[]));
       await reconcileCollection(trip.kod,'chat',trip.chat||[]);
@@ -10399,6 +10459,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
       const snap=await db.collection('trips').doc(code).get();
       if(!snap.exists){ toast('⚠️ Nincs ilyen kódú utazás'); return; }
       const data=snap.data();
+      const memberSnap=await db.collection('trips').doc(code).collection('members').get();
       const expSnap=await db.collection('trips').doc(code).collection('expenses').get();
       const setSnap=await db.collection('trips').doc(code).collection('settlements').get();
       const chatSnap=await db.collection('trips').doc(code).collection('chat').get();
@@ -10406,6 +10467,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
       const evtSnap=await db.collection('trips').doc(code).collection('events').get();
       const trip={id:genId(),kod:code,aktiv:false,terv:[],helyek:[],csomagol:[],kiadasok:[],chat:[],places:[],events:[]};
       META_KEYS.forEach(k=>{ if(data[k]!==undefined) trip[k]=data[k]; });
+      // ── tagok: a KÜLÖN 'members' subcollection-ből, nem a meta-dokumentumból ──
+      trip.tagok=memberSnap.docs.map(d=>d.data());
       trip.kiadasok=expSnap.docs.map(d=>({...d.data(),atts:[]}));
       trip.chat=chatSnap.docs.map(d=>d.data()).sort((a,b)=>a.ts-b.ts);
       trip.places=plcSnap.docs.map(d=>d.data());
@@ -10413,12 +10476,18 @@ document.addEventListener('DOMContentLoaded',async()=>{
       if(myProfileName){
         const already=(trip.tagok||[]).some(tg=>(tg.nev||'').trim().toLowerCase()===myProfileName.trim().toLowerCase());
         if(!already){
-          trip.tagok=[...(trip.tagok||[]),{id:genId(),nev:myProfileName,ikon:'🧑'}];
-          await pushTripMeta(trip);
+          // ── csak a saját tag-dokumentumot írjuk be, elem-szinten —
+          //    így semmiképp nem tudjuk felülírni/törölni a többiek tagját,
+          //    még akkor sem, ha közben valaki más is csatlakozott ──
+          const meTag={id:genId(),nev:myProfileName,ikon:'🧑'};
+          trip.tagok=[...(trip.tagok||[]),meTag];
+          try{ await db.collection('trips').doc(code).collection('members').doc(meTag.id).set(meTag); }
+          catch(e){ console.warn('[MONYK sync] members write',e); }
         }
       }
       const c=cacheFor(code);
       c.meta=JSON.stringify(metaOf(trip));
+      trip.tagok.forEach(m=>{ c.tag[m.id]=JSON.stringify(m); });
       trip.kiadasok.forEach(e=>{ c.exp[e.id]=JSON.stringify({...e,atts:undefined}); });
       trip.chat.forEach(m=>{ c.chat[m.id]=JSON.stringify(m); });
       trip.places.forEach(p=>{ c.plc[p.id]=JSON.stringify(p); });
@@ -10927,14 +10996,82 @@ document.addEventListener('DOMContentLoaded',async()=>{
     }
   };
   // ── Trip Dash fejléc 👥 gomb: az adott utazás résztvevőinek listája ──
+  // Itt lehet: (1) meglévő tagot eltávolítani, (2) új tagot hozzáadni közvetlenül
+  // (olyat is, aki nem használja az appot – ő csak az elszámolásban jelenik meg,
+  // pont úgy, mint új utazás létrehozásakor), (3) meghívni valakit kóddal.
+  let etoAddMemberOpen=false;
+  window.etoNewMemberIkon='🧑';
+  function renderTripMembersScreen(tripId){
+    const trip=trips.find(t2=>t2.id===tripId); if(!trip)return;
+    etoSetBack(true); etoSetTitle(t('etoTtlMembers'));
+    const tgk=trip.tagok||[];
+    const rows=tgk.length?tgk.map(tg=>{
+      const isMe=(tg.nev||'').trim().toLowerCase()===(myProfileName||'').trim().toLowerCase();
+      return `<div class="eto-doc">
+        <div class="picn" style="background:rgba(255,255,255,.06);border-color:var(--brd);font-size:20px">${tg.ikon||'🧑'}</div>
+        <span class="nm">${chatEsc(tg.nev||'')}${isMe?` <span style="color:var(--acc);font-weight:800">(${t('etoMembersYou')})</span>`:''}</span>
+        ${isMe?'':`<button class="mlid" onclick="etoRemoveTripMember('${tripId}','${tg.id}')">✕</button>`}
+      </div>`;
+    }).join(''):`<div style="text-align:center;color:var(--mut);padding:24px 10px">${t('etoMembersEmpty')}</div>`;
+    const addForm=etoAddMemberOpen?`
+      <div class="eto-doc" style="flex-direction:column;align-items:stretch;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="picn" style="background:rgba(255,255,255,.06);border-color:var(--brd);font-size:20px;cursor:pointer" onclick="etoPickMemberEmoji()">${window.etoNewMemberIkon||'🧑'}</div>
+          <input id="etoNewMemberName" class="fi" style="flex:1;padding:9px 10px;font-size:13px" placeholder="${t('etoMembersNamePh')}" maxlength="24" onkeydown="if(event.key==='Enter')etoConfirmAddMember('${tripId}')">
+        </div>
+        <div style="font-size:11px;color:var(--mut);line-height:1.4">${t('etoMembersAddHint')}</div>
+        <div style="display:flex;gap:8px">
+          <button class="abtn" style="flex:1;justify-content:center;border:none;border-radius:10px;padding:8px" onclick="etoConfirmAddMember('${tripId}')">${t('etoMembersAddConfirm')}</button>
+          <button class="abtn" style="flex:1;justify-content:center;border:none;border-radius:10px;padding:8px;background:transparent;color:var(--mut)" onclick="etoToggleAddMember(false)">${t('btnCancel')}</button>
+        </div>
+      </div>`:`<button class="abtn" style="width:100%;justify-content:center;border:none;border-radius:10px;padding:9px" onclick="etoToggleAddMember(true)">＋ ${t('etoMembersAddBtn')}</button>`;
+    etoBody().innerHTML=`
+      <div class="eto-sec">${rows}</div>
+      <div class="eto-sec">${addForm}</div>
+      <div class="eto-sec"><button class="abtn" style="width:100%;justify-content:center;border:none;border-radius:10px;padding:9px;background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.35);color:#a78bfa" onclick="shareTrip('${tripId}')">🔗 ${t('etoMembersInviteBtn')}</button></div>`;
+  }
+  window.renderTripMembersScreen=renderTripMembersScreen;
   window.openTripMembers=function(tripId){
     const trip=trips.find(t2=>t2.id===tripId); if(!trip)return;
     const bg=document.getElementById('etoBg'); if(!bg)return;
     window.etoScopeTripId=tripId;
+    etoAddMemberOpen=false;
     bg.classList.add('on');
-    etoSetBack(true); etoSetTitle(t('etoTtlMembers'));
-    const tgk=trip.tagok||[];
-    etoBody().innerHTML=`<div class="eto-sec">${tgk.length?tgk.map(tg=>`<div class="eto-doc"><div class="picn" style="background:rgba(255,255,255,.06);border-color:var(--brd);font-size:20px">${tg.ikon||'🧑'}</div><span class="nm">${chatEsc(tg.nev||'')}</span></div>`).join(''):`<div style="text-align:center;color:var(--mut);padding:24px 10px">${t('etoMembersEmpty')}</div>`}</div>`;
+    renderTripMembersScreen(tripId);
+  };
+  window.etoToggleAddMember=function(show){
+    etoAddMemberOpen=!!show;
+    if(show) window.etoNewMemberIkon='🧑';
+    if(!window.etoScopeTripId) return;
+    renderTripMembersScreen(window.etoScopeTripId);
+    if(show){ setTimeout(()=>{ const inp=document.getElementById('etoNewMemberName'); if(inp) inp.focus(); },50); }
+  };
+  window.etoPickMemberEmoji=function(){ pickEmoji(-1,'tm'); };
+  window.etoConfirmAddMember=function(tripId){
+    const trip=trips.find(t2=>t2.id===tripId); if(!trip)return;
+    const inp=document.getElementById('etoNewMemberName');
+    const nev=(inp?.value||'').trim();
+    if(!nev){ toast(t('etoMembersNameReq')); return; }
+    trip.tagok=trip.tagok||[];
+    // ── új résztvevő hozzáadása közvetlenül; működik olyanra is, aki nem
+    //    használja az appot – ő csak egy sima {id,nev,ikon} rekord, ugyanúgy
+    //    mint az utazás létrehozásakor felvehető tagok ──
+    trip.tagok.push({id:genId(),nev,ikon:window.etoNewMemberIkon||'🧑'});
+    saveTrips();
+    etoAddMemberOpen=false;
+    renderTripMembersScreen(tripId);
+    renderAll();
+    toast('✅ '+t('etoMembersAdded'));
+  };
+  window.etoRemoveTripMember=function(tripId,memberId){
+    const trip=trips.find(t2=>t2.id===tripId); if(!trip)return;
+    const tg=(trip.tagok||[]).find(x=>x.id===memberId); if(!tg)return;
+    if(!confirm(t('etoMembersRemoveConfirmPrefix')+(tg.nev||'')+t('etoMembersRemoveConfirmSuffix')))return;
+    trip.tagok=(trip.tagok||[]).filter(x=>x.id!==memberId);
+    saveTrips();
+    renderTripMembersScreen(tripId);
+    renderAll();
+    toast('🗑️ '+t('etoMembersRemoved'));
   };
   // ── fejléc 💬 gomb: egyenesen a chatre ugrik, kihagyva az Extra eszközök menüt ──
   window.openChatDirect=function(){
