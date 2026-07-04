@@ -325,6 +325,7 @@ textarea.fi{resize:none}
 .vchips{display:flex;flex-wrap:wrap;gap:6px}
 .vchip{padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.08);color:var(--mut);transition:all .15s;font-family:inherit}
 .vchip.on{background:rgba(167,139,250,.15);border-color:#a78bfa;color:#a78bfa}
+.tip-btn{padding:9px 4px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);color:var(--mut);font-family:inherit;transition:all .15s}
 
 /* ── RECEIPT ── */
 .rclbl{width:100%;padding:10px 12px;border-radius:10px;border:1.5px dashed var(--brd);background:rgba(255,255,255,.03);color:var(--mut);font-size:13px;cursor:pointer;text-align:center;display:block}
@@ -1565,7 +1566,7 @@ textarea.fi{resize:none}
       <button class="td-hdr-btn" onclick="dashOpenId&&openTripMembers(dashOpenId)" title="Résztvevők">👥</button>
       <button class="td-hdr-btn" onclick="dashOpenId&&openExtraToolsForTrip(dashOpenId)" title="Extra eszközök">🧰</button>
       <button class="td-hdr-btn td-hdr-btn-close" onclick="dashOpenId&&openSum(dashOpenId)" id="tdCloseBtn" title="Lezárás">🔒</button>
-      <button class="td-hdr-btn" onclick="closeTripDash()" title="Vissza az utazáslistához" style="background:rgba(255,255,255,.06);border:1.5px solid var(--brd);color:var(--txt);font-size:11px;font-weight:900;padding:6px 10px;border-radius:9px;" id="tdExitBtn">← Vissza</button>
+      <button class="td-hdr-btn" onclick="closeTripDash()" title="Vissza az utazáslistához" style="background:rgba(255,255,255,.06);border:1.5px solid var(--brd);color:var(--txt);font-size:11px;font-weight:900;padding:6px 10px;border-radius:9px;" id="tdExitBtn">← <span id="tdExitLbl">Vissza</span></button>
     </div>
     <div class="td-bs" id="tdBs">
       <div class="td-bst">
@@ -1645,7 +1646,7 @@ textarea.fi{resize:none}
 <div class="mbg" id="pwaInfoMbg" style="z-index:1000" onclick="if(event.target===this)closePwaInfoModal()">
   <div class="modal">
     <div class="dpill"></div>
-    <div class="mhdr"><span class="mttl">📲 App telepítése</span><button class="mcls" onclick="closePwaInfoModal()">✕</button></div>
+    <div class="mhdr"><span class="mttl" id="pwaInfoTtl">📲 App telepítése</span><button class="mcls" onclick="closePwaInfoModal()">✕</button></div>
     <div class="mbdy" id="pwaInfoBody" style="padding-top:6px"></div>
     <div class="mft" id="pwaInfoFooter"></div>
   </div>
@@ -1655,10 +1656,10 @@ textarea.fi{resize:none}
 <div class="cfbg" id="pwaAskMbg">
   <div class="cfbox">
     <div class="cficon">📲</div>
-    <div class="cfmsg">Legközelebb is emlékeztesselek, hogy telepítsd az appot a kezdőképernyődre?</div>
+    <div class="cfmsg" id="pwaAskMsg">Legközelebb is emlékeztesselek, hogy telepítsd az appot a kezdőképernyődre?</div>
     <div class="cfbtns">
-      <button class="btns" onclick="pwaAskAgainAnswer(false)">Ne mutasd többé</button>
-      <button class="btnp" onclick="pwaAskAgainAnswer(true)">Igen, emlékeztess</button>
+      <button class="btns" onclick="pwaAskAgainAnswer(false)" id="pwaAskNeverBtn">Ne mutasd többé</button>
+      <button class="btnp" onclick="pwaAskAgainAnswer(true)" id="pwaAskYesBtn">Igen, emlékeztess</button>
     </div>
   </div>
 </div>
@@ -1880,7 +1881,7 @@ textarea.fi{resize:none}
     </div>
     <div class="sosec">
       <div class="soscl">📲 <span id="soPwaLbl">Telepítés</span></div>
-      <div class="sorow" onclick="openPwaInfoModal()"><div class="sorinf"><div class="sorl" id="soPwaRL">App telepítése a kezdőképernyőre</div><div class="sors" id="soPwaRS">Android és iPhone útmutató</div></div><span class="sorchv">›</span></div>
+      <div class="sorow" onclick="openPwaInfoModal()"><div class="sorinf"><div class="sorl" id="soPwaRL">App telepítése a kezdőképernyőre</div><div class="sors" id="soPwaRS">Android és iPhone útmutató</div></div><span class="sorchv">\u203a</span></div>
     </div>
     <div class="sosec"><div class="soscl" id="soSLang"></div><div class="lchips" id="langChips"></div></div>
     <div class="sosec">
@@ -2068,7 +2069,6 @@ hu:{
   ntervNew:'+ Esemény',ntervEdit:'Esemény szerkesztése',
   ntervNap:'NAP',ntervIdo:'IDŐ',ntervNev:'ESEMÉNY NEVE',ntervMegj:'MEGJEGYZÉS',ntervTip:'TÍPUS',ntervSave:'✅ Mentés',
   ntervDelConf:'Biztosan törlöd az eseményt?',
-  ntervTypes:'✈️ Repülő,🏨 Szállás,🍽️ Étkezés,🎭 Program,🚌 Közlekedés,💊 Gyógyszer,📸 Fotóspont,📍 Egyéb',
   packNevLbl:'TÁRGY NEVE *',packKatLbl:'KATEGÓRIA',packSave:'✅ Mentés',
   packDoneMsg:'🎉 Minden bepakolva!',packResetConf:'Visszaállítod a listát?',
   expDelConf:'Biztosan törlöd a kiadást?',tripDelConf:'Biztosan törlöd? ({n})',
@@ -2159,7 +2159,7 @@ hu:{
   empExp:'Még nincs kiadás',empExpD:'Nyomj + Új tétel-t az első kiadás rögzítéséhez',
   repBal:'⚖️ EGYENLEG',repSt:'📊 STATISZTIKÁK',repCat:'🏷️ KATEGÓRIÁK',repDay:'📅 NAP BONTÁS',
   stTot:'Összesen',stDay:'Napi átlag',stRem:'Maradék',
-  balSett:'✅ Mindenki rendezett',dayU:'nap',
+  balSett:'✅ Mindenki rendezett',dayU:'nap',dayU1:'nap',
   repTimeline:'📅 Napi idővonal',repCurrWidget:'💱 Gyors valutaváltó',repPlacesSum:'📍 Helyszínek',repPlacesDone:'teljesítve',repPdfBtn:'🖨️ Nyomtatás / PDF mentés',repPeakDay:'Csúcsnap',repWeekChart:'📊 Heti kiadások',repChartBtn:'Grafikonok',repChartClose:'Bezárás',
   repTimelineBtn:'Idősor',repOptTxSection:'💸 Ki kinek fizet',repBalSection:'⚖️ Egyenleg',repExportSummaryBtn:'📋 Összesítő export',pcOwesStatus:'tartozik',pcRecvStatus:'visszakap',
   colNote:'Megjegyzés',repItems:'tétel',repPersons:'fő',repDonut:'📊 Kategória megoszlás',
@@ -2174,7 +2174,7 @@ hu:{
   soKL:'Kategóriák szerkesztése',soKS:'Gyors kategóriák testreszabása',
   soCL:'Adatok törlése',soCS:'Minden utazás és kiadás törlése',
   soValLbl:'Valutaváltó',soValRL:'Valutaváltó megnyitása',soValRS:'Árfolyamok és konverzió',
-  soTheme:'🎨 Téma',soDefCurLbl:'Alapértelmezett valuta',soDefCurRL:'Saját alapvalutáim',
+  soDefCurLbl:'Alapértelmezett valuta',soDefCurRL:'Saját alapvalutáim',
   soAddCur:'+ Hozzáad',soCurAlready:'Már hozzáadva',soCurMin:'Legalább egy kell',
   clearConf:'Minden adat törlése?',
   kAcc:'Szállás',kFl:'Repülő',kFd:'Étkezés',kTr:'Közlekedés',kSh:'Bevásárlás',kCar:'Autóbérlés',kProg:'Programok',kOt:'Egyéb',
@@ -2203,7 +2203,8 @@ hu:{
   wgHero:'Hero kártya',wgHeroSub:'Gazdagabb dizájn, zászló, glow',
   aiTipLbl:'AI napi tipp',aiTipFresh:'ma',aiTipRegen:'✨ Új tipp',aiTipLoading:'⏳ Generálás…',
   wDayMon:'H',wDayTue:'K',wDayWed:'Sze',wDayThu:'Cs',wDayFri:'P',wDaySat:'Szo',wDaySun:'V',
-  tlElapsed:'Eltelt',tlRemaining:'Hátravan',tlTotal:'Összesen',tlDay:'nap',
+  tlElapsed:'Eltelt',tlRemaining:'Hátravan',tlTotal:'Összesen',tlDay:'nap',tlDays:'nap',
+  twAiLbl:'AI napi tipp',twAiToday:'ma',twAiBtn:'✨ Új tipp',twAiLoading:'⏳ Tipp generálása…',twWErr:'Időjárás nem elérhető',
   ntervTypes:'✈️ Repülő,🏨 Szállás,🍽️ Étkezés,🎭 Program,🚌 Közlekedés,💊 Gyógyszer,📸 Fotóspont,📍 Egyéb',
   aiPlaceBtn:'✨ AI Helyajánló',aiPlaceTitle:'AI HELYAJÁNLÓ',aiPlaceLoading:'⏳ Helyek keresése…',
   aiPlaceCount:'ajánlat',aiPlaceAdd:'+ Hozzáad',aiPlaceAll:'+ Mindet',aiPlaceDone:'✅ Minden javaslatot hozzáadtál!',
@@ -2213,7 +2214,7 @@ hu:{
   aiPlacePrioMust:'Kötelező',aiPlacePrioWant:'Szeretnénk',aiPlacePrioMaybe:'Talán',
   aiPackBtn:'✨ AI Csomagoló Segéd',aiPackTitle:'AI Csomagoló Segéd',aiPackSuggestTitle:'AI JAVASLATOK',aiPackAdd:'+ Hozzáad',aiPackAll:'+ Mindet hozzáadja',aiPackDone:'✅ Minden AI javaslatot bepakoltál!',aiPackErr:'⚠️ AI nem elérhető.',aiPackRetry:'↺ Újra próbál',aiPackAdded:'tárgy hozzáadva',aiPackLoading:'⏳ Elemzés folyamatban…',aiPackCount:'javaslat',
   // Költségvetés tab
-  kNoTrip:'Nincs aktív utazás',kNoTripD:'Aktiválj egy utazást.',
+  kNoTrip:'Nincs aktív utazás',
   kTotalBudget:'🎯 Teljes keret',kNoBudget:'Nincs keret beállítva',
   kSet:'Beállít',kEdit:'Módosít',kSpent:'Elköltve',kLeft:'Marad',
   kCategories:'📊 Kategóriák',kByPerson:'👥 Személyek szerint',
@@ -2222,7 +2223,7 @@ hu:{
   kPlanned:'Terv',kOverBudget:'⚠️ Túllépve',
   kPaid:'Fizetett',kShare:'Saját rész',
   kOwes:'tartozik',kRecv:'visszakap',kEven:'egyensúly',
-  kBudgetSet:'Keret beállítva',kCatBudgetSet:'keret',
+  kBudgetSet:'Keret beállítva',
   kEditBudgetPrompt:'Teljes utazási keret',kCatBudgetPrompt:'tervezett keret',
   // Naptár tab
   tDayExps:'💸 Kiadások',tDayTotal:'Napi összesen',tAddEvent:'＋ Esemény',
@@ -2231,6 +2232,132 @@ hu:{
   tAiDayBtn:'✨ AI naptervező',tAiDayTitle:'AI NAPTERV',tAiDayLoading:'⏳ Nap tervezése…',tAiDayErr:'⚠️ AI hiba',tAiDayAdd:'+ Hozzáad',tAiDayAddAll:'+ Mindet hozzáadja',tAiDayAdded:'esemény hozzáadva',tAiDayDone:'✅ Minden esemény hozzáadva!',tAiDayRetry:'↺ Újra',tAiDayPromptPfx:'Tervezz nekem egy részletes programot erre a napra:',
   // Helyek tab
   hDoneToast:'voltam!',hTeljesitve:'teljesítve',hVoltam:'Voltam?',hVoltamDone:'✓ Voltam',
+  // Extra eszközök – közös
+  etoTtlMenu:'🧰 Extra eszközök',etoTtlDocs:'📁 Dokumentumtár',etoTtlEmergency:'🆘 Vészhelyzeti kártya',
+  etoTtlFlight:'✈️ Repülő/vonat státusz',etoTtlConverter:'📏 Mérték-/hőátváltó',etoTtlPay:'⚡ Gyors kiegyenlítés',
+  etoTtlPoll:'🗳️ Csoportos szavazás',etoTtlLive:'📍 Élő helyzetmegosztás',etoTtlChat:'💬 Csoportos chat',
+  etoTtlDiary:'📸 Napi emlékfotó napló',etoTtlMembers:'👥 Résztvevők',
+  etoLblValuta:'Valutaváltó',etoLblDocs:'Dokumentumtár',etoLblEmergency:'Vészhelyzeti kártya',
+  etoLblFlight:'Repülő/vonat státusz',etoLblConverter:'Mérték-/hőátváltó',etoLblPay:'Gyors kiegyenlítés',
+  etoLblPoll:'Csoportos szavazás',etoLblLive:'Élő helyzetmegosztás',etoLblDiary:'Napi emlékfotó napló',
+  etoNoTripTitle:'Nincs aktív utazás',etoNoTripDesc:'Aktiválj egy utazást a funkció használatához.',
+  etoToastCopied:'📋 Vágólapra másolva',etoToastSaved:'✅ Elmentve',etoToastSavedPlain:'✅ Mentve',
+  etoMembersEmpty:'Nincsenek résztvevők.',
+  etoChatOnlyTitle:'Csak megosztott utazásnál',etoChatOnlyDesc:'Oszd meg ezt az utazást útitársaiddal (🔗), hogy tudjatok csevegni.',
+  // Extra eszközök – Dokumentumtár
+  etoDocsPinSetupMsg:'Állíts be egy 4 jegyű PIN kódot a dokumentumtár védelméhez',
+  etoDocsNewPinLbl:'ÚJ PIN',etoDocsPinConfirmLbl:'PIN MÉGEGYSZER',etoDocsSetPinBtn:'PIN beállítása',
+  etoDocsEnterPinMsg:'Add meg a PIN kódot',etoDocsUnlockBtn:'Feloldás',
+  etoDocsTabTrip:'Ehhez az utazáshoz',etoDocsTabShared:'🌍 Megosztott dokumentumok',
+  etoDocsPhotoBtn:'📷 Fotózás',etoDocsUploadBtn:'📄 Kép/PDF feltöltése',
+  etoDocsEmptySharedMsg:'A megosztott dokumentumtár üres.<br>Ide olyan fájlokat érdemes feltölteni, amik minden utazásodnál kellenek (pl. oltási igazolás, útlevélmásolat).',
+  etoDocsEmptyTripMsg:'A dokumentumtár üres.<br>Fotózz le vagy tölts fel útlevelet, vízumot, jegyet, PDF-et.',
+  etoDocsNoteSharedMsg:'🌍 Ezek a dokumentumok minden utazásod Dokumentumtárában megjelennek – törléskor is mindenhonnan eltűnnek. 🔒 A PIN csak ezen a készüléken véd, a fájlok nem kerülnek felhőbe.',
+  etoDocsNoteTripMsg:'🔒 A PIN csak ezen a készüléken véd. A dokumentumok nem kerülnek felhőbe.',
+  etoDocsNamePrompt:'Dokumentum neve (pl. Útlevél, Vízum, Jegy):',
+  etoDocsPdfDefaultName:'PDF dokumentum',etoDocsDefaultName:'Dokumentum',
+  etoDocsSaveFailToast:'❌ Nem sikerült elmenteni a fájlt',
+  etoDocsDelSharedConfirm:'Törlöd ezt a megosztott dokumentumot?\nEz MINDEN utazásod Dokumentumtárából eltünteti.',
+  etoDocsDelConfirm:'Törlöd ezt a dokumentumot?',
+  etoDocsPin4DigitsToast:'Adj meg 4 számjegyet',etoDocsPinMismatchToast:'❌ A két PIN nem egyezik, próbáld újra',etoDocsPinWrongToast:'❌ Hibás PIN',
+  // Extra eszközök – Vészhelyzeti kártya
+  etoEcBloodLbl:'VÉRCSOPORT',etoEcBloodPh:'pl. A+',
+  etoEcAllergyLbl:'ALLERGIA / GYÓGYSZER',etoEcAllergyPh:'pl. penicillin allergia',
+  etoEcNameLbl:'VÉSZHELYZETI KONTAKT NÉV',etoEcNamePh:'Név',
+  etoEcPhoneLbl:'VÉSZHELYZETI KONTAKT TELEFON',etoEcPhonePh:'+36…',
+  etoEcEmbassyLbl:'NAGYKÖVETSÉGI SZÁM',etoEcEmbassyPh:'+…',
+  etoEcInsuranceLbl:'BALESETBIZTOSÍTÁSI SZÁM',etoEcInsurancePh:'Kötvényszám / segélyhívó',
+  etoEcShareBtn:'📤 Megosztás',etoEcNote:'Csoportos utazásnál ez a kártya az útitársakkal is szinkronizálódik.',
+  etoEcShareTitle:'Vészhelyzeti kártya',etoEcShareHeader:'🆘 VÉSZHELYZETI KÁRTYA',
+  etoEcShareBlood:'Vércsoport',etoEcShareAllergy:'Allergia',etoEcShareContact:'Kontakt',
+  etoEcShareEmbassy:'Nagykövetség',etoEcShareInsurance:'Balesetbiztosítás',
+  // Extra eszközök – Repülő/vonat státusz
+  etoFlTypeFlight:'✈️ Repülő',etoFlTypeTrain:'🚆 Vonat',
+  etoFlCodeLbl:'JÁRAT/VONATSZÁM',etoFlCodePh:'pl. LH1234',
+  etoFlFromLbl:'HONNAN',etoFlFromPh:'Indulási hely',
+  etoFlToLbl:'HOVÁ',etoFlToPh:'Érkezési hely',
+  etoFlDtLbl:'INDULÁS IDŐPONTJA',
+  etoFlGateLbl:'KAPU / VÁGÁNY',etoFlGatePh:'pl. B12',
+  etoFlNotifBtn:'🔔 Emlékeztető értesítések bekapcsolása',
+  etoFlNote:'A visszaszámláló csak nyitott appnál frissül élőben; az emlékeztető push (indulás előtt 3h / 1h) zárt app esetén is megérkezik, ha bekapcsoltad az értesítéseket.',
+  etoFlDeparted:'Indulás megtörtént',etoFlUntilDeparture:'indulásig',etoFlGateInlinePrefix:' • Kapu/vágány: ',
+  etoUnitDayShort:'n',etoUnitHourShort:'ó',etoUnitMinuteShort:'p',
+  // Extra eszközök – Mérték-/hőátváltó
+  etoConvTemp:'🌡️ Hőmérséklet',etoConvLen:'📏 Hossz',etoConvWt:'⚖️ Súly',etoConvVol:'🧴 Térfogat',
+  etoUnitLiter:'liter',etoUnitGallon:'gallon (US)',
+  // Extra eszközök – Gyors kiegyenlítés
+  etoPayAmtLbl:'ÖSSZEG',etoPayCurLbl:'PÉNZNEM',etoPayNoteLbl:'MEGJEGYZÉS',etoPayNotePh:'pl. vacsora',
+  etoPayRecipientsLbl:'FOGADÓ FELHASZNÁLÓNEVEK',etoPayUsernamePh:'felhasznalonev',
+  etoPayGenBtn:'Link generálása',etoPayNoUsernameMsg:'Adj meg legalább egy felhasználónevet.',
+  etoPayCopyBtn:'📋 Szöveg másolása',etoPayWiseBtn:'Wise (add meg az összeget kézzel)',
+  etoPayOpenBtnPrefix:'💳 ',etoPayOpenBtnSuffix:' megnyitása',etoPayCopySummaryPrefix:'Kérlek utald el: ',
+  // Extra eszközök – Csoportos szavazás
+  etoPollQLbl:'ÚJ KÉRDÉS',etoPollQPh:'pl. Hova menjünk ma?',
+  etoPollOptsLbl:'OPCIÓK (vesszővel elválasztva)',etoPollOptsPh:'pl. Étterem, Strand, Múzeum',
+  etoPollCreateBtn:'+ Szavazás létrehozása',etoPollEmpty:'Még nincs szavazás.',etoPollDeleteBtn:'🗑️ Szavazás törlése',
+  etoPollNeedQOpts:'Adj meg kérdést és opciókat',etoPollNeed2Opts:'Legalább 2 opció kell',
+  // Extra eszközök – Élő helyzetmegosztás
+  etoLiveTeamPositions:'👥 Csapat pozíciói',etoLiveNeverShared:'még nem osztott meg pozíciót',etoLiveMapBtn:'🗺️ Térkép',
+  etoLiveNoOthers:'Még senki más nem osztott meg pozíciót ebben az utazásban.',
+  etoLiveToggleTitle:'Helyzetmegosztás',etoLiveToggleSub:'A csapat láthatja, hol jársz',
+  etoLiveShareNowBtn:'📍 Pozíció megosztása most',etoLiveRequestBtn:'🙋 Frissítést kérek a csapattól',
+  etoLiveNotifBtn:'🔔 Értesítések bekapcsolása ezen a készüléken',
+  etoLiveLastSharedPrefix:'Utoljára megosztva: ',etoLiveOpenMapLink:'🗺️ Térkép megnyitása',
+  etoLiveNeverSharedSelf:'Még nem osztottál meg pozíciót.',
+  etoLiveNote:'A kapcsoló jelzi a csapatnak, hogy elérhető vagy — a valós pozíció frissítéséhez nyomd meg a gombot, amikor meg szeretnéd osztani, hol vagy. Amíg ez a képernyő nyitva van, a telefon nem alszik el; háttérbe/zárt appra váltva a frissítés szünetel, de a "Frissítést kérek" gomb push értesítést küld a társaidnak, hogy nyissák meg és osszák meg friss pozíciójukat.',
+  etoLiveNoGeoToast:'A helymeghatározás nem elérhető',etoLiveShareTitle:'Az én pozícióm',etoLiveShareText:'Itt vagyok most:',
+  etoLiveLinkCopiedToast:'📋 Link a vágólapon',
+  etoLiveErrDenied:'❌ Nincs engedélyezve a helymeghatározás (ellenőrizd a böngésző/telefon beállításait)',
+  etoLiveErrUnavailable:'❌ A pozíció jelenleg nem elérhető',etoLiveErrTimeout:'❌ Túl sokáig tartott a pozíció lekérése',
+  etoLiveErrGeneric:'❌ Nem sikerült lekérni a pozíciót',
+  etoLiveNeedSharedTrip:'Ehhez egy megosztott (csoportos) utazás szükséges',etoLiveRequestSentToast:'📤 Kérés elküldve a csapatnak',
+  // Extra eszközök – Csoportos chat
+  etoChatYouAppearAs:'Itt így látszol:',etoChatNicknameBtn:'✏️ Becenév',etoChatInputPlaceholder:'Írj üzenetet…',
+  etoChatClearHistoryBtn:'🗑️ Előzmények törlése',
+  etoChatNote:'Csak szöveges üzenetek – fotót inkább a Dokumentumtárba tölts fel. Az utolsó 200 üzenet marad meg.',
+  etoChatPlanningNote:' Ez egy tervezési fázisú utazás chatje.',
+  etoChatNoMessages:'Még nincs üzenet. Írd meg az elsőt! 👋',
+  etoChatNickPrompt:'Milyen néven jelenj meg ennek az utazásnak a chatjében?\n(Üresen hagyva a profilneved lesz használva.)',
+  etoChatClearConfirm:'Törlöd az összes chatüzenetet? Ez mindenkinél törlődik.',
+  etoChatClearedToast:'🗑️ Chat előzmények törölve',etoChatTripFallbackName:'Utazás',
+  etoUnknownUser:'Ismeretlen',etoSomeoneFallback:'Valaki',
+  // Extra eszközök – Napi emlékfotó napló
+  etoDiaryAddBtn:'📸 Mai emlékfotó hozzáadása',etoDiaryEmpty:'Még nincs emlékfotó. Készíts egyet minden napról!',
+  etoDiaryDeleteBtn:'🗑️ Törlés',etoDiaryNotePrompt:'Rövid emlék a mai napról (opcionális):',
+  etoDiarySavedToast:'✅ Emlék elmentve',etoDiarySaveFailToast:'❌ Nem sikerült elmenteni a fotót',
+  etoDiaryDelConfirm:'Törlöd ezt az emléket?',
+  // Rendezés & Tartozások
+  settleTitle:'⚖️ Rendezés & Tartozások',settleOpenBalance:'NYITOTT EGYENLEG',settleNoItems:'Nincs nyitott tétel',
+  settleNewItem:'ÚJ TÉTEL RÖGZÍTÉSE',settleIGetBack:'↓ Visszakapok',settleIOwe:'↑ Tartozom',
+  settleAmountPh:'Összeg',settleDescPh:'Leírás (pl. vacsora, taxi...)',settleAddBtn:'+ Rögzít',
+  settleSettleBtn:'✓ Rendez',settleSettledPrefix:'✓ Rendezve ',
+  // PWA telepítés
+  pwaInstallTitle:'Telepítsd az appot',pwaSubIOS:'Oszd meg → Főképernyőhöz adás',
+  pwaSubPrompt:'Egy koppintással a kezdőképernyőn',pwaSubFallback:'Böngésző menü → Telepítés / Hozzáadás',
+  pwaBtnShow:'Mutasd',pwaBtnInstall:'Telepítés',
+  pwaAskAgainMsg:'Legközelebb is emlékeztesselek, hogy telepítsd az appot a kezdőképernyődre?',
+  pwaAskNever:'Ne mutasd többé',pwaAskYes:'Igen, emlékeztess',
+  pwaToastWillRemind:'✓ Legközelebb emlékeztetünk',
+  pwaToastWontRemind:'✓ Rendben, nem mutatjuk többé — de a ⚙️ Beállításokban bármikor megtalálod',
+  pwaInfoTtl:'📲 App telepítése',pwaOkBtn:'Rendben',pwaGotItBtn:'Értem',
+  pwaAlreadyInstalled:'✅ Az app már telepítve van a kezdőképernyődre.',
+  pwaIosIntro:'iPhone-on/iPaden a Safari böngészőből tudod hozzáadni az appot a kezdőképernyőhöz — utána egy sima ikonként nyílik meg, böngészősáv nélkül.',
+  pwaIosStep1:'Nyomd meg a <b>Megosztás</b> ikont (⬆️) a Safari alsó (vagy felső) sávjában',
+  pwaIosStep2:'Görgess le, és válaszd: <b>„Főképernyőhöz adás”</b>',
+  pwaIosStep3:'Koppints a <b>„Hozzáadás”</b> gombra jobb fent',
+  pwaIosWarning:'⚠️ Ez csak Safariban működik — Chrome vagy más iOS böngészőben nem jelenik meg ez az opció.',
+  pwaAndroidPromptBody:'Telepítsd a MONYK Travelt a kezdőképernyődre — utána egy sima appként nyílik meg, böngésző nélkül.',
+  pwaInstallNowBtn:'📲 Telepítés most',
+  pwaAndroidIntro:'Android/Chrome-on a böngésző menüjéből tudod hozzáadni az appot a kezdőképernyőhöz.',
+  pwaAndroidStep1:'Nyisd meg a böngésző menüjét (⋮ jobb felül)',
+  pwaAndroidStep2:'Válaszd: <b>„Telepítés”</b> vagy <b>„Hozzáadás a kezdőképernyőhöz”</b>',
+  pwaAndroidStep3:'Erősítsd meg — az ikon megjelenik a kezdőképernyőn',
+  // Beállítások – Profil / Megosztás / Telepítés
+  soProfileLbl:'Profil',
+  soProfileHint:'A neved — ezzel csatlakozol be a megosztott utazásokhoz, és ez lesz az alapértelmezett fizető új tételnél (mindig módosítható).',
+  soShareLbl:'App megosztása',soShareRL:'App linkjének küldése',
+  soShareRS:'Küldd el valakinek, hogy megnyithassa/telepíthesse a MONYK-ot — utazás és kód nélkül is',
+  soPwaLbl:'Telepítés',soPwaRL:'App telepítése a kezdőképernyőre',soPwaRS:'Android és iPhone útmutató',
 },
 de:{
   nav0:'Reisen',nav1:'Ausgaben',nav2:'Bericht',nav3:'Plan',nav4:'Orte',nav5:'Gepäck',nav6:'Budget',
@@ -2245,7 +2372,6 @@ de:{
   ntervNew:'+ Ereignis',ntervEdit:'Ereignis bearbeiten',
   ntervNap:'TAG',ntervIdo:'UHRZEIT',ntervNev:'EREIGNISNAME',ntervMegj:'NOTIZ',ntervTip:'TYP',ntervSave:'✅ Speichern',
   ntervDelConf:'Ereignis wirklich löschen?',
-  ntervTypes:'✈️ Flug,🏨 Unterkunft,🍽️ Essen,🎭 Aktivität,🚌 Transport,💊 Medizin,📸 Fotopunkt,📍 Sonstiges',
   packNevLbl:'ARTIKELNAME *',packKatLbl:'KATEGORIE',packSave:'✅ Speichern',
   packDoneMsg:'🎉 Alles eingepackt!',packResetConf:'Liste wirklich zurücksetzen?',
   expDelConf:'Ausgabe wirklich löschen?',tripDelConf:'Wirklich löschen? ({n})',
@@ -2333,10 +2459,10 @@ de:{
   tripsUpcoming:'🗓️ Bevorstehend',tripsPast:'Abgeschlossene Reisen',
   navTrips:'Reisen',
   empTrip:'Noch keine Reisen',empTripD:'Erstelle deine erste mit der ＋ Karte unten!',
-  empExp:'Noch keine Ausgaben',empExpD:'Tippe auf ⚡ Schnell hinzu für den ersten Eintrag',
+  empExp:'Noch keine Ausgaben',empExpD:'Tippe auf + Ausgabe hinzufügen für den ersten Eintrag',
   repBal:'⚖️ ABRECHNUNG',repSt:'📊 STATISTIKEN',repCat:'🏷️ KATEGORIEN',repDay:'📅 TAGESÜBERSICHT',
   stTot:'Gesamt',stDay:'Tagesdurchschn.',stRem:'Verbleibend',
-  balSett:'✅ Alle abgerechnet',dayU:'Tage',
+  balSett:'✅ Alle abgerechnet',dayU:'Tage',dayU1:'Tag',
   repTimeline:'📅 Tages-Zeitstrahl',repCurrWidget:'💱 Schnellwährungsrechner',repPlacesSum:'📍 Orte',repPlacesDone:'erledigt',repPdfBtn:'🖨️ Drucken / PDF speichern',repPeakDay:'Spitzentag',repWeekChart:'📊 Wochenausgaben',repChartBtn:'Diagramme',repChartClose:'Schließen',
   repTimelineBtn:'Zeitstrahl',repOptTxSection:'💸 Wer zahlt wem',repBalSection:'⚖️ Abrechnung',repExportSummaryBtn:'📋 Zusammenfassung',pcOwesStatus:'schuldet',pcRecvStatus:'bekommt zurück',
   colNote:'Notiz',repItems:'Posten',repPersons:'Pers.',repDonut:'📊 Kategorienverteilung',
@@ -2351,7 +2477,7 @@ de:{
   soKL:'Kategorien bearbeiten',soKS:'Schnellkategorien anpassen',
   soCL:'Daten löschen',soCS:'Alle Reisen und Ausgaben löschen',
   soValLbl:'Währungsrechner',soValRL:'Währungsrechner öffnen',soValRS:'Wechselkurse und Umrechnung',
-  soTheme:'🎨 Design',soDefCurLbl:'Standardwährung',soDefCurRL:'Meine Basiswährungen',
+  soDefCurLbl:'Standardwährung',soDefCurRL:'Meine Basiswährungen',
   soAddCur:'+ Hinzufügen',soCurAlready:'Bereits hinzugefügt',soCurMin:'Mindestens eine erforderlich',
   clearConf:'Alle Daten löschen?',
   kAcc:'Unterkunft',kFl:'Flug',kFd:'Essen & Trinken',kTr:'Transport',kSh:'Einkaufen',kCar:'Mietwagen',kProg:'Aktivitäten',kOt:'Sonstiges',
@@ -2380,7 +2506,8 @@ de:{
   wgHero:'Hero-Karte',wgHeroSub:'Reichhaltigeres Design, Flagge, Glow',
   aiTipLbl:'KI-Tipp',aiTipFresh:'heute',aiTipRegen:'✨ Neuer Tipp',aiTipLoading:'⏳ Generierung…',
   wDayMon:'Mo',wDayTue:'Di',wDayWed:'Mi',wDayThu:'Do',wDayFri:'Fr',wDaySat:'Sa',wDaySun:'So',
-  tlElapsed:'Vergangen',tlRemaining:'Verbleibend',tlTotal:'Gesamt',tlDay:'Tage',
+  tlElapsed:'Vergangen',tlRemaining:'Verbleibend',tlTotal:'Gesamt',tlDay:'Tage',tlDays:'Tage',
+  twAiLbl:'KI-Tipp des Tages',twAiToday:'heute',twAiBtn:'✨ Neuer Tipp',twAiLoading:'⏳ Tipp wird erstellt…',twWErr:'Wetter nicht verfügbar',
   ntervTypes:'✈️ Flug,🏨 Unterkunft,🍽️ Essen,🎭 Aktivität,🚌 Transport,💊 Medizin,📸 Fotopunkt,📍 Sonstiges',
   kNoTrip:'Keine aktive Reise',kNoBudget:'Kein Budget festgelegt',
   kTotalBudget:'🎯 Gesamtbudget',kSet:'Festlegen',kEdit:'Bearbeiten',
@@ -2403,6 +2530,132 @@ de:{
   aiPlacePrice:'Eintritt',aiPlaceHours:'Öffnungszeiten',aiPlaceDist:'Vom Hotel',aiPlaceOpen:'In diesem Zeitraum geöffnet',aiPlaceSeasonal:'⚠️ Saisonal',
   aiPlacePrioMust:'Muss',aiPlacePrioWant:'Wollen',aiPlacePrioMaybe:'Vielleicht',
   aiPackBtn:'✨ KI Packlisten-Assistent',aiPackTitle:'KI Packlisten-Assistent',aiPackSuggestTitle:'KI VORSCHLÄGE',aiPackAdd:'+ Hinzufügen',aiPackAll:'+ Alle hinzufügen',aiPackDone:'✅ Alle KI-Vorschläge eingepackt!',aiPackErr:'⚠️ KI nicht verfügbar.',aiPackRetry:'↺ Nochmal',aiPackAdded:'Artikel hinzugefügt',aiPackLoading:'⏳ Analyse läuft…',aiPackCount:'Vorschläge',
+  // Extra Tools – gemeinsam
+  etoTtlMenu:'🧰 Extra-Tools',etoTtlDocs:'📁 Dokumentenablage',etoTtlEmergency:'🆘 Notfallkarte',
+  etoTtlFlight:'✈️ Flug-/Zugstatus',etoTtlConverter:'📏 Maß-/Temperaturumrechner',etoTtlPay:'⚡ Schnelle Begleichung',
+  etoTtlPoll:'🗳️ Gruppenabstimmung',etoTtlLive:'📍 Live-Standort teilen',etoTtlChat:'💬 Gruppenchat',
+  etoTtlDiary:'📸 Tägliches Erinnerungsfoto-Tagebuch',etoTtlMembers:'👥 Teilnehmer',
+  etoLblValuta:'Währungsrechner',etoLblDocs:'Dokumentenablage',etoLblEmergency:'Notfallkarte',
+  etoLblFlight:'Flug-/Zugstatus',etoLblConverter:'Maß-/Temperaturumrechner',etoLblPay:'Schnelle Begleichung',
+  etoLblPoll:'Gruppenabstimmung',etoLblLive:'Live-Standort teilen',etoLblDiary:'Tägliches Erinnerungsfoto-Tagebuch',
+  etoNoTripTitle:'Keine aktive Reise',etoNoTripDesc:'Aktiviere eine Reise, um diese Funktion zu nutzen.',
+  etoToastCopied:'📋 In die Zwischenablage kopiert',etoToastSaved:'✅ Gespeichert',etoToastSavedPlain:'✅ Gespeichert',
+  etoMembersEmpty:'Keine Teilnehmer.',
+  etoChatOnlyTitle:'Nur bei geteilten Reisen',etoChatOnlyDesc:'Teile diese Reise mit deinen Mitreisenden (🔗), damit ihr chatten könnt.',
+  // Extra Tools – Dokumentenablage
+  etoDocsPinSetupMsg:'Lege einen 4-stelligen PIN-Code zum Schutz der Dokumentenablage fest',
+  etoDocsNewPinLbl:'NEUER PIN',etoDocsPinConfirmLbl:'PIN WIEDERHOLEN',etoDocsSetPinBtn:'PIN festlegen',
+  etoDocsEnterPinMsg:'Gib den PIN-Code ein',etoDocsUnlockBtn:'Entsperren',
+  etoDocsTabTrip:'Für diese Reise',etoDocsTabShared:'🌍 Geteilte Dokumente',
+  etoDocsPhotoBtn:'📷 Fotografieren',etoDocsUploadBtn:'📄 Bild/PDF hochladen',
+  etoDocsEmptySharedMsg:'Die geteilte Dokumentenablage ist leer.<br>Lade hier Dateien hoch, die du bei jeder Reise brauchst (z. B. Impfnachweis, Passkopie).',
+  etoDocsEmptyTripMsg:'Die Dokumentenablage ist leer.<br>Fotografiere oder lade Reisepass, Visum, Ticket oder PDF hoch.',
+  etoDocsNoteSharedMsg:'🌍 Diese Dokumente erscheinen in der Dokumentenablage jeder Reise – beim Löschen verschwinden sie überall. 🔒 Der PIN schützt nur auf diesem Gerät, die Dateien landen nicht in der Cloud.',
+  etoDocsNoteTripMsg:'🔒 Der PIN schützt nur auf diesem Gerät. Die Dokumente landen nicht in der Cloud.',
+  etoDocsNamePrompt:'Name des Dokuments (z. B. Reisepass, Visum, Ticket):',
+  etoDocsPdfDefaultName:'PDF-Dokument',etoDocsDefaultName:'Dokument',
+  etoDocsSaveFailToast:'❌ Datei konnte nicht gespeichert werden',
+  etoDocsDelSharedConfirm:'Dieses geteilte Dokument löschen?\nEs wird aus der Dokumentenablage ALLER deiner Reisen entfernt.',
+  etoDocsDelConfirm:'Dieses Dokument löschen?',
+  etoDocsPin4DigitsToast:'Gib 4 Ziffern ein',etoDocsPinMismatchToast:'❌ Die beiden PINs stimmen nicht überein, versuch es erneut',etoDocsPinWrongToast:'❌ Falscher PIN',
+  // Extra Tools – Notfallkarte
+  etoEcBloodLbl:'BLUTGRUPPE',etoEcBloodPh:'z. B. A+',
+  etoEcAllergyLbl:'ALLERGIE / MEDIKAMENT',etoEcAllergyPh:'z. B. Penicillin-Allergie',
+  etoEcNameLbl:'NAME NOTFALLKONTAKT',etoEcNamePh:'Name',
+  etoEcPhoneLbl:'TELEFON NOTFALLKONTAKT',etoEcPhonePh:'+49…',
+  etoEcEmbassyLbl:'BOTSCHAFTSNUMMER',etoEcEmbassyPh:'+…',
+  etoEcInsuranceLbl:'UNFALLVERSICHERUNGSNUMMER',etoEcInsurancePh:'Policennummer / Notruf',
+  etoEcShareBtn:'📤 Teilen',etoEcNote:'Bei Gruppenreisen wird diese Karte auch mit den Mitreisenden synchronisiert.',
+  etoEcShareTitle:'Notfallkarte',etoEcShareHeader:'🆘 NOTFALLKARTE',
+  etoEcShareBlood:'Blutgruppe',etoEcShareAllergy:'Allergie',etoEcShareContact:'Kontakt',
+  etoEcShareEmbassy:'Botschaft',etoEcShareInsurance:'Unfallversicherung',
+  // Extra Tools – Flug-/Zugstatus
+  etoFlTypeFlight:'✈️ Flug',etoFlTypeTrain:'🚆 Zug',
+  etoFlCodeLbl:'FLUG-/ZUGNUMMER',etoFlCodePh:'z. B. LH1234',
+  etoFlFromLbl:'VON',etoFlFromPh:'Abflugort',
+  etoFlToLbl:'NACH',etoFlToPh:'Ankunftsort',
+  etoFlDtLbl:'ABFLUGZEITPUNKT',
+  etoFlGateLbl:'GATE / GLEIS',etoFlGatePh:'z. B. B12',
+  etoFlNotifBtn:'🔔 Erinnerungsbenachrichtigungen aktivieren',
+  etoFlNote:'Der Countdown aktualisiert sich nur bei geöffneter App live; die Erinnerungs-Push (3 Std. / 1 Std. vor Abflug) kommt auch bei geschlossener App an, wenn du Benachrichtigungen aktiviert hast.',
+  etoFlDeparted:'Abflug erfolgt',etoFlUntilDeparture:'bis zum Abflug',etoFlGateInlinePrefix:' • Gate/Gleis: ',
+  etoUnitDayShort:'T',etoUnitHourShort:'Std',etoUnitMinuteShort:'Min',
+  // Extra Tools – Maß-/Temperaturumrechner
+  etoConvTemp:'🌡️ Temperatur',etoConvLen:'📏 Länge',etoConvWt:'⚖️ Gewicht',etoConvVol:'🧴 Volumen',
+  etoUnitLiter:'Liter',etoUnitGallon:'Gallone (US)',
+  // Extra Tools – Schnelle Begleichung
+  etoPayAmtLbl:'BETRAG',etoPayCurLbl:'WÄHRUNG',etoPayNoteLbl:'NOTIZ',etoPayNotePh:'z. B. Abendessen',
+  etoPayRecipientsLbl:'BENUTZERNAMEN DES EMPFÄNGERS',etoPayUsernamePh:'benutzername',
+  etoPayGenBtn:'Link erstellen',etoPayNoUsernameMsg:'Gib mindestens einen Benutzernamen ein.',
+  etoPayCopyBtn:'📋 Text kopieren',etoPayWiseBtn:'Wise (Betrag manuell eingeben)',
+  etoPayOpenBtnPrefix:'💳 ',etoPayOpenBtnSuffix:' öffnen',etoPayCopySummaryPrefix:'Bitte überweise: ',
+  // Extra Tools – Gruppenabstimmung
+  etoPollQLbl:'NEUE FRAGE',etoPollQPh:'z. B. Wohin gehen wir heute?',
+  etoPollOptsLbl:'OPTIONEN (durch Komma getrennt)',etoPollOptsPh:'z. B. Restaurant, Strand, Museum',
+  etoPollCreateBtn:'+ Abstimmung erstellen',etoPollEmpty:'Noch keine Abstimmung.',etoPollDeleteBtn:'🗑️ Abstimmung löschen',
+  etoPollNeedQOpts:'Gib eine Frage und Optionen ein',etoPollNeed2Opts:'Mindestens 2 Optionen erforderlich',
+  // Extra Tools – Live-Standort teilen
+  etoLiveTeamPositions:'👥 Positionen des Teams',etoLiveNeverShared:'hat noch keine Position geteilt',etoLiveMapBtn:'🗺️ Karte',
+  etoLiveNoOthers:'Bisher hat niemand sonst auf dieser Reise seine Position geteilt.',
+  etoLiveToggleTitle:'Standort teilen',etoLiveToggleSub:'Das Team kann sehen, wo du bist',
+  etoLiveShareNowBtn:'📍 Position jetzt teilen',etoLiveRequestBtn:'🙋 Update vom Team anfordern',
+  etoLiveNotifBtn:'🔔 Benachrichtigungen auf diesem Gerät aktivieren',
+  etoLiveLastSharedPrefix:'Zuletzt geteilt: ',etoLiveOpenMapLink:'🗺️ Karte öffnen',
+  etoLiveNeverSharedSelf:'Du hast noch keine Position geteilt.',
+  etoLiveNote:'Der Schalter zeigt dem Team, dass du erreichbar bist — um deine tatsächliche Position zu aktualisieren, drücke den Button, wenn du mitteilen möchtest, wo du bist. Solange dieser Bildschirm geöffnet ist, schläft das Telefon nicht ein; im Hintergrund/bei geschlossener App pausiert die Aktualisierung, aber der Button „Update anfordern“ sendet eine Push-Benachrichtigung an deine Mitreisenden, damit sie die App öffnen und ihre aktuelle Position teilen.',
+  etoLiveNoGeoToast:'Standortbestimmung nicht verfügbar',etoLiveShareTitle:'Mein Standort',etoLiveShareText:'Ich bin gerade hier:',
+  etoLiveLinkCopiedToast:'📋 Link in der Zwischenablage',
+  etoLiveErrDenied:'❌ Standortbestimmung nicht erlaubt (prüfe die Browser-/Telefoneinstellungen)',
+  etoLiveErrUnavailable:'❌ Position derzeit nicht verfügbar',etoLiveErrTimeout:'❌ Positionsabruf hat zu lange gedauert',
+  etoLiveErrGeneric:'❌ Position konnte nicht abgerufen werden',
+  etoLiveNeedSharedTrip:'Dafür ist eine geteilte (Gruppen-)Reise erforderlich',etoLiveRequestSentToast:'📤 Anfrage an das Team gesendet',
+  // Extra Tools – Gruppenchat
+  etoChatYouAppearAs:'So erscheinst du hier:',etoChatNicknameBtn:'✏️ Spitzname',etoChatInputPlaceholder:'Nachricht schreiben…',
+  etoChatClearHistoryBtn:'🗑️ Verlauf löschen',
+  etoChatNote:'Nur Textnachrichten – Fotos bitte in die Dokumentenablage hochladen. Die letzten 200 Nachrichten bleiben erhalten.',
+  etoChatPlanningNote:' Dies ist der Chat einer Reise in der Planungsphase.',
+  etoChatNoMessages:'Noch keine Nachricht. Schreib die erste! 👋',
+  etoChatNickPrompt:'Unter welchem Namen möchtest du im Chat dieser Reise erscheinen?\n(Leer lassen, um deinen Profilnamen zu verwenden.)',
+  etoChatClearConfirm:'Alle Chatnachrichten löschen? Dies wird bei allen gelöscht.',
+  etoChatClearedToast:'🗑️ Chatverlauf gelöscht',etoChatTripFallbackName:'Reise',
+  etoUnknownUser:'Unbekannt',etoSomeoneFallback:'Jemand',
+  // Extra Tools – Tägliches Erinnerungsfoto-Tagebuch
+  etoDiaryAddBtn:'📸 Heutiges Erinnerungsfoto hinzufügen',etoDiaryEmpty:'Noch kein Erinnerungsfoto. Mach jeden Tag eins!',
+  etoDiaryDeleteBtn:'🗑️ Löschen',etoDiaryNotePrompt:'Kurze Erinnerung an den heutigen Tag (optional):',
+  etoDiarySavedToast:'✅ Erinnerung gespeichert',etoDiarySaveFailToast:'❌ Foto konnte nicht gespeichert werden',
+  etoDiaryDelConfirm:'Diese Erinnerung löschen?',
+  // Ausgleich & Schulden
+  settleTitle:'⚖️ Ausgleich & Schulden',settleOpenBalance:'OFFENER SALDO',settleNoItems:'Kein offener Posten',
+  settleNewItem:'NEUEN POSTEN ERFASSEN',settleIGetBack:'↓ Ich bekomme zurück',settleIOwe:'↑ Ich schulde',
+  settleAmountPh:'Betrag',settleDescPh:'Beschreibung (z. B. Abendessen, Taxi...)',settleAddBtn:'+ Erfassen',
+  settleSettleBtn:'✓ Ausgleichen',settleSettledPrefix:'✓ Ausgeglichen ',
+  // PWA-Installation
+  pwaInstallTitle:'App installieren',pwaSubIOS:'Teilen → Zum Home-Bildschirm',
+  pwaSubPrompt:'Mit einem Tipp auf dem Startbildschirm',pwaSubFallback:'Browsermenü → Installieren / Hinzufügen',
+  pwaBtnShow:'Anzeigen',pwaBtnInstall:'Installieren',
+  pwaAskAgainMsg:'Soll ich dich beim nächsten Mal wieder daran erinnern, die App auf deinem Startbildschirm zu installieren?',
+  pwaAskNever:'Nicht mehr anzeigen',pwaAskYes:'Ja, erinnere mich',
+  pwaToastWillRemind:'✓ Wir erinnern dich beim nächsten Mal',
+  pwaToastWontRemind:'✓ Alles klar, wir zeigen es nicht mehr — du findest es aber jederzeit in den ⚙️ Einstellungen',
+  pwaInfoTtl:'📲 App installieren',pwaOkBtn:'Alles klar',pwaGotItBtn:'Verstanden',
+  pwaAlreadyInstalled:'✅ Die App ist bereits auf deinem Startbildschirm installiert.',
+  pwaIosIntro:'Auf dem iPhone/iPad kannst du die App über den Safari-Browser zum Startbildschirm hinzufügen — danach öffnet sie sich wie ein normales Symbol, ohne Browserleiste.',
+  pwaIosStep1:'Tippe auf das <b>Teilen</b>-Symbol (⬆️) in der unteren (oder oberen) Safari-Leiste',
+  pwaIosStep2:'Scrolle nach unten und wähle: <b>„Zum Home-Bildschirm”</b>',
+  pwaIosStep3:'Tippe oben rechts auf <b>„Hinzufügen”</b>',
+  pwaIosWarning:'⚠️ Dies funktioniert nur in Safari — in Chrome oder anderen iOS-Browsern erscheint diese Option nicht.',
+  pwaAndroidPromptBody:'Installiere MONYK Travel auf deinem Startbildschirm — danach öffnet es sich wie eine normale App, ohne Browser.',
+  pwaInstallNowBtn:'📲 Jetzt installieren',
+  pwaAndroidIntro:'Auf Android/Chrome kannst du die App über das Browsermenü zum Startbildschirm hinzufügen.',
+  pwaAndroidStep1:'Öffne das Browsermenü (⋮ oben rechts)',
+  pwaAndroidStep2:'Wähle: <b>„Installieren”</b> oder <b>„Zum Startbildschirm hinzufügen”</b>',
+  pwaAndroidStep3:'Bestätige — das Symbol erscheint auf dem Startbildschirm',
+  // Einstellungen – Profil / Teilen / Installation
+  soProfileLbl:'Profil',
+  soProfileHint:'Dein Name — damit trittst du geteilten Reisen bei, und er wird zum Standardzahler bei neuen Posten (immer änderbar).',
+  soShareLbl:'App teilen',soShareRL:'App-Link senden',
+  soShareRS:'Sende ihn jemandem, damit er MONYK öffnen/installieren kann — auch ohne Reise und Code',
+  soPwaLbl:'Installation',soPwaRL:'App auf dem Startbildschirm installieren',soPwaRS:'Anleitung für Android und iPhone',
 },
 en:{
   nav0:'Trips',nav1:'Expenses',nav2:'Report',nav3:'Plan',nav4:'Places',nav5:'Pack',nav6:'Budget',
@@ -2417,7 +2670,6 @@ en:{
   ntervNew:'+ Event',ntervEdit:'Edit event',
   ntervNap:'DAY',ntervIdo:'TIME',ntervNev:'EVENT NAME',ntervMegj:'NOTES',ntervTip:'TYPE',ntervSave:'✅ Save',
   ntervDelConf:'Delete this event?',
-  ntervTypes:'✈️ Flight,🏨 Hotel,🍽️ Food,🎭 Activity,🚌 Transport,💊 Medicine,📸 Photo spot,📍 Other',
   packNevLbl:'ITEM NAME *',packKatLbl:'CATEGORY',packSave:'✅ Save',
   packDoneMsg:'🎉 All packed!',packResetConf:'Reset the list?',
   expDelConf:'Delete this expense?',tripDelConf:'Are you sure? ({n})',
@@ -2505,10 +2757,10 @@ en:{
   tripsUpcoming:'🗓️ Upcoming',tripsPast:'Past trips',
   navTrips:'Trips',
   empTrip:'No trips yet',empTripD:'Create your first one with the ＋ card below!',
-  empExp:'No expenses yet',empExpD:'Tap ⚡ Quick add to log your first item',
+  empExp:'No expenses yet',empExpD:'Tap + Add expense to log your first item',
   repBal:'⚖️ BALANCE',repSt:'📊 STATISTICS',repCat:'🏷️ CATEGORIES',repDay:'📅 DAILY BREAKDOWN',
   stTot:'Total',stDay:'Daily avg',stRem:'Remaining',
-  balSett:'✅ All settled up',dayU:'days',
+  balSett:'✅ All settled up',dayU:'days',dayU1:'day',
   repTimeline:'📅 Daily timeline',repCurrWidget:'💱 Quick currency converter',repPlacesSum:'📍 Places',repPlacesDone:'done',repPdfBtn:'🖨️ Print / Save PDF',repPeakDay:'Peak day',repWeekChart:'📊 Weekly expenses',repChartBtn:'Charts',repChartClose:'Close',
   repTimelineBtn:'Timeline',repOptTxSection:'💸 Who pays whom',repBalSection:'⚖️ Settlement',repExportSummaryBtn:'📋 Export summary',pcOwesStatus:'owes',pcRecvStatus:'gets back',
   colNote:'Note',repItems:'items',repPersons:'pax',repDonut:'📊 Category breakdown',
@@ -2523,7 +2775,7 @@ en:{
   soKL:'Edit categories',soKS:'Customize quick categories',
   soCL:'Clear data',soCS:'Delete all trips and expenses',
   soValLbl:'Currency converter',soValRL:'Open currency converter',soValRS:'Exchange rates and conversion',
-  soTheme:'🎨 Theme',soDefCurLbl:'Default currency',soDefCurRL:'My base currencies',
+  soDefCurLbl:'Default currency',soDefCurRL:'My base currencies',
   soAddCur:'+ Add',soCurAlready:'Already added',soCurMin:'At least one required',
   clearConf:'Delete all data?',
   kAcc:'Accommodation',kFl:'Flight',kFd:'Food & Drink',kTr:'Transport',kSh:'Shopping',kCar:'Car Rental',kProg:'Activities',kOt:'Other',
@@ -2552,7 +2804,8 @@ en:{
   wgHero:'Hero card',wgHeroSub:'Richer design, flag, glow effect',
   aiTipLbl:'AI tip',aiTipFresh:'today',aiTipRegen:'✨ New tip',aiTipLoading:'⏳ Generating…',
   wDayMon:'Mon',wDayTue:'Tue',wDayWed:'Wed',wDayThu:'Thu',wDayFri:'Fri',wDaySat:'Sat',wDaySun:'Sun',
-  tlElapsed:'Elapsed',tlRemaining:'Remaining',tlTotal:'Total',tlDay:'days',
+  tlElapsed:'Elapsed',tlRemaining:'Remaining',tlTotal:'Total',tlDay:'days',tlDays:'days',
+  twAiLbl:'AI daily tip',twAiToday:'today',twAiBtn:'✨ New tip',twAiLoading:'⏳ Generating tip…',twWErr:'Weather unavailable',
   ntervTypes:'✈️ Flight,🏨 Accommodation,🍽️ Food,🎭 Activity,🚌 Transport,💊 Medicine,📸 Photo spot,📍 Other',
   kNoTrip:'No active trip',kNoBudget:'No budget set',
   kTotalBudget:'🎯 Total budget',kSet:'Set budget',kEdit:'Edit',
@@ -2562,7 +2815,7 @@ en:{
   kPlanned:'Planned',kOverBudget:'⚠️ Over budget',
   kPaid:'Paid',kShare:'Own share',
   kOwes:'owes',kRecv:'gets back',kEven:'balanced',
-  kBudgetSet:'Budget set',kCatBudgetSet:'budget',
+  kBudgetSet:'Budget set',
   kEditBudgetPrompt:'Total trip budget',kCatBudgetPrompt:'planned budget',
   tDayExps:'💸 Expenses',tDayTotal:'Day total',tAddEvent:'＋ Event',
   tDayHeader:'event',tDayCopy:'📋 Copy to day',tDayCopyTitle:'Copy to which day?',tDayCopyDone:'Event copied!',tEvMoveUp:'↑ Move up',tEvMoveDown:'↓ Move down',
@@ -2576,6 +2829,132 @@ en:{
   aiPlacePrice:'Entry fee',aiPlaceHours:'Opening hours',aiPlaceDist:'From hotel',aiPlaceOpen:'Open in this period',aiPlaceSeasonal:'⚠️ Seasonal',
   aiPlacePrioMust:'Must see',aiPlacePrioWant:'Want',aiPlacePrioMaybe:'Maybe',
   aiPackBtn:'✨ AI Packing Assistant',aiPackTitle:'AI Packing Assistant',aiPackSuggestTitle:'AI SUGGESTIONS',aiPackAdd:'+ Add',aiPackAll:'+ Add all',aiPackDone:'✅ All AI suggestions packed!',aiPackErr:'⚠️ AI unavailable.',aiPackRetry:'↺ Try again',aiPackAdded:'items added',aiPackLoading:'⏳ Analysing…',aiPackCount:'suggestions',
+  // Extra Tools – shared
+  etoTtlMenu:'🧰 Extra Tools',etoTtlDocs:'📁 Document Vault',etoTtlEmergency:'🆘 Emergency Card',
+  etoTtlFlight:'✈️ Flight/Train Status',etoTtlConverter:'📏 Unit/Temp Converter',etoTtlPay:'⚡ Quick Settle',
+  etoTtlPoll:'🗳️ Group Poll',etoTtlLive:'📍 Live Location Sharing',etoTtlChat:'💬 Group Chat',
+  etoTtlDiary:'📸 Daily Memory Photo Journal',etoTtlMembers:'👥 Members',
+  etoLblValuta:'Currency converter',etoLblDocs:'Document vault',etoLblEmergency:'Emergency card',
+  etoLblFlight:'Flight/train status',etoLblConverter:'Unit/temp converter',etoLblPay:'Quick settle',
+  etoLblPoll:'Group poll',etoLblLive:'Live location sharing',etoLblDiary:'Daily memory photo journal',
+  etoNoTripTitle:'No active trip',etoNoTripDesc:'Activate a trip to use this feature.',
+  etoToastCopied:'📋 Copied to clipboard',etoToastSaved:'✅ Saved',etoToastSavedPlain:'✅ Saved',
+  etoMembersEmpty:'No members.',
+  etoChatOnlyTitle:'Shared trips only',etoChatOnlyDesc:'Share this trip with your travel companions (🔗) so you can chat.',
+  // Extra Tools – Document vault
+  etoDocsPinSetupMsg:'Set a 4-digit PIN to protect the document vault',
+  etoDocsNewPinLbl:'NEW PIN',etoDocsPinConfirmLbl:'CONFIRM PIN',etoDocsSetPinBtn:'Set PIN',
+  etoDocsEnterPinMsg:'Enter the PIN code',etoDocsUnlockBtn:'Unlock',
+  etoDocsTabTrip:'For this trip',etoDocsTabShared:'🌍 Shared documents',
+  etoDocsPhotoBtn:'📷 Take photo',etoDocsUploadBtn:'📄 Upload image/PDF',
+  etoDocsEmptySharedMsg:'The shared document vault is empty.<br>Upload files you need on every trip here (e.g. vaccination certificate, passport copy).',
+  etoDocsEmptyTripMsg:'The document vault is empty.<br>Photograph or upload a passport, visa, ticket, or PDF.',
+  etoDocsNoteSharedMsg:'🌍 These documents appear in the Document Vault of every trip – deleting them removes them everywhere. 🔒 The PIN only protects this device; files are never uploaded to the cloud.',
+  etoDocsNoteTripMsg:'🔒 The PIN only protects this device. Documents are never uploaded to the cloud.',
+  etoDocsNamePrompt:'Document name (e.g. Passport, Visa, Ticket):',
+  etoDocsPdfDefaultName:'PDF document',etoDocsDefaultName:'Document',
+  etoDocsSaveFailToast:'❌ Could not save the file',
+  etoDocsDelSharedConfirm:'Delete this shared document?\nThis removes it from the Document Vault of ALL your trips.',
+  etoDocsDelConfirm:'Delete this document?',
+  etoDocsPin4DigitsToast:'Enter 4 digits',etoDocsPinMismatchToast:'❌ The two PINs don\u2019t match, try again',etoDocsPinWrongToast:'❌ Wrong PIN',
+  // Extra Tools – Emergency card
+  etoEcBloodLbl:'BLOOD TYPE',etoEcBloodPh:'e.g. A+',
+  etoEcAllergyLbl:'ALLERGY / MEDICATION',etoEcAllergyPh:'e.g. penicillin allergy',
+  etoEcNameLbl:'EMERGENCY CONTACT NAME',etoEcNamePh:'Name',
+  etoEcPhoneLbl:'EMERGENCY CONTACT PHONE',etoEcPhonePh:'+1…',
+  etoEcEmbassyLbl:'EMBASSY NUMBER',etoEcEmbassyPh:'+…',
+  etoEcInsuranceLbl:'ACCIDENT INSURANCE NUMBER',etoEcInsurancePh:'Policy number / helpline',
+  etoEcShareBtn:'📤 Share',etoEcNote:'On group trips, this card also syncs with your travel companions.',
+  etoEcShareTitle:'Emergency card',etoEcShareHeader:'🆘 EMERGENCY CARD',
+  etoEcShareBlood:'Blood type',etoEcShareAllergy:'Allergy',etoEcShareContact:'Contact',
+  etoEcShareEmbassy:'Embassy',etoEcShareInsurance:'Accident insurance',
+  // Extra Tools – Flight/train status
+  etoFlTypeFlight:'✈️ Flight',etoFlTypeTrain:'🚆 Train',
+  etoFlCodeLbl:'FLIGHT/TRAIN NUMBER',etoFlCodePh:'e.g. LH1234',
+  etoFlFromLbl:'FROM',etoFlFromPh:'Departure location',
+  etoFlToLbl:'TO',etoFlToPh:'Arrival location',
+  etoFlDtLbl:'DEPARTURE TIME',
+  etoFlGateLbl:'GATE / TRACK',etoFlGatePh:'e.g. B12',
+  etoFlNotifBtn:'🔔 Turn on reminder notifications',
+  etoFlNote:'The countdown only updates live while the app is open; the reminder push (3h / 1h before departure) still arrives even if the app is closed, as long as you\u2019ve enabled notifications.',
+  etoFlDeparted:'Departure has occurred',etoFlUntilDeparture:'until departure',etoFlGateInlinePrefix:' • Gate/Track: ',
+  etoUnitDayShort:'d',etoUnitHourShort:'h',etoUnitMinuteShort:'m',
+  // Extra Tools – Unit/temp converter
+  etoConvTemp:'🌡️ Temperature',etoConvLen:'📏 Length',etoConvWt:'⚖️ Weight',etoConvVol:'🧴 Volume',
+  etoUnitLiter:'liter',etoUnitGallon:'gallon (US)',
+  // Extra Tools – Quick settle
+  etoPayAmtLbl:'AMOUNT',etoPayCurLbl:'CURRENCY',etoPayNoteLbl:'NOTE',etoPayNotePh:'e.g. dinner',
+  etoPayRecipientsLbl:'RECIPIENT USERNAMES',etoPayUsernamePh:'username',
+  etoPayGenBtn:'Generate link',etoPayNoUsernameMsg:'Enter at least one username.',
+  etoPayCopyBtn:'📋 Copy text',etoPayWiseBtn:'Wise (enter amount manually)',
+  etoPayOpenBtnPrefix:'💳 Open ',etoPayOpenBtnSuffix:'',etoPayCopySummaryPrefix:'Please transfer: ',
+  // Extra Tools – Group poll
+  etoPollQLbl:'NEW QUESTION',etoPollQPh:'e.g. Where should we go today?',
+  etoPollOptsLbl:'OPTIONS (comma-separated)',etoPollOptsPh:'e.g. Restaurant, Beach, Museum',
+  etoPollCreateBtn:'+ Create poll',etoPollEmpty:'No polls yet.',etoPollDeleteBtn:'🗑️ Delete poll',
+  etoPollNeedQOpts:'Enter a question and options',etoPollNeed2Opts:'At least 2 options required',
+  // Extra Tools – Live location sharing
+  etoLiveTeamPositions:'👥 Team positions',etoLiveNeverShared:'hasn\u2019t shared a location yet',etoLiveMapBtn:'🗺️ Map',
+  etoLiveNoOthers:'No one else has shared their location on this trip yet.',
+  etoLiveToggleTitle:'Location sharing',etoLiveToggleSub:'The team can see where you are',
+  etoLiveShareNowBtn:'📍 Share location now',etoLiveRequestBtn:'🙋 Request an update from the team',
+  etoLiveNotifBtn:'🔔 Turn on notifications on this device',
+  etoLiveLastSharedPrefix:'Last shared: ',etoLiveOpenMapLink:'🗺️ Open map',
+  etoLiveNeverSharedSelf:'You haven\u2019t shared your location yet.',
+  etoLiveNote:'The toggle tells the team you\u2019re available — to actually update your position, press the button whenever you want to share where you are. While this screen is open, the phone won\u2019t sleep; switching to the background or closing the app pauses updates, but the "Request update" button sends a push notification to your companions so they can open the app and share their current position.',
+  etoLiveNoGeoToast:'Location services aren\u2019t available',etoLiveShareTitle:'My location',etoLiveShareText:'I\u2019m here right now:',
+  etoLiveLinkCopiedToast:'📋 Link copied to clipboard',
+  etoLiveErrDenied:'❌ Location access isn\u2019t allowed (check your browser/phone settings)',
+  etoLiveErrUnavailable:'❌ Location is currently unavailable',etoLiveErrTimeout:'❌ Getting the location took too long',
+  etoLiveErrGeneric:'❌ Could not get the location',
+  etoLiveNeedSharedTrip:'This requires a shared (group) trip',etoLiveRequestSentToast:'📤 Request sent to the team',
+  // Extra Tools – Group chat
+  etoChatYouAppearAs:'You appear here as:',etoChatNicknameBtn:'✏️ Nickname',etoChatInputPlaceholder:'Write a message…',
+  etoChatClearHistoryBtn:'🗑️ Clear history',
+  etoChatNote:'Text messages only – upload photos to the Document Vault instead. The last 200 messages are kept.',
+  etoChatPlanningNote:' This is the chat of a trip still in the planning phase.',
+  etoChatNoMessages:'No messages yet. Write the first one! 👋',
+  etoChatNickPrompt:'What name should you appear under in this trip\u2019s chat?\n(Leave blank to use your profile name.)',
+  etoChatClearConfirm:'Delete all chat messages? This deletes them for everyone.',
+  etoChatClearedToast:'🗑️ Chat history cleared',etoChatTripFallbackName:'Trip',
+  etoUnknownUser:'Unknown',etoSomeoneFallback:'Someone',
+  // Extra Tools – Daily memory photo journal
+  etoDiaryAddBtn:'📸 Add today\u2019s memory photo',etoDiaryEmpty:'No memory photos yet. Take one every day!',
+  etoDiaryDeleteBtn:'🗑️ Delete',etoDiaryNotePrompt:'A short memory of today (optional):',
+  etoDiarySavedToast:'✅ Memory saved',etoDiarySaveFailToast:'❌ Could not save the photo',
+  etoDiaryDelConfirm:'Delete this memory?',
+  // Settlement & debts
+  settleTitle:'⚖️ Settlement & Debts',settleOpenBalance:'OPEN BALANCE',settleNoItems:'No open items',
+  settleNewItem:'RECORD NEW ITEM',settleIGetBack:'↓ I get back',settleIOwe:'↑ I owe',
+  settleAmountPh:'Amount',settleDescPh:'Description (e.g. dinner, taxi...)',settleAddBtn:'+ Record',
+  settleSettleBtn:'✓ Settle',settleSettledPrefix:'✓ Settled ',
+  // PWA install
+  pwaInstallTitle:'Install the app',pwaSubIOS:'Share → Add to Home Screen',
+  pwaSubPrompt:'One tap, right on your home screen',pwaSubFallback:'Browser menu → Install / Add',
+  pwaBtnShow:'Show me',pwaBtnInstall:'Install',
+  pwaAskAgainMsg:'Should we remind you next time to install the app on your home screen?',
+  pwaAskNever:'Don\u2019t show again',pwaAskYes:'Yes, remind me',
+  pwaToastWillRemind:'✓ We\u2019ll remind you next time',
+  pwaToastWontRemind:'✓ Okay, we won\u2019t show this again — but you can find it any time in ⚙️ Settings',
+  pwaInfoTtl:'📲 Install the app',pwaOkBtn:'OK',pwaGotItBtn:'Got it',
+  pwaAlreadyInstalled:'✅ The app is already installed on your home screen.',
+  pwaIosIntro:'On iPhone/iPad, you can add the app to your home screen from the Safari browser — it then opens like a plain icon, with no browser bar.',
+  pwaIosStep1:'Tap the <b>Share</b> icon (⬆️) in Safari\u2019s bottom (or top) bar',
+  pwaIosStep2:'Scroll down and choose: <b>“Add to Home Screen”</b>',
+  pwaIosStep3:'Tap <b>“Add”</b> in the top right',
+  pwaIosWarning:'⚠️ This only works in Safari — this option doesn\u2019t appear in Chrome or other iOS browsers.',
+  pwaAndroidPromptBody:'Install MONYK Travel on your home screen — it then opens like a plain app, with no browser.',
+  pwaInstallNowBtn:'📲 Install now',
+  pwaAndroidIntro:'On Android/Chrome, you can add the app to your home screen from the browser menu.',
+  pwaAndroidStep1:'Open the browser menu (⋮ top right)',
+  pwaAndroidStep2:'Choose: <b>“Install”</b> or <b>“Add to Home Screen”</b>',
+  pwaAndroidStep3:'Confirm — the icon appears on your home screen',
+  // Settings – Profile / Share / Install
+  soProfileLbl:'Profile',
+  soProfileHint:'Your name — this is how you join shared trips, and it becomes the default payer for new items (always editable).',
+  soShareLbl:'Share the app',soShareRL:'Send the app link',
+  soShareRS:'Send it to someone so they can open/install MONYK — no trip or code needed',
+  soPwaLbl:'Install',soPwaRL:'Install the app on your home screen',soPwaRS:'Android and iPhone instructions',
 }};
 
 
@@ -2584,7 +2963,7 @@ const EMOJIS=['🧑','👩','👨','👦','👧','🧒','👴','👵','🧔','�
 // ══════════════════════════════════════
 // STATE
 // ══════════════════════════════════════
-let lang='hu', tab=0, flt='all';
+let lang=(function(){try{return localStorage.getItem('monyk_lang')||'hu';}catch(e){return 'hu';}})(), tab=0, flt='all';
 let defaultCurrency='EUR'; // legacy, homeCurrencies[0] az elsődleges
 let homeCurrencies=['EUR']; // saját alapvaluta(k)
 let editTripId=null, editExpId=null, editExpTrId=null;
@@ -2725,6 +3104,7 @@ const setH=(id,h)=>{const e=$(id);if(e)e.innerHTML=h;};
 const genId=()=>'i'+Math.random().toString(36).slice(2,9);
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const t=k=>(I18N[lang]||I18N.hu)[k]||k;
+const dayLabel=n=>t(Math.abs(n)===1?'dayU1':'dayU');
 const tx=(k,o={})=>{let s=t(k);Object.entries(o).forEach(([a,b])=>{s=s.replace(`{${a}}`,b)});return s;};
 // ── VALUTA RENDSZER ──
 // Az app bázisvalutája: a felhasználó home valutája (BASE_CURRENCY). Az utazás valutája: trip.valuta.
@@ -3189,7 +3569,7 @@ function toggleExpFilterPanel(){
 function updateFilterLabel(){
   const lbl=$('expFilterLabel');if(!lbl)return;
   const parts=[];
-  if(flt!=='all')parts.push(t('fc'+['all','today','pending'].indexOf(flt)===-1?'fc0':'fc'+['all','today','pending'].indexOf(flt)));
+  if(flt!=='all'){const fcIdx=['all','today','pending'].indexOf(flt);parts.push(t(fcIdx===-1?'fc0':'fc'+fcIdx));}
   if(payerFlt==='mine')parts.push(t('fc3'));
   else if(payerFlt==='split')parts.push(t('fc4'));
   if(expCatFilter&&expCatFilter!=='all')parts.push(getKat(expCatFilter).ikon);
@@ -3234,19 +3614,19 @@ function applyLang(){
     qaMttl:(editExpId?'qaEdit':'qaNew'),
     fEA:'fEA',fEN:'fEN',fED:'fED',fET:'fET',fECat:'fECat',
     fPyr:'fPyr',fSpl:'fSpl',fENote:'fENote',fERec:'fERec',
-    rcCameraLbl:'rcCamera',rcGalleryLbl:'rcGallery',rcFileLbl:'rcFile',fERec:'fERec',pndH:'pndH',
+    rcCameraLbl:'rcCamera',rcGalleryLbl:'rcGallery',rcFileLbl:'rcFile',pndH:'pndH',
     btnQCancel:'btnCancel',btnQSave:'btnAdd',
     btnAE:'btnAE',btnAC:'btnAC',
     btnSumStay:'btnSumSt',btnSumClose:'btnSumCl',
     btnKC:'btnCancel',btnKS:'btnSave',
     soBkLbl:'soBk',soTtl:'soTtl',soSLang:'soSLang',soSKat:'soSKat',
     soKL:'soKL',soKS:'soKS',
-    soThemeLbl:'soTheme',soDefCurLbl:'soDefCurLbl',soDefCurRL:'soDefCurRL',soAddCurBtn:'soAddCur',
+    soDefCurLbl:'soDefCurLbl',soDefCurRL:'soDefCurRL',soAddCurBtn:'soAddCur',
     fQAAccount:'fQAAccount',fQAAccDat:'fQAAccDat',
     soValLbl:'soValLbl',soValRL:'soValRL',soValRS:'soValRS',
     bsL0:'bsL0',bsL1:'bsL1',bsL2:'bsL2',bsPv:'bsPv',
     expDetCloseBtn:'expDetClose',
-    tdBackLbl:'btnBack',tdBtnQA:'btnQA',
+    tdBackLbl:'btnBack',tdExitLbl:'btnBack',tdBtnQA:'btnQA',
     expFilterTimeLbl:'expFilterTime',expFilterCatLbl:'expFilterCat',
     eff0:'fc0',eff1:'fc1',eff2:'fc2',
     eff3:'fc3',eff4:'fc4',
@@ -3254,8 +3634,15 @@ function applyLang(){
     expFilterLabel:'expFilterLabel',
     fpTimeLbl:'expFilterTime',fpPayerLbl:'expFilterPayer',fpCatLbl:'expFilterCat',
     tdFpPayerLbl:'expFilterPayer',
-    fc3all:'fc0',
+    fc3all:'fc0',eff3all:'fc0',
     fHLink:'hLinkLbl',fHAr:'hArLbl',fTervLink:'tervLinkLbl',fTervAr:'tervArLbl',
+    etoTitle:'etoTtlMenu',
+    soProfileLbl:'soProfileLbl',soProfileHint:'soProfileHint',
+    soShareLbl:'soShareLbl',soShareRL:'soShareRL',soShareRS:'soShareRS',
+    soPwaLbl:'soPwaLbl',soPwaRL:'soPwaRL',soPwaRS:'soPwaRS',
+    pwaBannerTtl:'pwaInstallTitle',pwaBannerSub:'pwaSubPrompt',pwaBtn:'pwaBtnInstall',
+    pwaInfoTtl:'pwaInfoTtl',
+    pwaAskMsg:'pwaAskAgainMsg',pwaAskNeverBtn:'pwaAskNever',pwaAskYesBtn:'pwaAskYes',
   };
   Object.entries(ids).forEach(([id,key])=>set(id,t(key)));
   const _lb=$('logoBadge');if(_lb)_lb.textContent='TRAVEL';
@@ -3296,16 +3683,18 @@ function renderTrips(){
     // Automatikusan megnyitjuk az új utazás formot ha első indítás – de ne akkor, ha éppen
     // egy ?join= linkről érkezünk, mert akkor a csatlakozás modal nyílik meg helyette
     const cameFromJoinLink=new URLSearchParams(location.search).has('join');
-    if(!localStorage.getItem('monyk_trips_seen')&&!cameFromJoinLink){
-      localStorage.setItem('monyk_trips_seen','1');
-      setTimeout(()=>{ if(typeof openNewTrip==='function') openNewTrip(); },600);
-    }
+    try{
+      if(!localStorage.getItem('monyk_trips_seen')&&!cameFromJoinLink){
+        localStorage.setItem('monyk_trips_seen','1');
+        setTimeout(()=>{ if(typeof openNewTrip==='function') openNewTrip(); },600);
+      }
+    }catch(e) { console.warn('[MONYK]', e); }
     return;
   }
 
   const now=new Date();
   const active=trips.filter(tr=>tr.aktiv);
-  const todayStr=now.toISOString().slice(0,10);
+  const todayStr=today();
   // "Tervezett": nincs aktív, és (nincs veg dátum VAGY veg >= ma) – start dátumtól független
   const upcoming=trips.filter(tr=>!tr.aktiv&&(!tr.veg||tr.veg>=todayStr)).sort((a,b)=>new Date(a.kezdo)-new Date(b.kezdo));
   // "Lezárt": nincs aktív, és veg dátum létezik ÉS már elmúlt
@@ -3596,7 +3985,7 @@ function renderTdBS(trip){
   const bf=$('tdBsFil');if(bf){bf.style.width=pct+'%';bf.style.background=pc;}
   const v0=$('tdBsV0');if(v0){v0.innerHTML=fmtD(daily,trip);v0.style.color=pc;}
   const v1=$('tdBsV1');if(v1)v1.innerHTML=kr>0?fmtD(kr-sp,trip):'–';
-  const v2=$('tdBsV2');if(v2)v2.textContent=(rem!==null?rem:el)+' '+t('dayU');
+  const v2=$('tdBsV2');if(v2)v2.textContent=(rem!==null?rem:el)+' '+dayLabel(rem!==null?rem:el);
 }
 
 function setupTdSwipe(dash){
@@ -4155,7 +4544,7 @@ function humanDate(dateStr, trip){
 
   if(dateStr===tod)return{lbl:(lang==='hu'?'Ma':lang==='de'?'Heute':'Today')+daySuffix,isToday:true};
   const yd=new Date();yd.setDate(yd.getDate()-1);
-  const ydStr=yd.toISOString().split('T')[0];
+  const ydStr=yd.getFullYear()+'-'+String(yd.getMonth()+1).padStart(2,'0')+'-'+String(yd.getDate()).padStart(2,'0');
   if(dateStr===ydStr)return{lbl:(lang==='hu'?'Tegnap':lang==='de'?'Gestern':'Yesterday')+daySuffix,isToday:false};
   const todD=new Date(tod+'T12:00');
   const diff=Math.round((todD-d)/86400000);
@@ -4725,7 +5114,7 @@ function renderRep(){
   const statHTML=`<div class="rep-dash-hdr">
     <div class="rep-dash-top">
       <div class="rep-dash-tripname">${trip.nev}</div>
-      <div class="rep-dash-meta">📍 ${trip.cel||'–'} &nbsp;·&nbsp; ${el} ${t('dayU')}</div>
+      <div class="rep-dash-meta">📍 ${trip.cel||'–'} &nbsp;·&nbsp; ${el} ${dayLabel(el)}</div>
     </div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin:6px 0 2px">
       <div class="rep-dash-total" style="margin:0">${fmtD(displayAmt,trip)}</div>
@@ -5997,7 +6386,35 @@ function renderXPanel(katId,ex){
         <div class="fld"><div class="flbl">${t('tqaBo')}</div><input class="fi" id="xFT1" type="time" value="${ex.repFel||''}"></div>
         <div class="fld"><div class="flbl">${t('tqaLa')}</div><input class="fi" id="xFT2" type="time" value="${ex.repLe||''}"></div>
       </div></div>`,
-    etkezes:'',
+    etkezes:(()=>{
+      const _et=ex.tip!=null?ex.tip:15;
+      const _presets=[0,10,15,20];
+      const _custom=!_presets.includes(_et);
+      return `<div class="kp et"><div class="kph">${t('tqaFd')}</div>
+      <div class="fld" style="margin-bottom:12px">
+        <div class="flbl">${t('tqaPe')}</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:6px">
+          <button type="button" onclick="adjSz(-1)" style="width:34px;height:34px;flex-shrink:0;border-radius:10px;border:1.5px solid var(--brd);background:rgba(255,255,255,.05);color:var(--txt);font-size:18px;font-weight:800;cursor:pointer;font-family:inherit">−</button>
+          <span id="xSzNum" style="font-size:19px;font-weight:800;min-width:22px;text-align:center">${ex.szem||1}</span>
+          <button type="button" onclick="adjSz(1)" style="width:34px;height:34px;flex-shrink:0;border-radius:10px;border:1.5px solid var(--brd);background:rgba(255,255,255,.05);color:var(--txt);font-size:18px;font-weight:800;cursor:pointer;font-family:inherit">+</button>
+          <div style="flex:1;text-align:right">
+            <div class="flbl" style="margin-bottom:3px">${t('tqaPP')}</div>
+            <div id="xPP" style="font-size:16px;font-weight:800;color:var(--mut)">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="fld" style="margin-bottom:0">
+        <div class="flbl">${t('tqaTip')}</div>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          ${_presets.map(p=>`<button type="button" class="tip-btn" onclick="setTip(this,${p})" style="flex:1${p===_et?';background:var(--adim);border-color:var(--acc);color:var(--acc)':''}">${p}%</button>`).join('')}
+          <input class="fi mn" id="xTipCustom" type="number" inputmode="numeric" placeholder="%" value="${_custom?_et:''}" oninput="setTipCustom(this.value)" style="width:54px;flex-shrink:0;text-align:center;padding:8px 4px">
+        </div>
+        <div id="xTipRow" style="display:none;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--brd)">
+          <span id="xTipLbl" style="font-size:11px;color:var(--mut)"></span>
+          <span id="xTipTotal" style="font-size:13px;font-weight:800;color:var(--acc)"></span>
+        </div>
+      </div></div>`;
+    })(),
     autoberles:`<div class="kp ab"><div class="kph">${t('tqaAb')}</div>
       <div class="two">
         <div class="fld"><div class="flbl">${t('tqaCo')}</div><input class="fi" id="xCo" value="${ex.carCeg||''}" placeholder="Hertz..."></div>
@@ -6021,10 +6438,13 @@ function renderXPanel(katId,ex){
   };
   c.innerHTML=panels[katId]||'';
   if(katId==='etkezes'){
-    _tipPct=15;
-    // Személyszám szinkronizálás a split listából
-    const splSz=document.querySelectorAll('#splList .mcr.sel').length;
-    const szEl=$('xSzNum');if(szEl&&splSz>0)szEl.textContent=splSz;
+    _tipPct=ex.tip!=null?ex.tip:15;
+    // Személyszám szinkronizálás a split listából (csak ha nincs korábban mentett érték)
+    const szEl=$('xSzNum');
+    if(szEl&&!ex.szem){
+      const splSz=document.querySelectorAll('#splList .mcr.sel').length;
+      if(splSz>0)szEl.textContent=splSz;
+    }
     calcFoodCard();
   }
 }
@@ -6287,32 +6707,32 @@ function buildSettlementSection(trip,tgk,bals,optTx){
 
   const pendingRows=pending.map(s=>{
     const col=s.nemTartozom?'var(--grn)':'var(--red)';
-    return`<div class="settle-item"><div class="settle-item-left"><div style="font-size:10px;font-weight:800;color:${col}">${s.nemTartozom?'↓ Visszakapok':'↑ Tartozom'}</div><div style="font-size:13px;font-weight:700">${s.nev||'–'}</div><div style="font-size:10px;color:var(--mut)">${s.dat||''}${s.leiras?' · '+s.leiras:''}</div></div><div class="settle-item-right"><div style="font-size:14px;font-weight:900;color:${col}">${s.nemTartozom?'+':'–'}${fmtD(s.osszeg,trip)}</div><button onclick="settleItem('${s.id}','${trip.id}')" style="background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:3px 8px;font-size:10px;font-weight:800;color:var(--grn);cursor:pointer;margin-top:3px">✓ Rendez</button></div></div>`;
+    return`<div class="settle-item"><div class="settle-item-left"><div style="font-size:10px;font-weight:800;color:${col}">${s.nemTartozom?t('settleIGetBack'):t('settleIOwe')}</div><div style="font-size:13px;font-weight:700">${s.nev||'–'}</div><div style="font-size:10px;color:var(--mut)">${s.dat||''}${s.leiras?' · '+s.leiras:''}</div></div><div class="settle-item-right"><div style="font-size:14px;font-weight:900;color:${col}">${s.nemTartozom?'+':'–'}${fmtD(s.osszeg,trip)}</div><button onclick="settleItem('${s.id}','${trip.id}')" style="background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:3px 8px;font-size:10px;font-weight:800;color:var(--grn);cursor:pointer;margin-top:3px">${t('settleSettleBtn')}</button></div></div>`;
   }).join('');
 
-  const settledRows=settlements.filter(s=>s.settled).map(s=>`<div class="settle-item" style="opacity:.45"><div class="settle-item-left"><div style="font-size:10px;font-weight:800;color:var(--mut)">✓ Rendezve ${s.rendDat||''}</div><div style="font-size:12px;font-weight:700">${s.nev||'–'}</div></div><div class="settle-item-right"><div style="font-size:13px;font-weight:800;color:var(--mut)">${fmtD(s.osszeg,trip)}</div><button onclick="deleteSettlementItem('${s.id}','${trip.id}')" style="background:none;border:none;color:var(--mut);cursor:pointer;font-size:14px;padding:2px 4px">✕</button></div></div>`).join('');
+  const settledRows=settlements.filter(s=>s.settled).map(s=>`<div class="settle-item" style="opacity:.45"><div class="settle-item-left"><div style="font-size:10px;font-weight:800;color:var(--mut)">${t('settleSettledPrefix')}${s.rendDat||''}</div><div style="font-size:12px;font-weight:700">${s.nev||'–'}</div></div><div class="settle-item-right"><div style="font-size:13px;font-weight:800;color:var(--mut)">${fmtD(s.osszeg,trip)}</div><button onclick="deleteSettlementItem('${s.id}','${trip.id}')" style="background:none;border:none;color:var(--mut);cursor:pointer;font-size:14px;padding:2px 4px">✕</button></div></div>`).join('');
 
-  return`<div class="secdiv" style="margin-top:16px">⚖️ Rendezés & Tartozások</div>
+  return`<div class="secdiv" style="margin-top:16px">${t('settleTitle')}</div>
   <div style="background:var(--bg2);border:1.5px solid var(--brd);border-radius:16px;padding:14px;margin-bottom:10px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07)">
-      <div style="font-size:11px;font-weight:800;color:var(--mut);letter-spacing:.05em">NYITOTT EGYENLEG</div>
+      <div style="font-size:11px;font-weight:800;color:var(--mut);letter-spacing:.05em">${t('settleOpenBalance')}</div>
       <div style="font-size:18px;font-weight:900;color:${totalColor}">${total>=0?'+':''}${fmtD(Math.abs(total),trip)}</div>
     </div>
-    ${pending.length?`<div style="margin-bottom:10px">${pendingRows}</div>`:`<div style="color:var(--mut);font-size:12px;text-align:center;padding:8px 0;margin-bottom:10px">Nincs nyitott tétel</div>`}
+    ${pending.length?`<div style="margin-bottom:10px">${pendingRows}</div>`:`<div style="color:var(--mut);font-size:12px;text-align:center;padding:8px 0;margin-bottom:10px">${t('settleNoItems')}</div>`}
     ${settledRows?`<div>${settledRows}</div>`:''}
     <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:12px;margin-top:8px">
-      <div style="font-size:10px;font-weight:800;color:var(--mut);letter-spacing:.05em;margin-bottom:10px">ÚJ TÉTEL RÖGZÍTÉSE</div>
+      <div style="font-size:10px;font-weight:800;color:var(--mut);letter-spacing:.05em;margin-bottom:10px">${t('settleNewItem')}</div>
       <div style="display:flex;gap:6px;margin-bottom:8px">
-        <button id="setDirBtnPos" onclick="setSettleDir(true)" style="flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;background:rgba(16,185,129,.2);border:1.5px solid rgba(16,185,129,.5);color:var(--grn)">↓ Visszakapok</button>
-        <button id="setDirBtnNeg" onclick="setSettleDir(false)" style="flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);color:var(--mut)">↑ Tartozom</button>
+        <button id="setDirBtnPos" onclick="setSettleDir(true)" style="flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;background:rgba(16,185,129,.2);border:1.5px solid rgba(16,185,129,.5);color:var(--grn)">${t('settleIGetBack')}</button>
+        <button id="setDirBtnNeg" onclick="setSettleDir(false)" style="flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);color:var(--mut)">${t('settleIOwe')}</button>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-        <input class="fi" id="setAmt" type="number" placeholder="Összeg" min="0" style="font-size:15px;font-weight:800;color:var(--acc)">
+        <input class="fi" id="setAmt" type="number" placeholder="${t('settleAmountPh')}" min="0" style="font-size:15px;font-weight:800;color:var(--acc)">
         <input class="fi" id="setDat" type="date" value="${today()}" style="font-size:12px">
       </div>
-      <input class="fi" id="setNev" type="text" placeholder="Leírás (pl. vacsora, taxi...)" style="margin-bottom:8px;font-size:13px">
+      <input class="fi" id="setNev" type="text" placeholder="${t('settleDescPh')}" style="margin-bottom:8px;font-size:13px">
       ${mainAppAccounts.length?`<select class="fi" id="setKartya" style="margin-bottom:10px;color:var(--acc);font-weight:800">${accountOpts}</select>`:''}
-      <button class="btnp" onclick="addSettlementItem('${trip.id}')" style="width:100%;padding:12px;font-size:13px">+ Rögzít</button>
+      <button class="btnp" onclick="addSettlementItem('${trip.id}')" style="width:100%;padding:12px;font-size:13px">${t('settleAddBtn')}</button>
     </div>
   </div>`;
 }
@@ -6703,7 +7123,7 @@ function openSum(id){
   </div>
   <div class="sgrd" style="margin-bottom:16px">
     <div class="sumsv"><div class="sumsl">💸 ${t('stTot')}</div><div class="sumsn">${fmtD(sp,tr)}</div>${kr>0?`<div style="font-size:10px;color:${sp<=kr?'var(--grn)':'var(--red)'};margin-top:2px">${sp<=kr?t('within'):t('over')}</div>`:''}</div>
-    <div class="sumsv"><div class="sumsl">📊 ${t('stDay')}</div><div class="sumsn" style="color:var(--txt);font-size:15px">${fmtD(daily,tr)}</div><div style="font-size:10px;color:var(--mut);margin-top:2px">${cnt} ${t('dayU')} · ${exps.length} ${t('repItems')}</div></div>
+    <div class="sumsv"><div class="sumsl">📊 ${t('stDay')}</div><div class="sumsn" style="color:var(--txt);font-size:15px">${fmtD(daily,tr)}</div><div style="font-size:10px;color:var(--mut);margin-top:2px">${cnt} ${dayLabel(cnt)} · ${exps.length} ${t('repItems')}</div></div>
   </div>
   ${maxN[0]?`<div class="bstd"><div><div style="font-size:11px;color:var(--mut)">${t('sumBD')}</div><div style="font-size:13px;font-weight:700;margin-top:2px">📅 ${maxN[0]}</div></div><div style="font-size:16px;font-weight:800;color:var(--acc)">${fmtD(maxN[1],tr)}</div></div>`:''}
   ${topK.length?`<div class="secdiv">${t('sumTC')}</div>${topK.map(([kid,tot])=>{const k=getKat(kid);return`<div class="cr"><div class="cci">${k.ikon}</div><div class="ccinf"><div class="ccnm">${k.nev}</div></div><div class="ccam" style="color:var(--acc)">${fmtD(tot,tr)} <span style="font-size:9px;color:var(--mut)">${sp>0?Math.round(tot/sp*100):0}%</span></div></div>`;}).join('')}`:''}
@@ -6991,7 +7411,6 @@ function applyTheme(id){
     els.forEach(el=>{if(el)el.classList.toggle('theme-'+th.id,th.id===id&&id!=='default');});
   });
   try{localStorage.setItem('monyk_travel_theme',id);}catch(e) { console.warn('[MONYK]', e); }
-  renderThemeChips();
   updateHdrThemeBtn();
 }
 
@@ -7008,19 +7427,10 @@ function updateHdrThemeBtn(){
   btn.title=th.nev;
 }
 
-function renderThemeChips(){
-  const box=document.getElementById('themeChips');if(!box)return;
-  box.innerHTML=THEMES.map(th=>{
-    const on=currentTheme===th.id;
-    return `<button onclick="applyTheme('${th.id}')" style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;border:1.5px solid ${on?'var(--acc)':'rgba(255,255,255,.12)'};background:${on?'var(--adim)':'rgba(255,255,255,.06)'};color:${on?'var(--acc)':'rgba(255,255,255,.6)'};transition:all .18s">${th.ikon} ${th.nev}</button>`;
-  }).join('');
-}
-
 function openSettings(){
   $('soPanel').classList.add('open');
   applyLang();
   renderHomeCurChips();
-  renderThemeChips();
   const pn=$('soProfileInp'); if(pn) pn.value=myProfileName;
   const sel=$('soDefCurSel');
   if(sel) sel.innerHTML=CURRENCIES.map(c=>`<option value="${c.code}">${c.symbol} ${c.code}</option>`).join('');
@@ -7088,7 +7498,7 @@ function getAiHeaders(){return{'Content-Type':'application/json'};}
 function getAiUrl(){return AI_PROXY_URL;}
 function groqBody(prompt,maxTokens,temperature){return JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:maxTokens,temperature:temperature||0.7,messages:[{role:'user',content:prompt}]});}
 function groqText(data){return data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content||'';}
-function setLang(l){lang=l;applyLang();closeSettings();}
+function setLang(l){lang=l;try{localStorage.setItem('monyk_lang',lang);}catch(e) { console.warn('[MONYK]', e); }applyLang();closeSettings();}
 function clearData(){showConfirm(t('clearConf'),()=>{trips=[];try{localStorage.removeItem(STORAGE_KEY);}catch(e) { console.warn('[MONYK]', e); }renderAll();closeSettings();});}
 function exitApp(){
   const embedded = (function(){ try{ return window.parent && window.parent!==window; }catch(e){ return false; } })();
@@ -7129,11 +7539,6 @@ function universalBack(){
   // Semmi nyitva → kilépés a MONYK főalkalmazásba
   exitApp();
 }
-
-
-// ══════════════════════════════════════
-// CONFIRM MODAL
-// ══════════════════════════════════════
 
 
 // ══════════════════════════════════════
@@ -7226,7 +7631,7 @@ function buildChart(trip, chartViewMode){
   // ── Napi bar chart – teljes utazás összes napja ──
   if(days.length<1)return toggleHTML+donutHTML+`<div class="chrt"><div class="chrt-ttl">${t('grafTitle')}</div><div style="color:var(--mut);font-size:11px;text-align:center;padding:20px 0">${t('grafNoData')}</div></div>`;
   const maxV=Math.max(...days.map(d=>d[1]))||1;
-  const todayStr=new Date().toISOString().slice(0,10);
+  const todayStr=today();
   const BAR_H=80;
   const bars=days.map(([d,v])=>{
     const h=Math.max(4,Math.round(v/maxV*BAR_H));
@@ -7273,7 +7678,7 @@ function buildTimeline(trip){
   const days=Object.entries(napTot).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,14);
   if(days.length<1)return'';
   const maxV=Math.max(...days.map(d=>d[1]));
-  const todayStr=new Date().toISOString().slice(0,10);
+  const todayStr=today();
   const rows=days.map(([d,v])=>{
     const pct=Math.round(v/maxV*100);
     const isMax=v===maxV;
@@ -7489,17 +7894,17 @@ function pwaUpdateBannerContent(){
   const ttl=document.getElementById('pwaBannerTtl'), sub=document.getElementById('pwaBannerSub'), btn=document.getElementById('pwaBtn');
   if(!ttl||!sub||!btn) return;
   if(pwaIsIOS()){
-    ttl.textContent='Telepítsd az appot';
-    sub.textContent='Oszd meg → Főképernyőhöz adás';
-    btn.textContent='Mutasd';
+    ttl.textContent=t('pwaInstallTitle');
+    sub.textContent=t('pwaSubIOS');
+    btn.textContent=t('pwaBtnShow');
   }else if(pwaDeferredPrompt){
-    ttl.textContent='Telepítsd az appot';
-    sub.textContent='Egy koppintással a kezdőképernyőn';
-    btn.textContent='Telepítés';
+    ttl.textContent=t('pwaInstallTitle');
+    sub.textContent=t('pwaSubPrompt');
+    btn.textContent=t('pwaBtnInstall');
   }else{
-    ttl.textContent='Telepítsd az appot';
-    sub.textContent='Böngésző menü → Telepítés / Hozzáadás';
-    btn.textContent='Mutasd';
+    ttl.textContent=t('pwaInstallTitle');
+    sub.textContent=t('pwaSubFallback');
+    btn.textContent=t('pwaBtnShow');
   }
 }
 
@@ -7525,7 +7930,7 @@ window.pwaBannerClose=function(){
 window.pwaAskAgainAnswer=function(showAgain){
   pwaSetPref(showAgain?'again':'hide');
   document.getElementById('pwaAskMbg')?.classList.remove('on');
-  toast(showAgain?'✓ Legközelebb emlékeztetünk':'✓ Rendben, nem mutatjuk többé — de a ⚙️ Beállításokban bármikor megtalálod');
+  toast(showAgain?t('pwaToastWillRemind'):t('pwaToastWontRemind'));
 };
 window.pwaBannerAction=function(){
   if(pwaIsIOS()){ openPwaInfoModal(); return; }
@@ -7542,26 +7947,26 @@ window.openPwaInfoModal=function(){
   const foot=document.getElementById('pwaInfoFooter');
   if(!body||!foot) return;
   if(pwaIsStandalone()){
-    body.innerHTML=`<div style="font-size:13px;color:var(--mut);line-height:1.6;text-align:center;padding:8px 0 4px">✅ Az app már telepítve van a kezdőképernyődre.</div>`;
-    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">Rendben</button>`;
+    body.innerHTML=`<div style="font-size:13px;color:var(--mut);line-height:1.6;text-align:center;padding:8px 0 4px">${t('pwaAlreadyInstalled')}</div>`;
+    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">${t('pwaOkBtn')}</button>`;
   }else if(pwaIsIOS()){
     body.innerHTML=`
-      <div style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5">iPhone-on/iPaden a Safari böngészőből tudod hozzáadni az appot a kezdőképernyőhöz — utána egy sima ikonként nyílik meg, böngészősáv nélkül.</div>
-      <div class="pwaStep"><div class="pwaStepNum">1</div><div class="pwaStepTxt">Nyomd meg a <b>Megosztás</b> ikont (⬆️) a Safari alsó (vagy felső) sávjában</div></div>
-      <div class="pwaStep"><div class="pwaStepNum">2</div><div class="pwaStepTxt">Görgess le, és válaszd: <b>„Főképernyőhöz adás”</b></div></div>
-      <div class="pwaStep"><div class="pwaStepNum">3</div><div class="pwaStepTxt">Koppints a <b>„Hozzáadás”</b> gombra jobb fent</div></div>
-      <div style="font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5">⚠️ Ez csak Safariban működik — Chrome vagy más iOS böngészőben nem jelenik meg ez az opció.</div>`;
-    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">Értem</button>`;
+      <div style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5">${t('pwaIosIntro')}</div>
+      <div class="pwaStep"><div class="pwaStepNum">1</div><div class="pwaStepTxt">${t('pwaIosStep1')}</div></div>
+      <div class="pwaStep"><div class="pwaStepNum">2</div><div class="pwaStepTxt">${t('pwaIosStep2')}</div></div>
+      <div class="pwaStep"><div class="pwaStepNum">3</div><div class="pwaStepTxt">${t('pwaIosStep3')}</div></div>
+      <div style="font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5">${t('pwaIosWarning')}</div>`;
+    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">${t('pwaGotItBtn')}</button>`;
   }else if(pwaDeferredPrompt){
-    body.innerHTML=`<div style="font-size:13px;color:var(--mut);line-height:1.6;text-align:center;padding:8px 0 4px">Telepítsd a MONYK Travelt a kezdőképernyődre — utána egy sima appként nyílik meg, böngésző nélkül.</div>`;
-    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="pwaBannerAction()">📲 Telepítés most</button>`;
+    body.innerHTML=`<div style="font-size:13px;color:var(--mut);line-height:1.6;text-align:center;padding:8px 0 4px">${t('pwaAndroidPromptBody')}</div>`;
+    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="pwaBannerAction()">${t('pwaInstallNowBtn')}</button>`;
   }else{
     body.innerHTML=`
-      <div style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5">Android/Chrome-on a böngésző menüjéből tudod hozzáadni az appot a kezdőképernyőhöz.</div>
-      <div class="pwaStep"><div class="pwaStepNum">1</div><div class="pwaStepTxt">Nyisd meg a böngésző menüjét (⋮ jobb felül)</div></div>
-      <div class="pwaStep"><div class="pwaStepNum">2</div><div class="pwaStepTxt">Válaszd: <b>„Telepítés”</b> vagy <b>„Hozzáadás a kezdőképernyőhöz”</b></div></div>
-      <div class="pwaStep"><div class="pwaStepNum">3</div><div class="pwaStepTxt">Erősítsd meg — az ikon megjelenik a kezdőképernyőn</div></div>`;
-    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">Értem</button>`;
+      <div style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5">${t('pwaAndroidIntro')}</div>
+      <div class="pwaStep"><div class="pwaStepNum">1</div><div class="pwaStepTxt">${t('pwaAndroidStep1')}</div></div>
+      <div class="pwaStep"><div class="pwaStepNum">2</div><div class="pwaStepTxt">${t('pwaAndroidStep2')}</div></div>
+      <div class="pwaStep"><div class="pwaStepNum">3</div><div class="pwaStepTxt">${t('pwaAndroidStep3')}</div></div>`;
+    foot.innerHTML=`<button class="btnp" style="width:100%" onclick="closePwaInfoModal()">${t('pwaGotItBtn')}</button>`;
   }
   document.getElementById('pwaInfoMbg').classList.add('on');
 };
@@ -9510,7 +9915,7 @@ window.addEventListener('message', function(ev){
       return;
     }
     // Ha settings overlay nyitva
-    const so=document.getElementById('settingsOv');
+    const so=document.getElementById('soPanel');
     if(so && so.classList.contains('open')){
       closeSettings();
       return;
@@ -10517,8 +10922,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
     bg.classList.add('on');
     if(trip.kod){ etoShowChat(trip.kod); }
     else{
-      etoSetBack(true); etoSetTitle('💬 Csoportos chat');
-      etoBody().innerHTML=`<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">💬</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">Csak megosztott utazásnál</div><div style="font-size:12px">Oszd meg ezt az utazást útitársaiddal (🔗), hogy tudjatok csevegni.</div></div>`;
+      etoSetBack(true); etoSetTitle(t('etoTtlChat'));
+      etoBody().innerHTML=`<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">💬</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">${t('etoChatOnlyTitle')}</div><div style="font-size:12px">${t('etoChatOnlyDesc')}</div></div>`;
     }
   };
   // ── Trip Dash fejléc 👥 gomb: az adott utazás résztvevőinek listája ──
@@ -10527,9 +10932,9 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const bg=document.getElementById('etoBg'); if(!bg)return;
     window.etoScopeTripId=tripId;
     bg.classList.add('on');
-    etoSetBack(true); etoSetTitle('👥 Résztvevők');
+    etoSetBack(true); etoSetTitle(t('etoTtlMembers'));
     const tgk=trip.tagok||[];
-    etoBody().innerHTML=`<div class="eto-sec">${tgk.length?tgk.map(tg=>`<div class="eto-doc"><div class="picn" style="background:rgba(255,255,255,.06);border-color:var(--brd);font-size:20px">${tg.ikon||'🧑'}</div><span class="nm">${chatEsc(tg.nev||'')}</span></div>`).join(''):'<div style="text-align:center;color:var(--mut);padding:24px 10px">Nincsenek résztvevők.</div>'}</div>`;
+    etoBody().innerHTML=`<div class="eto-sec">${tgk.length?tgk.map(tg=>`<div class="eto-doc"><div class="picn" style="background:rgba(255,255,255,.06);border-color:var(--brd);font-size:20px">${tg.ikon||'🧑'}</div><span class="nm">${chatEsc(tg.nev||'')}</span></div>`).join(''):`<div style="text-align:center;color:var(--mut);padding:24px 10px">${t('etoMembersEmpty')}</div>`}</div>`;
   };
   // ── fejléc 💬 gomb: egyenesen a chatre ugrik, kihagyva az Extra eszközök menüt ──
   window.openChatDirect=function(){
@@ -10572,31 +10977,31 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   function etoShowMenu(){
     etoSetBack(false);
-    etoSetTitle('🧰 Extra eszközök');
+    etoSetTitle(t('etoTtlMenu'));
     if(etoFlightTimer){clearInterval(etoFlightTimer);etoFlightTimer=null;}
     const cards=[
-      {ico:'💱',lbl:'Valutaváltó',onclick:'closeExtraTools();openValuta()'},
-      {ico:'📁',lbl:'Dokumentumtár',fn:'etoShowDocs'},
-      {ico:'🆘',lbl:'Vészhelyzeti kártya',fn:'etoShowEmergency'},
-      {ico:'✈️',lbl:'Repülő/vonat státusz',fn:'etoShowFlight'},
-      {ico:'📏',lbl:'Mérték-/hőátváltó',fn:'etoShowConverter'},
-      {ico:'⚡',lbl:'Gyors kiegyenlítés',fn:'etoShowPay'},
-      {ico:'🗳️',lbl:'Csoportos szavazás',fn:'etoShowPoll'},
-      {ico:'📍',lbl:'Élő helyzetmegosztás',fn:'etoShowLive'},
-      {ico:'📸',lbl:'Napi emlékfotó napló',fn:'etoShowDiary'}
+      {ico:'💱',lbl:t('etoLblValuta'),onclick:'closeExtraTools();openValuta()'},
+      {ico:'📁',lbl:t('etoLblDocs'),fn:'etoShowDocs'},
+      {ico:'🆘',lbl:t('etoLblEmergency'),fn:'etoShowEmergency'},
+      {ico:'✈️',lbl:t('etoLblFlight'),fn:'etoShowFlight'},
+      {ico:'📏',lbl:t('etoLblConverter'),fn:'etoShowConverter'},
+      {ico:'⚡',lbl:t('etoLblPay'),fn:'etoShowPay'},
+      {ico:'🗳️',lbl:t('etoLblPoll'),fn:'etoShowPoll'},
+      {ico:'📍',lbl:t('etoLblLive'),fn:'etoShowLive'},
+      {ico:'📸',lbl:t('etoLblDiary'),fn:'etoShowDiary'}
     ];
     etoBody().innerHTML=`<div class="eto-grid">${cards.map(c=>`<button class="eto-card" onclick="${c.onclick||(c.fn+'()')}"><span class="ic">${c.ico}</span><span class="lbl">${c.lbl}</span></button>`).join('')}</div>`;
   }
 
   function etoNoTrip(){
-    return `<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">🧳</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">Nincs aktív utazás</div><div style="font-size:12px">Aktiválj egy utazást a funkció használatához.</div></div>`;
+    return `<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">🧳</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">${t('etoNoTripTitle')}</div><div style="font-size:12px">${t('etoNoTripDesc')}</div></div>`;
   }
 
   // ── 1) DOKUMENTUMTÁR ──
   // preferTab: opcionális ('trip'|'shared') – globális belépési pontoknál ('shared')
   // nem kötelező, hogy legyen aktuális utazás.
   window.etoShowDocs=function(preferTab){
-    etoSetBack(true); etoSetTitle('📁 Dokumentumtár');
+    etoSetBack(true); etoSetTitle(t('etoTtlDocs'));
     const tab=preferTab||'trip';
     window.etoDocVaultTab=tab;
     const trip=etoCurrentTrip();
@@ -10605,19 +11010,19 @@ document.addEventListener('DOMContentLoaded',async()=>{
     if(!pin){
       etoBody().innerHTML=`<div style="text-align:center;padding:20px 6px">
         <div style="font-size:34px;margin-bottom:10px">🔒</div>
-        <div style="font-weight:800;margin-bottom:14px">Állíts be egy 4 jegyű PIN kódot a dokumentumtár védelméhez</div>
-        <div class="fld"><div class="flbl">ÚJ PIN</div><input class="fi" id="etoNewPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px"></div>
-        <div class="fld"><div class="flbl">PIN MÉGEGYSZER</div><input class="fi" id="etoNewPinConfirm" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px"></div>
-        <button class="btnp" style="width:100%;margin-top:6px" onclick="etoSetDocPin()">PIN beállítása</button>
+        <div style="font-weight:800;margin-bottom:14px">${t('etoDocsPinSetupMsg')}</div>
+        <div class="fld"><div class="flbl">${t('etoDocsNewPinLbl')}</div><input class="fi" id="etoNewPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px"></div>
+        <div class="fld"><div class="flbl">${t('etoDocsPinConfirmLbl')}</div><input class="fi" id="etoNewPinConfirm" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px"></div>
+        <button class="btnp" style="width:100%;margin-top:6px" onclick="etoSetDocPin()">${t('etoDocsSetPinBtn')}</button>
       </div>`;
       return;
     }
     if(!etoDocsUnlocked){
       etoBody().innerHTML=`<div style="text-align:center;padding:20px 6px">
         <div style="font-size:34px;margin-bottom:10px">🔒</div>
-        <div style="font-weight:800;margin-bottom:10px">Add meg a PIN kódot</div>
+        <div style="font-weight:800;margin-bottom:10px">${t('etoDocsEnterPinMsg')}</div>
         <input class="fi" id="etoEnterPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px;margin-bottom:10px">
-        <button class="btnp" style="width:100%" onclick="etoCheckDocPin()">Feloldás</button>
+        <button class="btnp" style="width:100%" onclick="etoCheckDocPin()">${t('etoDocsUnlockBtn')}</button>
       </div>`;
       return;
     }
@@ -10635,8 +11040,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
   window.etoSetDocPin=function(){
     const v=(document.getElementById('etoNewPin')||{}).value||'';
     const v2=(document.getElementById('etoNewPinConfirm')||{}).value||'';
-    if(!/^\d{4}$/.test(v)){ toast('Adj meg 4 számjegyet'); return; }
-    if(v!==v2){ toast('❌ A két PIN nem egyezik, próbáld újra'); return; }
+    if(!/^\d{4}$/.test(v)){ toast(t('etoDocsPin4DigitsToast')); return; }
+    if(v!==v2){ toast(t('etoDocsPinMismatchToast')); return; }
     try{localStorage.setItem('monyk_docvault_pin',v);}catch(e){}
     etoDocsUnlocked=true; etoRenderDocsList();
   };
@@ -10644,12 +11049,12 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const v=(document.getElementById('etoEnterPin')||{}).value||'';
     let pin=null; try{pin=localStorage.getItem('monyk_docvault_pin');}catch(e){}
     if(v===pin){ etoDocsUnlocked=true; etoRenderDocsList(); }
-    else toast('❌ Hibás PIN');
+    else toast(t('etoDocsPinWrongToast'));
   };
   window.etoSwitchDocVaultTab=function(tab){
     window.etoDocVaultTab=tab;
     if(tab==='trip'&&!etoCurrentTrip()){
-      etoSetTitle('📁 Dokumentumtár');
+      etoSetTitle(t('etoTtlDocs'));
       etoBody().innerHTML=etoDocVaultTabBar(tab)+etoNoTrip();
       return;
     }
@@ -10659,8 +11064,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const on='border:1.5px solid var(--acc);background:var(--adim);color:var(--acc)';
     const off='border:1.5px solid var(--brd);background:transparent;color:var(--mut)';
     return `<div style="display:flex;gap:6px;margin-bottom:12px">
-      <button onclick="etoSwitchDocVaultTab('trip')" style="flex:1;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;${tab==='trip'?on:off}">Ehhez az utazáshoz</button>
-      <button onclick="etoSwitchDocVaultTab('shared')" style="flex:1;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;${tab==='shared'?on:off}">🌍 Megosztott dokumentumok</button>
+      <button onclick="etoSwitchDocVaultTab('trip')" style="flex:1;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;${tab==='trip'?on:off}">${t('etoDocsTabTrip')}</button>
+      <button onclick="etoSwitchDocVaultTab('shared')" style="flex:1;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;${tab==='shared'?on:off}">${t('etoDocsTabShared')}</button>
     </div>`;
   }
   function etoRenderDocsList(){
@@ -10677,14 +11082,14 @@ document.addEventListener('DOMContentLoaded',async()=>{
         <input type="file" accept="image/*,application/pdf" id="etoDocFilePdf" style="display:none" onchange="etoAddDoc(this)">
         ${etoDocVaultTabBar(tab)}
         <div class="frow" style="margin-bottom:14px">
-          <button class="abtn" style="flex:1;justify-content:center" onclick="document.getElementById('etoDocFile').click()">📷 Fotózás</button>
-          <button class="abtn" style="flex:1;justify-content:center" onclick="document.getElementById('etoDocFilePdf').click()">📄 Kép/PDF feltöltése</button>
+          <button class="abtn" style="flex:1;justify-content:center" onclick="document.getElementById('etoDocFile').click()">${t('etoDocsPhotoBtn')}</button>
+          <button class="abtn" style="flex:1;justify-content:center" onclick="document.getElementById('etoDocFilePdf').click()">${t('etoDocsUploadBtn')}</button>
         </div>
         <div id="etoDocList">${items.length?items.map(d=>{
           const isPdf=(d.mime||'').indexOf('pdf')>=0;
           return `<div class="eto-doc">${isPdf?`<div class="picn" onclick="etoViewDoc('${d.id}')">📄</div>`:`<img id="etoDocImg_${d.id}" onclick="etoViewDoc('${d.id}')">`}<span class="nm">${d.name}</span><button class="rm" style="background:none;border:none;color:var(--red);font-size:16px;cursor:pointer;padding:4px" onclick="etoRemoveDoc('${d.id}')">🗑️</button></div>`;
-        }).join(''):`<div style="text-align:center;color:var(--mut);padding:20px;font-size:13px">${tab==='shared'?'A megosztott dokumentumtár üres.<br>Ide olyan fájlokat érdemes feltölteni, amik minden utazásodnál kellenek (pl. oltási igazolás, útlevélmásolat).':'A dokumentumtár üres.<br>Fotózz le vagy tölts fel útlevelet, vízumot, jegyet, PDF-et.'}</div>`}</div>
-        <div class="eto-note">${tab==='shared'?'🌍 Ezek a dokumentumok minden utazásod Dokumentumtárában megjelennek – törléskor is mindenhonnan eltűnnek. 🔒 A PIN csak ezen a készüléken véd, a fájlok nem kerülnek felhőbe.':'🔒 A PIN csak ezen a készüléken véd. A dokumentumok nem kerülnek felhőbe.'}</div>`;
+        }).join(''):`<div style="text-align:center;color:var(--mut);padding:20px;font-size:13px">${tab==='shared'?t('etoDocsEmptySharedMsg'):t('etoDocsEmptyTripMsg')}</div>`}</div>
+        <div class="eto-note">${tab==='shared'?t('etoDocsNoteSharedMsg'):t('etoDocsNoteTripMsg')}</div>`;
       items.forEach(d=>{
         if((d.mime||'').indexOf('pdf')>=0)return; // PDF-hez nincs img thumbnail
         const key=d.idbKey||(tab==='shared'?('docvault_shared_'+d.id):('doc_'+d.id));
@@ -10703,7 +11108,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const trip=etoCurrentTrip();
     if(tab==='trip'&&!trip){inp.value='';return;}
     const isPdf=(file.type||'').indexOf('pdf')>=0;
-    const name=prompt('Dokumentum neve (pl. Útlevél, Vízum, Jegy):',isPdf?'PDF dokumentum':'Dokumentum')||'Dokumentum';
+    const name=prompt(t('etoDocsNamePrompt'),isPdf?t('etoDocsPdfDefaultName'):t('etoDocsDefaultName'))||t('etoDocsDefaultName');
     const id=genId();
     const key=tab==='shared'?('docvault_shared_'+id):('doc_'+id);
     etoIdbPut(key,file).then(()=>{
@@ -10714,14 +11119,14 @@ document.addEventListener('DOMContentLoaded',async()=>{
         trip.docVault.push({id,name,idbKey:key,mime:file.type||'',ts:Date.now()});
         saveTrips();
       }
-      etoRenderDocsList(); toast('✅ Elmentve');
-    }).catch(()=>{ toast('❌ Nem sikerült elmenteni a fájlt'); });
+      etoRenderDocsList(); toast(t('etoToastSaved'));
+    }).catch(()=>{ toast(t('etoDocsSaveFailToast')); });
     inp.value='';
   };
   window.etoRemoveDoc=function(id){
     const tab=window.etoDocVaultTab||'trip';
     if(tab==='shared'){
-      if(!confirm('Törlöd ezt a megosztott dokumentumot?\nEz MINDEN utazásod Dokumentumtárából eltünteti.'))return;
+      if(!confirm(t('etoDocsDelSharedConfirm')))return;
       const d=etoSharedVaultGet().find(x=>x.id===id);
       etoSharedVaultRemove(id);
       etoRenderDocsList();
@@ -10733,7 +11138,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
       return;
     }
     const trip=etoCurrentTrip(); if(!trip)return;
-    if(!confirm('Törlöd ezt a dokumentumot?'))return;
+    if(!confirm(t('etoDocsDelConfirm')))return;
     const d=(trip.docVault||[]).find(x=>x.id===id);
     trip.docVault=(trip.docVault||[]).filter(x=>x.id!==id);
     saveTrips(); etoRenderDocsList();
@@ -10770,20 +11175,20 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   // ── 2) VÉSZHELYZETI KÁRTYA ──
   window.etoShowEmergency=function(){
-    etoSetBack(true); etoSetTitle('🆘 Vészhelyzeti kártya');
+    etoSetBack(true); etoSetTitle(t('etoTtlEmergency'));
     const trip=etoCurrentTrip();
     if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
     const ec=trip.emergencyCard||{};
     etoBody().innerHTML=`
-      <div class="fld"><div class="flbl">VÉRCSOPORT</div><input class="fi" id="etoEcBlood" value="${ec.blood||''}" placeholder="pl. A+"></div>
-      <div class="fld"><div class="flbl">ALLERGIA / GYÓGYSZER</div><input class="fi" id="etoEcAllergy" value="${ec.allergy||''}" placeholder="pl. penicillin allergia"></div>
-      <div class="fld"><div class="flbl">VÉSZHELYZETI KONTAKT NÉV</div><input class="fi" id="etoEcName" value="${ec.contactName||''}" placeholder="Név"></div>
-      <div class="fld"><div class="flbl">VÉSZHELYZETI KONTAKT TELEFON</div><input class="fi" id="etoEcPhone" value="${ec.contactPhone||''}" placeholder="+36…" type="tel"></div>
-      <div class="fld"><div class="flbl">NAGYKÖVETSÉGI SZÁM</div><input class="fi" id="etoEcEmbassy" value="${ec.embassy||''}" placeholder="+…" type="tel"></div>
-      <div class="fld"><div class="flbl">BALESETBIZTOSÍTÁSI SZÁM</div><input class="fi" id="etoEcInsurance" value="${ec.insurance||''}" placeholder="Kötvényszám / segélyhívó"></div>
-      <button class="btnp" style="width:100%;margin-top:6px" onclick="etoSaveEmergency()">Mentés</button>
-      ${(ec.blood||ec.contactName||ec.insurance)?`<button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoShareEmergency()">📤 Megosztás</button>`:''}
-      <div class="eto-note">Csoportos utazásnál ez a kártya az útitársakkal is szinkronizálódik.</div>`;
+      <div class="fld"><div class="flbl">${t('etoEcBloodLbl')}</div><input class="fi" id="etoEcBlood" value="${ec.blood||''}" placeholder="${t('etoEcBloodPh')}"></div>
+      <div class="fld"><div class="flbl">${t('etoEcAllergyLbl')}</div><input class="fi" id="etoEcAllergy" value="${ec.allergy||''}" placeholder="${t('etoEcAllergyPh')}"></div>
+      <div class="fld"><div class="flbl">${t('etoEcNameLbl')}</div><input class="fi" id="etoEcName" value="${ec.contactName||''}" placeholder="${t('etoEcNamePh')}"></div>
+      <div class="fld"><div class="flbl">${t('etoEcPhoneLbl')}</div><input class="fi" id="etoEcPhone" value="${ec.contactPhone||''}" placeholder="${t('etoEcPhonePh')}" type="tel"></div>
+      <div class="fld"><div class="flbl">${t('etoEcEmbassyLbl')}</div><input class="fi" id="etoEcEmbassy" value="${ec.embassy||''}" placeholder="${t('etoEcEmbassyPh')}" type="tel"></div>
+      <div class="fld"><div class="flbl">${t('etoEcInsuranceLbl')}</div><input class="fi" id="etoEcInsurance" value="${ec.insurance||''}" placeholder="${t('etoEcInsurancePh')}"></div>
+      <button class="btnp" style="width:100%;margin-top:6px" onclick="etoSaveEmergency()">${t('attSave')}</button>
+      ${(ec.blood||ec.contactName||ec.insurance)?`<button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoShareEmergency()">${t('etoEcShareBtn')}</button>`:''}
+      <div class="eto-note">${t('etoEcNote')}</div>`;
   };
   window.etoSaveEmergency=function(){
     const trip=etoCurrentTrip(); if(!trip)return;
@@ -10795,36 +11200,36 @@ document.addEventListener('DOMContentLoaded',async()=>{
       embassy:$('etoEcEmbassy').value.trim(),
       insurance:$('etoEcInsurance').value.trim()
     };
-    saveTrips(); toast('✅ Mentve'); window.etoShowEmergency();
+    saveTrips(); toast(t('etoToastSavedPlain')); window.etoShowEmergency();
   };
   window.etoShareEmergency=function(){
     const trip=etoCurrentTrip(); if(!trip)return;
     const ec=trip.emergencyCard||{};
-    const txt=`🆘 VÉSZHELYZETI KÁRTYA\nVércsoport: ${ec.blood||'-'}\nAllergia: ${ec.allergy||'-'}\nKontakt: ${ec.contactName||'-'} (${ec.contactPhone||'-'})\nNagykövetség: ${ec.embassy||'-'}\nBalesetbiztosítás: ${ec.insurance||'-'}`;
-    if(navigator.share){ navigator.share({title:'Vészhelyzeti kártya',text:txt}).catch(()=>{}); }
-    else if(navigator.clipboard){ navigator.clipboard.writeText(txt); toast('📋 Vágólapra másolva'); }
+    const txt=`${t('etoEcShareHeader')}\n${t('etoEcShareBlood')}: ${ec.blood||'-'}\n${t('etoEcShareAllergy')}: ${ec.allergy||'-'}\n${t('etoEcShareContact')}: ${ec.contactName||'-'} (${ec.contactPhone||'-'})\n${t('etoEcShareEmbassy')}: ${ec.embassy||'-'}\n${t('etoEcShareInsurance')}: ${ec.insurance||'-'}`;
+    if(navigator.share){ navigator.share({title:t('etoEcShareTitle'),text:txt}).catch(()=>{}); }
+    else if(navigator.clipboard){ navigator.clipboard.writeText(txt); toast(t('etoToastCopied')); }
   };
 
   // ── 3) REPÜLŐ/VONAT STÁTUSZ ──
   window.etoShowFlight=function(){
-    etoSetBack(true); etoSetTitle('✈️ Repülő/vonat státusz');
+    etoSetBack(true); etoSetTitle(t('etoTtlFlight'));
     const trip=etoCurrentTrip();
     if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
     const fs=trip.flightStatus||{};
     etoBody().innerHTML=`
       <div class="frow" style="margin-bottom:14px">
-        <button class="fchip ${(!fs.type||fs.type==='flight')?'on':''}" onclick="etoSetFlightType('flight')">✈️ Repülő</button>
-        <button class="fchip ${fs.type==='train'?'on':''}" onclick="etoSetFlightType('train')">🚆 Vonat</button>
+        <button class="fchip ${(!fs.type||fs.type==='flight')?'on':''}" onclick="etoSetFlightType('flight')">${t('etoFlTypeFlight')}</button>
+        <button class="fchip ${fs.type==='train'?'on':''}" onclick="etoSetFlightType('train')">${t('etoFlTypeTrain')}</button>
       </div>
-      <div class="fld"><div class="flbl">JÁRAT/VONATSZÁM</div><input class="fi" id="etoFlCode" value="${fs.code||''}" placeholder="pl. LH1234"></div>
-      <div class="fld"><div class="flbl">HONNAN</div><input class="fi" id="etoFlFrom" value="${fs.from||''}" placeholder="Indulási hely"></div>
-      <div class="fld"><div class="flbl">HOVÁ</div><input class="fi" id="etoFlTo" value="${fs.to||''}" placeholder="Érkezési hely"></div>
-      <div class="fld"><div class="flbl">INDULÁS IDŐPONTJA</div><input class="fi" id="etoFlDt" type="datetime-local" value="${fs.dt||''}"></div>
-      <div class="fld"><div class="flbl">KAPU / VÁGÁNY</div><input class="fi" id="etoFlGate" value="${fs.gate||''}" placeholder="pl. B12"></div>
-      <button class="btnp" style="width:100%;margin-bottom:10px" onclick="etoSaveFlight()">Mentés</button>
-      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="monykEnableNotifications()">🔔 Emlékeztető értesítések bekapcsolása</button>
+      <div class="fld"><div class="flbl">${t('etoFlCodeLbl')}</div><input class="fi" id="etoFlCode" value="${fs.code||''}" placeholder="${t('etoFlCodePh')}"></div>
+      <div class="fld"><div class="flbl">${t('etoFlFromLbl')}</div><input class="fi" id="etoFlFrom" value="${fs.from||''}" placeholder="${t('etoFlFromPh')}"></div>
+      <div class="fld"><div class="flbl">${t('etoFlToLbl')}</div><input class="fi" id="etoFlTo" value="${fs.to||''}" placeholder="${t('etoFlToPh')}"></div>
+      <div class="fld"><div class="flbl">${t('etoFlDtLbl')}</div><input class="fi" id="etoFlDt" type="datetime-local" value="${fs.dt||''}"></div>
+      <div class="fld"><div class="flbl">${t('etoFlGateLbl')}</div><input class="fi" id="etoFlGate" value="${fs.gate||''}" placeholder="${t('etoFlGatePh')}"></div>
+      <button class="btnp" style="width:100%;margin-bottom:10px" onclick="etoSaveFlight()">${t('attSave')}</button>
+      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="monykEnableNotifications()">${t('etoFlNotifBtn')}</button>
       <div id="etoFlCountdown"></div>
-      <div class="eto-note">A visszaszámláló csak nyitott appnál frissül élőben; az emlékeztető push (indulás előtt 3h / 1h) zárt app esetén is megérkezik, ha bekapcsoltad az értesítéseket.</div>`;
+      <div class="eto-note">${t('etoFlNote')}</div>`;
     etoTickFlight();
     if(etoFlightTimer)clearInterval(etoFlightTimer);
     etoFlightTimer=setInterval(etoTickFlight,30000);
@@ -10840,7 +11245,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
       code:$('etoFlCode').value.trim(), from:$('etoFlFrom').value.trim(), to:$('etoFlTo').value.trim(),
       dt:$('etoFlDt').value, gate:$('etoFlGate').value.trim()
     };
-    saveTrips(); toast('✅ Mentve'); etoTickFlight();
+    saveTrips(); toast(t('etoToastSavedPlain')); etoTickFlight();
   };
   function etoTickFlight(){
     const trip=etoCurrentTrip(); const el=document.getElementById('etoFlCountdown'); if(!trip||!el)return;
@@ -10849,33 +11254,35 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const target=new Date(fs.dt).getTime(); const now=Date.now(); const diff=target-now;
     const ico=fs.type==='train'?'🚆':'✈️';
     if(diff<=0){
-      el.innerHTML=`<div class="eto-flight-card"><div style="font-size:28px">${ico}</div><div style="font-weight:800;margin-top:6px">Indulás megtörtént</div></div>`;
+      el.innerHTML=`<div class="eto-flight-card"><div style="font-size:28px">${ico}</div><div style="font-weight:800;margin-top:6px">${t('etoFlDeparted')}</div></div>`;
       return;
     }
     const h=Math.floor(diff/3600000), d=Math.floor(h/24), hh=h%24, m=Math.floor((diff%3600000)/60000);
     el.innerHTML=`<div class="eto-flight-card">
       <div style="font-size:28px">${ico}</div>
       <div style="font-size:12px;color:var(--mut);margin-top:4px">${fs.code||''} ${fs.from?fs.from+' → '+fs.to:''}</div>
-      <div class="eto-flight-big" style="margin-top:8px">${d>0?d+'n ':''}${hh}ó ${m}p</div>
-      <div style="font-size:11px;color:var(--mut);margin-top:4px">indulásig${fs.gate?' • Kapu/vágány: '+fs.gate:''}</div>
+      <div class="eto-flight-big" style="margin-top:8px">${d>0?d+t('etoUnitDayShort')+' ':''}${hh}${t('etoUnitHourShort')} ${m}${t('etoUnitMinuteShort')}</div>
+      <div style="font-size:11px;color:var(--mut);margin-top:4px">${t('etoFlUntilDeparture')}${fs.gate?t('etoFlGateInlinePrefix')+fs.gate:''}</div>
     </div>`;
   }
 
   // ── 4) MÉRTÉK-/HŐMÉRSÉKLET-ÁTVÁLTÓ ──
-  const ETO_UNITS={
-    temp:[['C','°C'],['F','°F']],
-    len:[['km','km'],['mi','mi'],['m','m'],['ft','ft']],
-    wt:[['kg','kg'],['lb','lb']],
-    vol:[['l','liter'],['gal','gallon (US)']]
-  };
+  function ETO_UNITS_GET(){
+    return {
+      temp:[['C','°C'],['F','°F']],
+      len:[['km','km'],['mi','mi'],['m','m'],['ft','ft']],
+      wt:[['kg','kg'],['lb','lb']],
+      vol:[['l',t('etoUnitLiter')],['gal',t('etoUnitGallon')]]
+    };
+  }
   window.etoShowConverter=function(){
-    etoSetBack(true); etoSetTitle('📏 Mérték-/hőátváltó');
+    etoSetBack(true); etoSetTitle(t('etoTtlConverter'));
     etoBody().innerHTML=`
       <div class="frow" id="etoConvCats" style="margin-bottom:14px">
-        <button class="fchip on" onclick="etoConvCat(this,'temp')">🌡️ Hőmérséklet</button>
-        <button class="fchip" onclick="etoConvCat(this,'len')">📏 Hossz</button>
-        <button class="fchip" onclick="etoConvCat(this,'wt')">⚖️ Súly</button>
-        <button class="fchip" onclick="etoConvCat(this,'vol')">🧴 Térfogat</button>
+        <button class="fchip on" onclick="etoConvCat(this,'temp')">${t('etoConvTemp')}</button>
+        <button class="fchip" onclick="etoConvCat(this,'len')">${t('etoConvLen')}</button>
+        <button class="fchip" onclick="etoConvCat(this,'wt')">${t('etoConvWt')}</button>
+        <button class="fchip" onclick="etoConvCat(this,'vol')">${t('etoConvVol')}</button>
       </div>
       <div class="eto-conv-row">
         <input class="fi" id="etoConvA" type="number" inputmode="decimal" placeholder="0" oninput="etoConvCalc()">
@@ -10892,7 +11299,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     document.querySelectorAll('#etoConvCats .fchip').forEach(b=>b.classList.remove('on'));
     if(btn)btn.classList.add('on');
     window.__etoConvCat=cat;
-    const us=ETO_UNITS[cat];
+    const us=ETO_UNITS_GET()[cat];
     const a=document.getElementById('etoConvAU'), b=document.getElementById('etoConvBU');
     a.innerHTML=us.map((u,i)=>`<option value="${u[0]}" ${i===0?'selected':''}>${u[1]}</option>`).join('');
     b.innerHTML=us.map((u,i)=>`<option value="${u[0]}" ${i===1?'selected':''}>${u[1]}</option>`).join('');
@@ -10923,17 +11330,17 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   // ── 6) GYORS KIEGYENLÍTÉS FIZETÉSI LINKKEL ──
   window.etoShowPay=function(){
-    etoSetBack(true); etoSetTitle('⚡ Gyors kiegyenlítés');
+    etoSetBack(true); etoSetTitle(t('etoTtlPay'));
     let h={}; try{h=JSON.parse(localStorage.getItem('monyk_pay_handles')||'{}');}catch(e){}
     etoBody().innerHTML=`
-      <div class="fld"><div class="flbl">ÖSSZEG</div><input class="fi" id="etoPayAmt" type="number" inputmode="decimal" placeholder="0"></div>
-      <div class="fld"><div class="flbl">PÉNZNEM</div><input class="fi" id="etoPayCur" value="${h.cur||'EUR'}" placeholder="EUR"></div>
-      <div class="fld"><div class="flbl">MEGJEGYZÉS</div><input class="fi" id="etoPayNote" placeholder="pl. vacsora"></div>
-      <div class="secdiv">FOGADÓ FELHASZNÁLÓNEVEK</div>
-      <div class="fld"><div class="flbl">REVOLUT.ME</div><input class="fi" id="etoPayRev" value="${h.revolut||''}" placeholder="felhasznalonev"></div>
-      <div class="fld"><div class="flbl">PAYPAL.ME</div><input class="fi" id="etoPayPp" value="${h.paypal||''}" placeholder="felhasznalonev"></div>
-      <div class="fld"><div class="flbl">WISE</div><input class="fi" id="etoPayWise" value="${h.wise||''}" placeholder="felhasznalonev"></div>
-      <button class="btnp" style="width:100%;margin-bottom:14px" onclick="etoGenPayLinks()">Link generálása</button>
+      <div class="fld"><div class="flbl">${t('etoPayAmtLbl')}</div><input class="fi" id="etoPayAmt" type="number" inputmode="decimal" placeholder="0"></div>
+      <div class="fld"><div class="flbl">${t('etoPayCurLbl')}</div><input class="fi" id="etoPayCur" value="${h.cur||'EUR'}" placeholder="EUR"></div>
+      <div class="fld"><div class="flbl">${t('etoPayNoteLbl')}</div><input class="fi" id="etoPayNote" placeholder="${t('etoPayNotePh')}"></div>
+      <div class="secdiv">${t('etoPayRecipientsLbl')}</div>
+      <div class="fld"><div class="flbl">REVOLUT.ME</div><input class="fi" id="etoPayRev" value="${h.revolut||''}" placeholder="${t('etoPayUsernamePh')}"></div>
+      <div class="fld"><div class="flbl">PAYPAL.ME</div><input class="fi" id="etoPayPp" value="${h.paypal||''}" placeholder="${t('etoPayUsernamePh')}"></div>
+      <div class="fld"><div class="flbl">WISE</div><input class="fi" id="etoPayWise" value="${h.wise||''}" placeholder="${t('etoPayUsernamePh')}"></div>
+      <button class="btnp" style="width:100%;margin-bottom:14px" onclick="etoGenPayLinks()">${t('etoPayGenBtn')}</button>
       <div id="etoPayLinks"></div>`;
   };
   window.etoGenPayLinks=function(){
@@ -10946,50 +11353,50 @@ document.addEventListener('DOMContentLoaded',async()=>{
     let html='';
     if(rev){ html+=etoPayBtn('Revolut',`https://revolut.me/${rev}${amtStr?'/'+amtStr+cur:''}`); }
     if(pp){ html+=etoPayBtn('PayPal',`https://paypal.me/${pp}${amtStr?'/'+amtStr+cur:''}`); }
-    if(wise){ html+=etoPayBtn('Wise (add meg az összeget kézzel)',`https://wise.com/pay/r/${wise}`); }
-    if(!html) html='<div style="color:var(--mut);font-size:13px;text-align:center;padding:14px">Adj meg legalább egy felhasználónevet.</div>';
-    else html+=`<button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoCopyPaySummary('${amtStr}','${cur}',${JSON.stringify(note)})">📋 Szöveg másolása</button>`;
+    if(wise){ html+=etoPayBtn(t('etoPayWiseBtn'),`https://wise.com/pay/r/${wise}`); }
+    if(!html) html=`<div style="color:var(--mut);font-size:13px;text-align:center;padding:14px">${t('etoPayNoUsernameMsg')}</div>`;
+    else html+=`<button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoCopyPaySummary('${amtStr}','${cur}',${JSON.stringify(note)})">${t('etoPayCopyBtn')}</button>`;
     document.getElementById('etoPayLinks').innerHTML=html;
   };
   function etoPayBtn(label,link){
-    return `<button class="abtn" style="width:100%;justify-content:center;margin-bottom:8px" onclick="window.open('${link}','_blank')">💳 ${label} megnyitása</button>`;
+    return `<button class="abtn" style="width:100%;justify-content:center;margin-bottom:8px" onclick="window.open('${link}','_blank')">${t('etoPayOpenBtnPrefix')}${label}${t('etoPayOpenBtnSuffix')}</button>`;
   }
   window.etoCopyPaySummary=function(amt,cur,note){
-    const txt=`Kérlek utald el: ${amt} ${cur}${note?' — '+note:''}`;
-    if(navigator.clipboard){ navigator.clipboard.writeText(txt); toast('📋 Vágólapra másolva'); }
+    const txt=`${t('etoPayCopySummaryPrefix')}${amt} ${cur}${note?' — '+note:''}`;
+    if(navigator.clipboard){ navigator.clipboard.writeText(txt); toast(t('etoToastCopied')); }
   };
 
   // ── 7) CSOPORTOS SZAVAZÁS ──
   window.etoShowPoll=function(){
-    etoSetBack(true); etoSetTitle('🗳️ Csoportos szavazás');
+    etoSetBack(true); etoSetTitle(t('etoTtlPoll'));
     const trip=etoCurrentTrip();
     if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
     if(!trip.polls)trip.polls=[];
     etoBody().innerHTML=`
-      <div class="fld"><div class="flbl">ÚJ KÉRDÉS</div><input class="fi" id="etoPollQ" placeholder="pl. Hova menjünk ma?"></div>
-      <div class="fld"><div class="flbl">OPCIÓK (vesszővel elválasztva)</div><input class="fi" id="etoPollOpts" placeholder="pl. Étterem, Strand, Múzeum"></div>
-      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="etoAddPoll()">+ Szavazás létrehozása</button>
+      <div class="fld"><div class="flbl">${t('etoPollQLbl')}</div><input class="fi" id="etoPollQ" placeholder="${t('etoPollQPh')}"></div>
+      <div class="fld"><div class="flbl">${t('etoPollOptsLbl')}</div><input class="fi" id="etoPollOpts" placeholder="${t('etoPollOptsPh')}"></div>
+      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="etoAddPoll()">${t('etoPollCreateBtn')}</button>
       <div id="etoPollList">${etoPollListHtml(trip)}</div>`;
   };
   function etoPollListHtml(trip){
     const polls=trip.polls||[];
-    if(!polls.length) return `<div style="text-align:center;color:var(--mut);padding:16px;font-size:13px">Még nincs szavazás.</div>`;
+    if(!polls.length) return `<div style="text-align:center;color:var(--mut);padding:16px;font-size:13px">${t('etoPollEmpty')}</div>`;
     return polls.slice().reverse().map(p=>{
       const total=p.options.reduce((s,o)=>s+o.votes,0)||1;
       return `<div class="eto-sec"><div style="font-weight:800;margin-bottom:8px">${p.q}</div>
         ${p.options.map((o,i)=>`<div class="eto-poll-opt" onclick="etoVotePoll('${p.id}',${i})"><span>${o.text}</span><b style="color:var(--acc)">${o.votes}</b></div><div class="eto-poll-bar"><div class="eto-poll-fil" style="width:${Math.round(o.votes/total*100)}%"></div></div>`).join('')}
-        <button style="color:var(--red);background:none;border:none;font-size:11px;margin-top:6px;cursor:pointer;font-family:inherit" onclick="etoDeletePoll('${p.id}')">🗑️ Szavazás törlése</button>
+        <button style="color:var(--red);background:none;border:none;font-size:11px;margin-top:6px;cursor:pointer;font-family:inherit" onclick="etoDeletePoll('${p.id}')">${t('etoPollDeleteBtn')}</button>
         </div>`;
     }).join('');
   }
   window.etoAddPoll=function(){
     const trip=etoCurrentTrip(); if(!trip)return;
     const q=$('etoPollQ').value.trim(); const optsRaw=$('etoPollOpts').value.trim();
-    if(!q||!optsRaw){ toast('Adj meg kérdést és opciókat'); return; }
+    if(!q||!optsRaw){ toast(t('etoPollNeedQOpts')); return; }
     const opts=optsRaw.split(',').map(s=>s.trim()).filter(Boolean).slice(0,6);
-    if(opts.length<2){ toast('Legalább 2 opció kell'); return; }
+    if(opts.length<2){ toast(t('etoPollNeed2Opts')); return; }
     if(!trip.polls)trip.polls=[];
-    trip.polls.push({id:genId(),q,options:opts.map(t=>({text:t,votes:0})),ts:Date.now()});
+    trip.polls.push({id:genId(),q,options:opts.map(o=>({text:o,votes:0})),ts:Date.now()});
     saveTrips(); window.etoShowPoll();
   };
   window.etoVotePoll=function(pid,idx){
@@ -11006,69 +11413,70 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   // ── 8) ÉLŐ HELYZETMEGOSZTÁS ──
   window.etoShowLive=function(){
-    etoSetBack(true); etoSetTitle('📍 Élő helyzetmegosztás');
+    etoSetBack(true); etoSetTitle(t('etoTtlLive'));
     const trip=etoCurrentTrip();
     if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
     trip.liveShare=trip.liveShare||{};
     trip.liveShare.members=trip.liveShare.members||{};
-    const myKey=myProfileName||'Ismeretlen';
+    const myKey=myProfileName||t('etoUnknownUser');
     const mine=trip.liveShare.members[myKey]||{enabled:false};
+    const liveLocale=lang==='hu'?'hu-HU':lang==='de'?'de-DE':'en-US';
     // Lista az összes csapattag legutóbb megosztott pozíciójáról (mindenki a sajátját írja, nem írják egymást felül)
     const allEntries=Object.entries(trip.liveShare.members).filter(([name])=>name!==myKey);
-    const othersHTML=allEntries.length?`<div class="secdiv" style="margin-top:14px">👥 Csapat pozíciói</div>`+allEntries.map(([name,m])=>{
-      const when=m.lastTs?new Date(m.lastTs).toLocaleString():'még nem osztott meg pozíciót';
+    const othersHTML=allEntries.length?`<div class="secdiv" style="margin-top:14px">${t('etoLiveTeamPositions')}</div>`+allEntries.map(([name,m])=>{
+      const when=m.lastTs?new Date(m.lastTs).toLocaleString(liveLocale):t('etoLiveNeverShared');
       return `<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:12px;padding:10px 12px;margin-bottom:8px">
         <div style="min-width:0">
           <div style="font-weight:700;font-size:13px">${chatEsc(name)} ${m.enabled?'🟢':'⚪'}</div>
           <div style="font-size:10.5px;color:var(--mut)">${chatEsc(when)}</div>
         </div>
-        ${m.lastLink?`<button class="abtn" style="flex-shrink:0" onclick="window.open('${m.lastLink}','_blank')">🗺️ Térkép</button>`:''}
+        ${m.lastLink?`<button class="abtn" style="flex-shrink:0" onclick="window.open('${m.lastLink}','_blank')">${t('etoLiveMapBtn')}</button>`:''}
       </div>`;
-    }).join(''):`<div class="eto-note" style="margin-top:14px">Még senki más nem osztott meg pozíciót ebben az utazásban.</div>`;
+    }).join(''):`<div class="eto-note" style="margin-top:14px">${t('etoLiveNoOthers')}</div>`;
     etoBody().innerHTML=`
       <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid var(--brd);border-radius:14px;padding:14px;margin-bottom:14px">
-        <div><div style="font-weight:800">Helyzetmegosztás</div><div style="font-size:11px;color:var(--mut)">A csapat láthatja, hol jársz</div></div>
+        <div><div style="font-weight:800">${t('etoLiveToggleTitle')}</div><div style="font-size:11px;color:var(--mut)">${t('etoLiveToggleSub')}</div></div>
         <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0">
           <input type="checkbox" id="etoLiveToggle" ${mine.enabled?'checked':''} onchange="etoToggleLive(this.checked)" style="opacity:0;width:0;height:0">
           <span style="position:absolute;inset:0;background:${mine.enabled?'var(--acc)':'rgba(255,255,255,.15)'};border-radius:26px;transition:.2s;pointer-events:none"></span>
           <span style="position:absolute;top:3px;left:${mine.enabled?'23px':'3px'};width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s;pointer-events:none"></span>
         </label>
       </div>
-      <button class="btnp" style="width:100%;margin-bottom:10px" onclick="etoShareLocationNow()">📍 Pozíció megosztása most</button>
-      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="etoRequestLocation()">🙋 Frissítést kérek a csapattól</button>
-      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="monykEnableNotifications()">🔔 Értesítések bekapcsolása ezen a készüléken</button>
-      <div id="etoLiveLast" class="eto-note" style="margin-top:0">${mine.lastLink?`Utoljára megosztva: ${new Date(mine.lastTs).toLocaleString()} · <a href="#" onclick="window.open('${mine.lastLink}','_blank');return false" style="color:var(--acc);font-weight:700">🗺️ Térkép megnyitása</a>`:'Még nem osztottál meg pozíciót.'}</div>
-      <div class="eto-note">A kapcsoló jelzi a csapatnak, hogy elérhető vagy — a valós pozíció frissítéséhez nyomd meg a gombot, amikor meg szeretnéd osztani, hol vagy. Amíg ez a képernyő nyitva van, a telefon nem alszik el; háttérbe/zárt appra váltva a frissítés szünetel, de a "Frissítést kérek" gomb push értesítést küld a társaidnak, hogy nyissák meg és osszák meg friss pozíciójukat.${othersHTML}</div>`;
+      <button class="btnp" style="width:100%;margin-bottom:10px" onclick="etoShareLocationNow()">${t('etoLiveShareNowBtn')}</button>
+      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="etoRequestLocation()">${t('etoLiveRequestBtn')}</button>
+      <button class="abtn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="monykEnableNotifications()">${t('etoLiveNotifBtn')}</button>
+      <div id="etoLiveLast" class="eto-note" style="margin-top:0">${mine.lastLink?`${t('etoLiveLastSharedPrefix')}${new Date(mine.lastTs).toLocaleString(liveLocale)} · <a href="#" onclick="window.open('${mine.lastLink}','_blank');return false" style="color:var(--acc);font-weight:700">${t('etoLiveOpenMapLink')}</a>`:t('etoLiveNeverSharedSelf')}</div>
+      <div class="eto-note">${t('etoLiveNote')}${othersHTML}</div>`;
     if(mine.enabled) etoAcquireWakeLock();
   };
   window.etoToggleLive=function(checked){
     const trip=etoCurrentTrip(); if(!trip)return;
     trip.liveShare=trip.liveShare||{}; trip.liveShare.members=trip.liveShare.members||{};
-    const myKey=myProfileName||'Ismeretlen';
+    const myKey=myProfileName||t('etoUnknownUser');
     trip.liveShare.members[myKey]=trip.liveShare.members[myKey]||{};
     trip.liveShare.members[myKey].enabled=checked;
     saveTrips(); window.etoShowLive();
   };
   window.etoShareLocationNow=function(){
     const trip=etoCurrentTrip(); if(!trip)return;
-    if(!navigator.geolocation){ toast('A helymeghatározás nem elérhető'); return; }
+    if(!navigator.geolocation){ toast(t('etoLiveNoGeoToast')); return; }
     navigator.geolocation.getCurrentPosition(function(pos){
       const latitude=pos.coords.latitude, longitude=pos.coords.longitude;
       const link=`https://maps.google.com/?q=${latitude},${longitude}`;
       trip.liveShare=trip.liveShare||{}; trip.liveShare.members=trip.liveShare.members||{};
-      const myKey=myProfileName||'Ismeretlen';
+      const myKey=myProfileName||t('etoUnknownUser');
       trip.liveShare.members[myKey]=trip.liveShare.members[myKey]||{};
       trip.liveShare.members[myKey].enabled=true;
       trip.liveShare.members[myKey].lastLink=link;
       trip.liveShare.members[myKey].lastTs=Date.now();
       saveTrips();
-      if(navigator.share){ navigator.share({title:'Az én pozícióm',text:'Itt vagyok most:',url:link}).catch(()=>{}); }
-      else if(navigator.clipboard){ navigator.clipboard.writeText(link); toast('📋 Link a vágólapon'); }
+      if(navigator.share){ navigator.share({title:t('etoLiveShareTitle'),text:t('etoLiveShareText'),url:link}).catch(()=>{}); }
+      else if(navigator.clipboard){ navigator.clipboard.writeText(link); toast(t('etoLiveLinkCopiedToast')); }
       window.etoShowLive();
     },function(err){
-      const msg=err&&err.code===1?'❌ Nincs engedélyezve a helymeghatározás (ellenőrizd a böngésző/telefon beállításait)':
-                 err&&err.code===2?'❌ A pozíció jelenleg nem elérhető':
-                 err&&err.code===3?'❌ Túl sokáig tartott a pozíció lekérése':'❌ Nem sikerült lekérni a pozíciót';
+      const msg=err&&err.code===1?t('etoLiveErrDenied'):
+                 err&&err.code===2?t('etoLiveErrUnavailable'):
+                 err&&err.code===3?t('etoLiveErrTimeout'):t('etoLiveErrGeneric');
       toast(msg);
     },{enableHighAccuracy:true,timeout:10000});
   };
@@ -11077,12 +11485,12 @@ document.addEventListener('DOMContentLoaded',async()=>{
   // Function küld push értesítést a mentett tokenek alapján.
   window.etoRequestLocation=function(){
     const trip=etoCurrentTrip(); if(!trip)return;
-    if(!trip.kod){ toast('Ehhez egy megosztott (csoportos) utazás szükséges'); return; }
+    if(!trip.kod){ toast(t('etoLiveNeedSharedTrip')); return; }
     trip.liveShare=trip.liveShare||{};
     trip.liveShare.requestedAt=Date.now();
-    trip.liveShare.requestedBy=myProfileName||'Valaki';
+    trip.liveShare.requestedBy=myProfileName||t('etoSomeoneFallback');
     saveTrips();
-    toast('📤 Kérés elküldve a csapatnak');
+    toast(t('etoLiveRequestSentToast'));
   };
 
   // ── CSOPORTOS CHAT: olvasatlan üzenetek követése (csak ezen az eszközön) ──
@@ -11103,11 +11511,11 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   // ── 11) CSOPORTOS CHAT ──
   window.etoShowChat=function(code){
-    etoSetBack(true); etoSetTitle('💬 Csoportos chat');
+    etoSetBack(true); etoSetTitle(t('etoTtlChat'));
     const shared=trips.filter(t=>t.kod);
     if(!shared.length){
       window.etoChatOpenCode=null;
-      etoBody().innerHTML=`<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">💬</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">Csak megosztott utazásnál</div><div style="font-size:12px">Oszd meg egy utazásodat útitársaiddal (🔗), hogy tudjatok csevegni.</div></div>`;
+      etoBody().innerHTML=`<div style="text-align:center;padding:40px 10px;color:var(--mut)"><div style="font-size:34px;margin-bottom:10px">💬</div><div style="font-weight:800;margin-bottom:4px;color:var(--txt)">${t('etoChatOnlyTitle')}</div><div style="font-size:12px">${t('etoChatOnlyDesc')}</div></div>`;
       return;
     }
     const active=getActiveTrip();
@@ -11125,22 +11533,22 @@ document.addEventListener('DOMContentLoaded',async()=>{
       const isActive=t===active;
       const sel=t.kod===trip.kod;
       const unread=chatUnreadCount(t);
-      return `<button onclick="etoShowChat('${t.kod}')" style="flex:0 0 auto;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid var(--bd,#e5e7eb);background:${sel?'var(--acc,#6366f1)':'transparent'};color:${sel?'#fff':'var(--txt)'};white-space:nowrap;cursor:pointer;font-family:inherit">${isActive?'🟢':'📝'} ${chatEsc(t.nev||t.cel||'Utazás')}${(unread&&!sel)?` <span style="display:inline-block;min-width:16px;padding:1px 5px;border-radius:9px;background:var(--red,#ef4444);color:#fff;font-size:10px;margin-left:4px">${unread>99?'99+':unread}</span>`:''}</button>`;
+      return `<button onclick="etoShowChat('${t.kod}')" style="flex:0 0 auto;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid var(--bd,#e5e7eb);background:${sel?'var(--acc,#6366f1)':'transparent'};color:${sel?'#fff':'var(--txt)'};white-space:nowrap;cursor:pointer;font-family:inherit">${isActive?'🟢':'📝'} ${chatEsc(t.nev||t.cel||t('etoChatTripFallbackName'))}${(unread&&!sel)?` <span style="display:inline-block;min-width:16px;padding:1px 5px;border-radius:9px;background:var(--red,#ef4444);color:#fff;font-size:10px;margin-left:4px">${unread>99?'99+':unread}</span>`:''}</button>`;
     }).join('')}</div>`:'';
     etoBody().innerHTML=`
       <div class="eto-chat-wrap">
         ${selector}
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--mut);margin-bottom:8px">
-          <span>Itt így látszol: <b style="color:var(--txt)">${chatEsc(chatSenderFor(trip.kod))}</b></span>
-          <button onclick="etoEditChatNick('${trip.kod}')" style="border:none;background:none;color:var(--acc,#6366f1);font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">✏️ Becenév</button>
+          <span>${t('etoChatYouAppearAs')} <b style="color:var(--txt)">${chatEsc(chatSenderFor(trip.kod))}</b></span>
+          <button onclick="etoEditChatNick('${trip.kod}')" style="border:none;background:none;color:var(--acc,#6366f1);font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">${t('etoChatNicknameBtn')}</button>
         </div>
         <div class="eto-chat-list" id="etoChatList"></div>
         <div class="eto-chat-inputrow">
-          <input id="etoChatInp" class="fi" placeholder="Írj üzenetet…" maxlength="1000" autocomplete="off">
+          <input id="etoChatInp" class="fi" placeholder="${t('etoChatInputPlaceholder')}" maxlength="1000" autocomplete="off">
           <button class="btnp" onclick="etoSendChat()">➤</button>
         </div>
-        <button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoClearChatConfirm()">🗑️ Előzmények törlése</button>
-        <div class="eto-note">Csak szöveges üzenetek – fotót inkább a Dokumentumtárba tölts fel. Az utolsó 200 üzenet marad meg.${trip!==active?' Ez egy tervezési fázisú utazás chatje.':''}</div>
+        <button class="abtn" style="width:100%;justify-content:center;margin-top:10px" onclick="etoClearChatConfirm()">${t('etoChatClearHistoryBtn')}</button>
+        <div class="eto-note">${t('etoChatNote')}${trip!==active?t('etoChatPlanningNote'):''}</div>
       </div>`;
     const inp=document.getElementById('etoChatInp');
     if(inp) inp.addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); etoSendChat(); } });
@@ -11151,13 +11559,14 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const list=document.getElementById('etoChatList'); if(!list) return;
     const msgs=trip.chat||[];
     if(!msgs.length){
-      list.innerHTML=`<div style="text-align:center;color:var(--mut);padding:24px 10px;font-size:13px">Még nincs üzenet. Írd meg az elsőt! 👋</div>`;
+      list.innerHTML=`<div style="text-align:center;color:var(--mut);padding:24px 10px;font-size:13px">${t('etoChatNoMessages')}</div>`;
       return;
     }
     const nearBottom=(list.scrollTop+list.clientHeight)>=(list.scrollHeight-60);
+    const chatLocale=lang==='hu'?'hu-HU':lang==='de'?'de-DE':'en-US';
     list.innerHTML=msgs.map(m=>{
       const mine=m.sender===chatSenderFor(trip.kod);
-      const time=new Date(m.ts).toLocaleTimeString('hu-HU',{hour:'2-digit',minute:'2-digit'});
+      const time=new Date(m.ts).toLocaleTimeString(chatLocale,{hour:'2-digit',minute:'2-digit'});
       return `<div class="eto-chat-msg${mine?' mine':''}">${mine?'':`<div class="eto-chat-sender">${chatEsc(m.sender)}</div>`}<div class="eto-chat-bubble">${chatEsc(m.text)}</div><div class="eto-chat-time">${time}</div></div>`;
     }).join('');
     if(nearBottom||msgs.length<=1) list.scrollTop=list.scrollHeight;
@@ -11167,7 +11576,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     if(!code) return;
     const cur=chatNickFor(code);
     const oldName=chatSenderFor(code);
-    const val=prompt('Milyen néven jelenj meg ennek az utazásnak a chatjében?\n(Üresen hagyva a profilneved lesz használva.)',cur||myProfileName||'');
+    const val=prompt(t('etoChatNickPrompt'),cur||myProfileName||'');
     if(val===null) return;
     setChatNick(code,val);
     const newName=chatSenderFor(code);
@@ -11188,12 +11597,12 @@ document.addEventListener('DOMContentLoaded',async()=>{
   };
 
   window.etoClearChatConfirm=function(){
-    if(!confirm('Törlöd az összes chatüzenetet? Ez mindenkinél törlődik.')) return;
+    if(!confirm(t('etoChatClearConfirm'))) return;
     const code=window.etoChatOpenCode;
     if(typeof window.clearChatHistory==='function') window.clearChatHistory(code);
     const trip=trips.find(t=>t.kod===code);
     if(trip) etoRenderChatMessages(trip);
-    toast('🗑️ Chat előzmények törölve');
+    toast(t('etoChatClearedToast'));
   };
 
   // a valós idejű figyelő (index.html sync szekció) hívja ezt minden megosztott
@@ -11208,7 +11617,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
   // ── 12) NAPI EMLÉKFOTÓ NAPLÓ ──
   window.etoShowDiary=function(){
-    etoSetBack(true); etoSetTitle('📸 Napi emlékfotó napló');
+    etoSetBack(true); etoSetTitle(t('etoTtlDiary'));
     const trip=etoCurrentTrip();
     if(!trip){ etoBody().innerHTML=etoNoTrip(); return; }
     if(!trip.dailyPhotos)trip.dailyPhotos=[];
@@ -11218,11 +11627,11 @@ document.addEventListener('DOMContentLoaded',async()=>{
     });
   };
   function etoRenderDiary(trip){
-    const today=new Date().toISOString().slice(0,10);
-    const already=(trip.dailyPhotos||[]).find(d=>d.date===today);
+    const todayStr=today();
+    const already=(trip.dailyPhotos||[]).find(d=>d.date===todayStr);
     etoBody().innerHTML=`
       <input type="file" accept="image/*" capture="environment" id="etoDiaryFile" style="display:none" onchange="etoAddDiary(this)">
-      ${already?'':`<button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="document.getElementById('etoDiaryFile').click()">📸 Mai emlékfotó hozzáadása</button>`}
+      ${already?'':`<button class="abtn" style="width:100%;justify-content:center;margin-bottom:16px" onclick="document.getElementById('etoDiaryFile').click()">${t('etoDiaryAddBtn')}</button>`}
       <div id="etoDiaryList"></div>`;
     etoFillDiaryList(trip);
   }
@@ -11230,10 +11639,10 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const list=document.getElementById('etoDiaryList'); if(!list)return;
     const items=(trip.dailyPhotos||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
     if(!items.length){
-      list.innerHTML=`<div style="text-align:center;color:var(--mut);padding:16px;font-size:13px">Még nincs emlékfotó. Készíts egyet minden napról!</div>`;
+      list.innerHTML=`<div style="text-align:center;color:var(--mut);padding:16px;font-size:13px">${t('etoDiaryEmpty')}</div>`;
       return;
     }
-    list.innerHTML=items.map(d=>`<div class="eto-diary-item"><img id="etoDiaryImg_${d.date}"><div style="font-weight:800;font-size:12px;margin-bottom:4px">${d.date}</div>${d.note?`<div style="font-size:12px;color:var(--mut)">${d.note}</div>`:''}<button style="color:var(--red);background:none;border:none;font-size:11px;margin-top:6px;cursor:pointer;font-family:inherit" onclick="etoRemoveDiary('${d.date}')">🗑️ Törlés</button></div>`).join('');
+    list.innerHTML=items.map(d=>`<div class="eto-diary-item"><img id="etoDiaryImg_${d.date}"><div style="font-weight:800;font-size:12px;margin-bottom:4px">${d.date}</div>${d.note?`<div style="font-size:12px;color:var(--mut)">${d.note}</div>`:''}<button style="color:var(--red);background:none;border:none;font-size:11px;margin-top:6px;cursor:pointer;font-family:inherit" onclick="etoRemoveDiary('${d.date}')">${t('etoDiaryDeleteBtn')}</button></div>`).join('');
     items.forEach(d=>{
       const key=d.idbKey||('diary_'+trip.id+'_'+d.date);
       etoIdbGet(key).then(blob=>{
@@ -11247,20 +11656,20 @@ document.addEventListener('DOMContentLoaded',async()=>{
   window.etoAddDiary=function(inp){
     const file=inp.files&&inp.files[0]; if(!file)return;
     const trip=etoCurrentTrip(); if(!trip){inp.value='';return;}
-    const today=new Date().toISOString().slice(0,10);
-    const note=prompt('Rövid emlék a mai napról (opcionális):','')||'';
-    const key='diary_'+trip.id+'_'+today;
+    const todayStr=today();
+    const note=prompt(t('etoDiaryNotePrompt'),'')||'';
+    const key='diary_'+trip.id+'_'+todayStr;
     etoIdbPut(key,file).then(()=>{
       if(!trip.dailyPhotos)trip.dailyPhotos=[];
-      trip.dailyPhotos=trip.dailyPhotos.filter(d=>d.date!==today);
-      trip.dailyPhotos.push({date:today,idbKey:key,note});
-      saveTrips(); etoRenderDiary(trip); toast('✅ Emlék elmentve');
-    }).catch(()=>{ toast('❌ Nem sikerült elmenteni a fotót'); });
+      trip.dailyPhotos=trip.dailyPhotos.filter(d=>d.date!==todayStr);
+      trip.dailyPhotos.push({date:todayStr,idbKey:key,note});
+      saveTrips(); etoRenderDiary(trip); toast(t('etoDiarySavedToast'));
+    }).catch(()=>{ toast(t('etoDiarySaveFailToast')); });
     inp.value='';
   };
   window.etoRemoveDiary=function(date){
     const trip=etoCurrentTrip(); if(!trip)return;
-    if(!confirm('Törlöd ezt az emléket?'))return;
+    if(!confirm(t('etoDiaryDelConfirm')))return;
     const d=(trip.dailyPhotos||[]).find(x=>x.date===date);
     trip.dailyPhotos=(trip.dailyPhotos||[]).filter(x=>x.date!==date);
     saveTrips(); etoRenderDiary(trip);
