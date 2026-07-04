@@ -591,6 +591,16 @@ textarea.fi{resize:none}
 
 /* ── MISC ── */
 .secdiv{font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin:16px 0 10px}
+.csom-quick-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;font-size:12px;font-weight:800;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;margin:14px 0;padding:11px 14px;background:var(--adim);border:1.5px solid var(--ab);border-radius:14px;user-select:none}
+.csom-quick-hdr:active{filter:brightness(1.15)}
+.csom-quick-hdr-lbl{display:flex;align-items:center;gap:7px}
+.csom-quick-count{background:rgba(255,255,255,.12);color:var(--acc);border-radius:20px;padding:1px 8px;font-size:10px}
+.csom-quick-arrow{font-size:14px;transition:transform .18s;color:var(--acc)}
+.csom-quick-arrow.open{transform:rotate(180deg)}
+.csom-quick-wrap{max-height:130px;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-bottom:14px}
+.csom-quick-chips{display:flex;flex-wrap:wrap;gap:5px;padding-right:2px}
+.fchip-sm{flex-shrink:0;padding:5px 11px;border-radius:16px;font-size:11px;font-weight:800;cursor:pointer;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);transition:all .18s;font-family:inherit;letter-spacing:.01em}
+.theme-paper .fchip-sm{background:rgba(20,20,20,.05);border-color:rgba(20,20,20,.12);color:rgba(20,20,20,.55)}
 .rts{font-size:10px;color:var(--mut);text-align:right;margin-top:3px}
 .rts.ok{color:var(--grn)}.rts.er{color:var(--red)}
 .sumsv{background:var(--bg);border-radius:14px;padding:14px;text-align:center}
@@ -3022,6 +3032,7 @@ function _staticCrossRate(from,to){
 let curAttId=null, curSumId=null;
 let editTervId=null, editHelyId=null;
 let tervSelDat=null, helyFilter='all', tervSubTab=0, repViewMode='total'; // total | mine
+let csomQuickOpen=false; // Csomagolólista "Gyors hozzáadás" panel nyitva/zárva
 let tervViewMode='list'; // 'list' | 'timeline'
 let aiDayCache={}; // {tripId_date: [{nev, ido, tip, megj}]}
 let copyDayTripId=null, copyDayEvId=null;
@@ -3045,6 +3056,16 @@ function setProfileName(name){
   myProfileName=(name||'').trim();
   try{localStorage.setItem('monyk_profileName',myProfileName);}catch(e) { console.warn('[MONYK]', e); }
 }
+// ── Saját avatár (eszközszintű) – ebből származtatjuk a "nem" jelzést névtelen statisztikához, külön nem-választó nélkül ──
+let myProfileIcon='';
+try{const pi=localStorage.getItem('monyk_profileIcon');if(pi)myProfileIcon=pi;}catch(e) { console.warn('[MONYK]', e); }
+function setProfileIcon(ic){
+  myProfileIcon=ic||'';
+  try{localStorage.setItem('monyk_profileIcon',myProfileIcon);}catch(e) { console.warn('[MONYK]', e); }
+}
+// Ikon → nem leképezés, KIZÁRÓLAG névtelen aggregált statisztikához. Semleges/egyéb ikonoknál nincs nem-jelzés.
+const ICON_GENDER={'👨':'ferfi','👦':'ferfi','👴':'ferfi','🧔':'ferfi','👩':'no','👧':'no','👵':'no','👩‍💼':'no'};
+function myGenderStat(){ return ICON_GENDER[myProfileIcon]||''; }
 // ── Utazásonkénti chat-becenév (eszközszintű, nem szinkronizált) ──
 // Ha egy utazáshoz nincs beállítva külön becenév, a globális profilnév (myProfileName) érvényes.
 function chatNickKey(code){ return 'monyk_chat_nick_'+code; }
@@ -3279,6 +3300,10 @@ function fmtForPerson(baseAmt, tag){
 }
 
 const getActiveTrip=()=>trips.find(tr=>tr.aktiv)||null;
+// A trip dashboard megnyitása szándékosan NEM állítja át az "aktív" utazást
+// (lásd openTripDash), ezért ha a dashboardból nézünk egy utazást, azt kell
+// használni – nem feltétlenül egyezik meg a globálisan aktív utazással.
+const getViewedTrip=()=>dashOpenId?(trips.find(tr=>tr.id===dashOpenId)||getActiveTrip()):getActiveTrip();
 const getKats=()=>customKats&&customKats.length?customKats:[
   {id:'szallas',ikon:'🏨',nev:t('kAcc')},{id:'repjegy',ikon:'✈️',nev:t('kFl')},
   {id:'etkezes',ikon:'🍽️',nev:t('kFd')},{id:'kozlekedes',ikon:'🚌',nev:t('kTr')},
@@ -5877,7 +5902,7 @@ function openTripModal(id){
   wzStep=1;
   populateTValutaOptions();
   const tr=id?trips.find(t2=>t2.id===id):null;
-  editMems=tr?(tr.tagok||[]).map(m=>({...m})):[{id:genId(),nev:myProfileName||t('memDef')[0],ikon:'🧑'}];
+  editMems=tr?(tr.tagok||[]).map(m=>({...m})):[{id:genId(),nev:myProfileName||t('memDef')[0],ikon:myProfileIcon||'🧑'}];
   set('tripMttl',tr?t('tmEdit'):t('tmNew'));
   const flds=[['tNev',tr?.nev||''],['tCel',tr?.cel||''],['tKezdo',tr?.kezdo||today()],
     ['tVeg',tr?.veg||''],['tKeret',tr?.keret||''],['tValuta',tr?.valuta||''],
@@ -7520,6 +7545,44 @@ function getAiHeaders(){return{'Content-Type':'application/json'};}
 function getAiUrl(){return AI_PROXY_URL;}
 function groqBody(prompt,maxTokens,temperature){return JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:maxTokens,temperature:temperature||0.7,messages:[{role:'user',content:prompt}]});}
 function groqText(data){return data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content||'';}
+
+// ══════════════════════════════════════
+// NÉVTELEN HASZNÁLATI STATISZTIKA (közösségi AI-tanulás)
+// Semmilyen azonosító (userID, email, pontos GPS) nem kerül elküldésre –
+// csak kategória-szintű adat (város, hónap/évszak, kategória, esetleg avatárból
+// levezetett nem). Hiba esetén csendben elnyeljük, sosem zavarja a UX-et.
+// ══════════════════════════════════════
+function seasonFromDate(d){
+  if(!d)return'';
+  const m=new Date(d).getMonth()+1;
+  if(m===12||m===1||m===2)return'tel';
+  if(m>=3&&m<=5)return'tavasz';
+  if(m>=6&&m<=8)return'nyar';
+  return'osz';
+}
+function monthNumFromDate(d){ if(!d)return null; const m=new Date(d).getMonth()+1; return Number.isFinite(m)?m:null; }
+function logUsage(tipus,payload){
+  try{
+    fetch(AI_PROXY_URL+'/log-usage',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({tipus,...payload})
+    }).catch(()=>{});
+  }catch(e){}
+}
+async function getCommunityStatsForPrompt(tipus,params){
+  try{
+    const qs=new URLSearchParams({tipus,...params}).toString();
+    const r=await fetch(AI_PROXY_URL+'/get-stats?'+qs);
+    const d=await r.json();
+    const items=(d&&d.items)||[];
+    if(!items.length)return'';
+    const list=items.map(i=>i.nev+' ('+i.cnt+'×)').join(', ');
+    return tipus==='hely'
+      ?`Más MONYK-felhasználók által ehhez a városhoz leggyakrabban mentett helyek (vedd figyelembe, de ne csak ezeket javasold): ${list}.`
+      :`Más MONYK-felhasználók által hasonló utazáshoz leggyakrabban bepakolt tárgyak: ${list}.`;
+  }catch(e){return'';}
+}
 function setLang(l){lang=l;try{localStorage.setItem('monyk_lang',lang);}catch(e) { console.warn('[MONYK]', e); }applyLang();closeSettings();}
 function clearData(){showConfirm(t('clearConf'),()=>{trips=[];try{localStorage.removeItem(STORAGE_KEY);}catch(e) { console.warn('[MONYK]', e); }renderAll();closeSettings();});}
 function exitApp(){
@@ -7770,8 +7833,22 @@ function buildPlacesSummary(trip){
 
 
 
+// A csomagolólista helyes újrarajzolása – akár a fő Terv fülön,
+// akár a trip dashboardon (ahol a renderCsomag() csak ID-csere közben
+// ér célba, közvetlen hívásra a rejtett csomCont-ba írna).
+function refreshPackUI(){
+  if(dashOpenId){
+    if(tervSubTab===2) tdGoTervSub(2);
+  } else if(tab===2){
+    renderRep();
+  } else if(tab===3&&tervSubTab===2){
+    renderCsomag();
+  } else if(tab===5){
+    renderCsomag();
+  }
+}
 function openPackModal(){
-  const trip=getActiveTrip();if(!trip)return;
+  const trip=getViewedTrip();if(!trip)return;
   set('packMttl',t('packAdd'));
   $('packItemNev').value='';
   set('packSavBtn',t('packSave'));
@@ -7784,13 +7861,16 @@ function closePackModal(){$('packMbg').classList.remove('on');}
 function savePackItem(){
   const nev=$('packItemNev').value.trim();
   if(!nev){toast('⚠️ '+t('packNevLbl')+'!');return;}
-  const trip=getActiveTrip();if(!trip)return;
+  const trip=getViewedTrip();if(!trip)return;
   if(!trip.csomagol)trip.csomagol=[];
-  trip.csomagol.push({id:genId(),nev,kat:$('packItemKat').value,done:false});
-  closePackModal();if(tab===2)renderRep();else if(tab===5)renderCsomag();toast(t('packSave'));
+  const packKat=$('packItemKat').value;
+  trip.csomagol.push({id:genId(),nev,kat:packKat,done:false});
+  saveTrips();
+  logUsage('csomag',{evszak:seasonFromDate(trip.kezdo),orszag:trip.cel||trip.nev||'',kat:packKat,nev,nem:myGenderStat()});
+  closePackModal();refreshPackUI();toast(t('packSave'));
 }
 function togPack(iid){
-  const trip=getActiveTrip();if(!trip)return;
+  const trip=getViewedTrip();if(!trip)return;
   const item=(trip.csomagol||[]).find(i=>i.id===iid);if(!item)return;
   item.done=!item.done;
   saveTrips();
@@ -7802,20 +7882,22 @@ function togPack(iid){
     if(chk){chk.classList.toggle('done',item.done);chk.textContent=item.done?'✓':'';}
   }
   // Progress bar frissítése
-  if(tab===2)renderRep();
-  else if(tab===3&&tervSubTab===2)renderCsomag();
-  else if(tab===5)renderCsomag();
+  refreshPackUI();
 }
 function delPackItem(iid){
   showConfirm(t('packDelConf'),()=>{
-    const trip=getActiveTrip();if(!trip)return;
-    trip.csomagol=(trip.csomagol||[]).filter(i=>i.id!==iid);if(tab===2)renderRep();else if(tab===5)renderCsomag();
+    const trip=getViewedTrip();if(!trip)return;
+    trip.csomagol=(trip.csomagol||[]).filter(i=>i.id!==iid);
+    saveTrips();
+    refreshPackUI();
   });
 }
 function resetPack(){
   showConfirm(t('packResetConf'),()=>{
-    const trip=getActiveTrip();if(!trip)return;
-    (trip.csomagol||[]).forEach(i=>i.done=false);if(tab===2)renderRep();else if(tab===5)renderCsomag();
+    const trip=getViewedTrip();if(!trip)return;
+    (trip.csomagol||[]).forEach(i=>i.done=false);
+    saveTrips();
+    refreshPackUI();
   },'🧳');
 }
 
@@ -8281,12 +8363,13 @@ async function runAiDayPlan(tripId,dat){
   const otherCtx=Object.entries(allOther).sort(([a],[b])=>a.localeCompare(b)).map(([d,evs])=>`${d}: ${evs.join(', ')}`).join(' | ')||'–';
   const places=(trip.places||[]).map(p=>p.nev).join(', ')||'–';
   const weather=await getWeatherForPrompt(trip.cel||trip.nev);
+  const communityStats=await getCommunityStatsForPrompt('hely',{varos:trip.cel||trip.nev||''});
   const dtObj=new Date(dat+'T12:00');
   const dayOfWeek=dtObj.toLocaleDateString(lang==='hu'?'hu-HU':lang==='de'?'de-DE':'en-US',{weekday:'long'});
   const tripStart=new Date((trip.kezdo||dat)+'T12:00');
   const dayNum=Math.round((dtObj-tripStart)/(1000*60*60*24))+1;
   const prompt=lang==='hu'
-    ?`Te egy helyi ismeretekkel rendelkező utazási tervező vagy. Tervezz részletes, reális napi programot: ${dat} (${dayOfWeek}, ${dayNum}. nap), helyszín: ${trip.cel||trip.nev}.${weather?'\n'+weather:''}
+    ?`Te egy helyi ismeretekkel rendelkező utazási tervező vagy. Tervezz részletes, reális napi programot: ${dat} (${dayOfWeek}, ${dayNum}. nap), helyszín: ${trip.cel||trip.nev}.${weather?'\n'+weather:''}${communityStats?'\n'+communityStats:''}
 Már mentett helyek: ${places}.
 Ezen a napon már tervezett: ${existing}.
 MÁS napokon tervezett (EZEKET NE ISMÉTELD!): ${otherCtx}.
@@ -8302,7 +8385,7 @@ Válaszolj CSAK JSON formátumban:
 Típusok: ✈️ Repülő, 🏨 Szállás, 🍽️ Étkezés, 🚌 Közlekedés, 🏛️ Látnivaló, 🎭 Program, 🛒 Bevásárlás, 📝 Egyéb
 FONTOS: Étkezési eseményeknél (🍽️) adj meg 3 étteremopciót "opciok" mezőben: [{"nev":"étterem neve","tav":"X perc séta","ert":"4.5★","leiras":"konyha típusa, árkategória"}]`
     :lang==='de'
-    ?`Du bist ein Reiseplaner mit lokalen Kenntnissen. Plane ein detailliertes Tagesprogramm: ${dat} (${dayOfWeek}, Tag ${dayNum}), Ort: ${trip.cel||trip.nev}.${weather?'\n'+weather:''}
+    ?`Du bist ein Reiseplaner mit lokalen Kenntnissen. Plane ein detailliertes Tagesprogramm: ${dat} (${dayOfWeek}, Tag ${dayNum}), Ort: ${trip.cel||trip.nev}.${weather?'\n'+weather:''}${communityStats?'\n'+communityStats:''}
 Gespeicherte Orte: ${places}. Bereits an diesem Tag geplant: ${existing}.
 An anderen Tagen geplant (NICHT WIEDERHOLEN!): ${otherCtx}.
 
@@ -8315,7 +8398,7 @@ REGELN:
 Antworte NUR als JSON:
 [{"nev":"Konkreter Ort / Programmname","ido":"HH:MM","tip":"🏛️ Sehenswürdigkeit","megj":"nützliche Info"}]
 WICHTIG: Bei Mahlzeiten (🍽️) füge 3 Restaurant-Optionen in "opciok" hinzu: [{"nev":"Restaurantname","tav":"X min zu Fuß","ert":"4.5★","leiras":"Küchentyp, Preiskategorie"}]`
-    :`You are a travel planner with local knowledge. Plan a detailed day programme: ${dat} (${dayOfWeek}, day ${dayNum}), destination: ${trip.cel||trip.nev}.${weather?'\n'+weather:''}
+    :`You are a travel planner with local knowledge. Plan a detailed day programme: ${dat} (${dayOfWeek}, day ${dayNum}), destination: ${trip.cel||trip.nev}.${weather?'\n'+weather:''}${communityStats?'\n'+communityStats:''}
 Saved places: ${places}. Already planned this day: ${existing}.
 Planned on OTHER days (DO NOT REPEAT!): ${otherCtx}.
 
@@ -8446,6 +8529,7 @@ function aiDayAddOne(tripId,dat,idx,btn){
   const megj=selRest?`${selRest.leiras||''}${selRest.tav?' · '+selRest.tav:''}${selRest.ert?' · '+selRest.ert:''}`:item.megj||'';
   trip.events.push({id:genId(),dat,nev,ido:item.ido||'',tip:item.tip||'📝 Egyéb',megj});
   saveTrips();toast('📅 '+t('tAiDayAdded'));
+  logUsage('hely',{varos:trip.cel||trip.nev||'',tip:item.tip||'',nev,honap:monthNumFromDate(dat)});
   btn.textContent='✓';btn.disabled=true;btn.style.opacity='.5';
   requestAnimationFrame(()=>renderTerv());
 }
@@ -8464,6 +8548,7 @@ function aiDayAddAll(tripId,dat){
       const nev=selRest?selRest.nev:item.nev;
       const megj=selRest?`${selRest.leiras||''}${selRest.tav?' · '+selRest.tav:''}${selRest.ert?' · '+selRest.ert:''}`:item.megj||'';
       trip.events.push({id:genId(),dat,nev,ido:item.ido||'',tip:item.tip||'📝 Egyéb',megj});
+      logUsage('hely',{varos:trip.cel||trip.nev||'',tip:item.tip||'',nev,honap:monthNumFromDate(dat)});
       added++;
     }
   });
@@ -8515,7 +8600,10 @@ function saveTervEsemeny(){
   const trip=getActiveTrip();if(!trip)return;
   if(!trip.events)trip.events=[];
   if(editTervId){const ev=trip.events.find(e=>e.id===editTervId);if(ev)Object.assign(ev,{nev,dat,ido,megj,link,ar,tip});}
-  else{trip.events.push({id:genId(),nev,dat,ido,megj,link,ar,tip});}
+  else{
+    trip.events.push({id:genId(),nev,dat,ido,megj,link,ar,tip});
+    logUsage('hely',{varos:trip.cel||trip.nev||'',tip,nev,honap:monthNumFromDate(dat)});
+  }
   tervSelDat=dat;closeTerv();saveTrips();renderTerv();toast('✅ '+t('tervSaved'));
 }
 function delTervEsemeny(tid,eid){
@@ -8608,13 +8696,14 @@ async function runAiPlaceSuggest(tripId){
   const radLabels={city:t('aiPlaceR0'),'10km':t('aiPlaceR1'),'50km':t('aiPlaceR2'),country:t('aiPlaceR3')};
   const radLabel=radLabels[aiPlaceRadius]||t('aiPlaceR0');
   const weather=await getWeatherForPrompt(dest);
+  const communityStats=await getCommunityStatsForPrompt('hely',{varos:dest});
 
   const promptHU=`Te egy tapasztalt utazási tanácsadó vagy.
 
 Utazás: ${dest}, ${days} nap, ${monthStr}.
 Szállás: ${szallas||'ismeretlen helyen'}.
 Keresési terület: ${radLabel}.
-Már tervezett helyek: ${existing}.${weather?'\n'+weather:''}
+Már tervezett helyek: ${existing}.${weather?'\n'+weather:''}${communityStats?'\n'+communityStats:''}
 
 Adj pontosan 10 egyedi, érdekes helyszínjavalatot ami MÉG NINCS a listában! Az időjárást is vedd figyelembe (pl. borús időben fedett helyszínek).
 Válaszolj CSAK JSON formátumban:
@@ -8625,7 +8714,7 @@ Válaszolj CSAK JSON formátumban:
 Reise: ${dest}, ${days} Tage, ${monthStr}.
 Unterkunft: ${szallas||'unbekannt'}.
 Suchbereich: ${radLabel}.
-Bereits geplante Orte: ${existing}.${weather?'\n'+weather:''}
+Bereits geplante Orte: ${existing}.${weather?'\n'+weather:''}${communityStats?'\n'+communityStats:''}
 
 Gib genau 10 einzigartige Ortsvorschläge die noch NICHT auf der Liste stehen! Das Wetter berücksichtigen.
 Antworte NUR als JSON:
@@ -8636,7 +8725,7 @@ Antworte NUR als JSON:
 Trip: ${dest}, ${days} days, ${monthStr}.
 Accommodation: ${szallas||'unknown'}.
 Search area: ${radLabel}.
-Already planned places: ${existing}.${weather?'\n'+weather:''}
+Already planned places: ${existing}.${weather?'\n'+weather:''}${communityStats?'\n'+communityStats:''}
 
 Give exactly 10 unique, interesting place suggestions NOT already on the list!
 For each place check:
@@ -8726,6 +8815,7 @@ function aiPlaceAdd(tripId, item, btn){
   const meta=[item.price?'🎟 '+item.price:'',item.hours?'🕐 '+item.hours:'',item.distance?'📍 '+item.distance:''].filter(Boolean).join(' · ');
   trip.places.push({id:genId(),nev:item.nev,tip:item.tip||'📍 Egyéb',prio:item.prio||'want',cim:'',megj:meta||item.reason||'',link:''});
   saveTrips();
+  logUsage('hely',{varos:trip.cel||trip.nev||'',tip:item.tip||'',nev:item.nev,honap:monthNumFromDate(trip.kezdo)});
   if(btn){btn.textContent='✓';btn.style.background='rgba(52,211,153,.15)';btn.style.borderColor='rgba(52,211,153,.4)';btn.style.color='var(--grn)';btn.disabled=true;}
   setTimeout(()=>renderHelyek(),300);
 }
@@ -8738,6 +8828,7 @@ function aiPlaceAddAll(tripId, items){
     if(!trip.places.some(p=>p.nev.toLowerCase()===(i.nev||'').toLowerCase())){
       const meta=[i.price?'🎟 '+i.price:'',i.hours?'🕐 '+i.hours:'',i.distance?'📍 '+i.distance:''].filter(Boolean).join(' · ');
       trip.places.push({id:genId(),nev:i.nev,tip:i.tip||'📍 Egyéb',prio:i.prio||'want',cim:'',megj:meta||i.reason||'',link:''});
+      logUsage('hely',{varos:trip.cel||trip.nev||'',tip:i.tip||'',nev:i.nev,honap:monthNumFromDate(trip.kezdo)});
       added++;
     }
   });
@@ -8845,7 +8936,10 @@ function saveHely(){
   const trip=getActiveTrip();if(!trip)return;
   if(!trip.places)trip.places=[];
   if(editHelyId){const h=trip.places.find(p=>p.id===editHelyId);if(h)Object.assign(h,{nev,cim,megj,link,ar,tip,prio});}
-  else{trip.places.push({id:genId(),nev,cim,megj,link,ar,tip,prio});}
+  else{
+    trip.places.push({id:genId(),nev,cim,megj,link,ar,tip,prio});
+    logUsage('hely',{varos:trip.cel||trip.nev||'',tip,nev,honap:monthNumFromDate(trip.kezdo)});
+  }
   closeHely();saveTrips();renderHelyek();toast('✅ '+t('hSaved'));
 }
 function delHely(tid,hid){
@@ -9287,23 +9381,24 @@ async function openAiPackSuggest(tripId){
     : crossBorder?(needsPassport?`Passport required (${homeCountry} → ${destCountry}).`:`EU travel (${homeCountry} → ${destCountry}), ID card may suffice.`):`Domestic trip.`;
 
   const weather=await getWeatherForPrompt(trip.cel||trip.nev);
+  const communityStats=await getCommunityStatsForPrompt('csomag',{evszak:seasonFromDate(trip.kezdo),nem:myGenderStat()});
 
   const prompt=lang==='hu'
     ?`Utazás: ${trip.cel||trip.nev}, ${days} nap, ${month}.
-${weather?weather+'\n':''}Kiindulás: ${homeCountry} (${homeCur}). Célország: ${destCountry} (${destCur}). Okmányok: ${docHint}
+${weather?weather+'\n':''}${communityStats?communityStats+'\n':''}Kiindulás: ${homeCountry} (${homeCur}). Célország: ${destCountry} (${destCur}). Okmányok: ${docHint}
 Programok: ${events}. Helyszínek: ${places}. Kiadási kategóriák: ${cats}. Már bepakolt: ${existing}.
 Adj pontosan 12 csomagolási javaslatot ami még NINCS bepakolva! Vedd figyelembe: időjárást, éghajlatot, programokat, utazás típusát, és KÜLÖNÖSEN az okmányokat (útlevél/személyi/vízum/biztosítás) ha szükséges.
 Válaszolj CSAK JSON formátumban, semmi más szöveg:
 [{"nev":"tárgy neve","kat":"clothing/toiletries/health/electronics/documents/other","reason":"rövid indok magyarul"}]`
     :lang==='de'
     ?`Reise: ${trip.cel||trip.nev}, ${days} Tage, ${month}.
-${weather?weather+'\n':''}Abflugland: ${homeCountry} (${homeCur}). Zielland: ${destCountry} (${destCur}). Dokumente: ${docHint}
+${weather?weather+'\n':''}${communityStats?communityStats+'\n':''}Abflugland: ${homeCountry} (${homeCur}). Zielland: ${destCountry} (${destCur}). Dokumente: ${docHint}
 Programme: ${events}. Orte: ${places}. Bereits eingepackt: ${existing}.
 Gib genau 12 Packlisten-Vorschläge die noch NICHT eingepackt sind. Berücksichtige Wetter, Dokumente (Reisepass/Ausweis/Versicherung) falls nötig.
 Antworte NUR als JSON:
 [{"nev":"Artikelname","kat":"clothing/toiletries/health/electronics/documents/other","reason":"kurze Begründung auf Deutsch"}]`
     :`Trip: ${trip.cel||trip.nev}, ${days} days, ${month}.
-${weather?weather+'\n':''}Origin: ${homeCountry} (${homeCur}). Destination: ${destCountry} (${destCur}). Documents: ${docHint}
+${weather?weather+'\n':''}${communityStats?communityStats+'\n':''}Origin: ${homeCountry} (${homeCur}). Destination: ${destCountry} (${destCur}). Documents: ${docHint}
 Activities: ${events}. Places: ${places}. Already packed: ${existing}.
 Give exactly 12 packing suggestions not already packed. Consider the weather forecast. Pay special attention to travel documents (passport/ID/visa/insurance) if needed.
 Reply ONLY as JSON:
@@ -9366,6 +9461,7 @@ function aiPackAdd(tripId, nev, kat, btn){
   if(trip.csomagol.some(i=>i.nev.toLowerCase()===nev.toLowerCase()))return;
   trip.csomagol.push({id:genId(),nev,kat,done:false});
   saveTrips();
+  logUsage('csomag',{evszak:seasonFromDate(trip.kezdo),orszag:trip.cel||trip.nev||'',kat,nev,nem:myGenderStat()});
   // Gomb vizuális visszajelzés
   if(btn){btn.textContent='✓';btn.style.background='rgba(52,211,153,.15)';btn.style.borderColor='rgba(52,211,153,.4)';btn.style.color='var(--grn)';btn.disabled=true;}
   // Progress bar frissítés
@@ -9379,6 +9475,7 @@ function aiPackAddAll(tripId, items){
   items.forEach(i=>{
     if(!trip.csomagol.some(x=>x.nev.toLowerCase()===i.nev.toLowerCase())){
       trip.csomagol.push({id:genId(),nev:i.nev,kat:i.kat,done:false});
+      logUsage('csomag',{evszak:seasonFromDate(trip.kezdo),orszag:trip.cel||trip.nev||'',kat:i.kat,nev:i.nev,nem:myGenderStat()});
       added++;
     }
   });
@@ -9389,7 +9486,7 @@ function aiPackAddAll(tripId, items){
 
 function renderCsomag(){
   const c=$('csomCont');if(!c)return;
-  const trip=getActiveTrip();
+  const trip=getViewedTrip();
   if(!trip){
     c.innerHTML=`<div style="text-align:center;padding:48px 20px"><div style="font-size:52px;margin-bottom:14px;opacity:.4">🧳</div><div style="font-size:16px;font-weight:800;margin-bottom:6px">${t('csomNoTrip')}</div><div style="font-size:13px;color:var(--mut)">${t('csomNoTripD')}</div></div>`;return;
   }
@@ -9411,16 +9508,20 @@ function renderCsomag(){
     if(pct===100)html+=`<div class="csomag-done-msg">${t('packDoneMsg')}</div>`;
   }
   const qp=QUICK_PACKS_DATA[lang]||QUICK_PACKS_DATA.en;
-  if(total===0){
-    html+=`<div class="secdiv">${t('packQuick')}</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">`;
-    PACK_CATS.forEach(({id})=>{
-      const items=qp[id]||[];
-      items.forEach(nev=>{
-        const exists=trip.csomagol.some(i=>i.nev===nev);
-        if(!exists)html+=`<button class="fchip" onclick="quickAddPack('${nev.replace(/'/g,"\\'")}','${id}')">＋ ${nev}</button>`;
+  const remainingQuickCount=PACK_CATS.reduce((s,{id})=>s+(qp[id]||[]).filter(nev=>!trip.csomagol.some(i=>i.nev===nev)).length,0);
+  if(remainingQuickCount>0){
+    html+=`<div class="csom-quick-hdr" onclick="toggleCsomQuick()"><span class="csom-quick-hdr-lbl">✨ ${t('packQuick')} <span class="csom-quick-count">${remainingQuickCount}</span></span><span class="csom-quick-arrow${csomQuickOpen?' open':''}">▾</span></div>`;
+    if(csomQuickOpen){
+      html+=`<div class="csom-quick-wrap"><div class="csom-quick-chips">`;
+      PACK_CATS.forEach(({id})=>{
+        const items=qp[id]||[];
+        items.forEach(nev=>{
+          const exists=trip.csomagol.some(i=>i.nev===nev);
+          if(!exists)html+=`<button class="fchip-sm" onclick="quickAddPack('${nev.replace(/'/g,"\\'")}','${id}')">＋ ${nev}</button>`;
+        });
       });
-    });
-    html+='</div>';
+      html+='</div></div>';
+    }
   }
   PACK_CATS.forEach(({id})=>{
     const items=trip.csomagol.filter(i=>i.kat===id);
@@ -9447,11 +9548,17 @@ function renderCsomag(){
   c.innerHTML=html;
 }
 
+function toggleCsomQuick(){
+  csomQuickOpen=!csomQuickOpen;
+  refreshPackUI();
+}
 function quickAddPack(nev,katId){
-  const trip=getActiveTrip();if(!trip)return;
+  const trip=getViewedTrip();if(!trip)return;
   if(!trip.csomagol)trip.csomagol=[];
   trip.csomagol.push({id:genId(),nev,kat:katId,done:false});
-  renderCsomag();toast('✅ '+nev);
+  saveTrips();
+  logUsage('csomag',{evszak:seasonFromDate(trip.kezdo),orszag:trip.cel||trip.nev||'',kat:katId,nev,nem:myGenderStat()});
+  refreshPackUI();toast('✅ '+nev);
 }
 
 // ══════════════════════════════════════
@@ -10479,7 +10586,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
           // ── csak a saját tag-dokumentumot írjuk be, elem-szinten —
           //    így semmiképp nem tudjuk felülírni/törölni a többiek tagját,
           //    még akkor sem, ha közben valaki más is csatlakozott ──
-          const meTag={id:genId(),nev:myProfileName,ikon:'🧑'};
+          const meTag={id:genId(),nev:myProfileName,ikon:myProfileIcon||'🧑'};
           trip.tagok=[...(trip.tagok||[]),meTag];
           try{ await db.collection('trips').doc(code).collection('members').doc(meTag.id).set(meTag); }
           catch(e){ console.warn('[MONYK sync] members write',e); }
@@ -10557,7 +10664,9 @@ document.addEventListener('DOMContentLoaded',async()=>{
         <div class="mhdr"><span class="mttl">👋 Hogy szólítsunk?</span><button class="mcls" onclick="closeProfileModal()">✕</button></div>
         <div class="mbdy" style="padding-top:6px">
           <div style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5">Ez a neved lesz alapértelmezve, amikor csatlakozol egy megosztott utazáshoz, és amikor új tételt rögzítesz. Bármikor módosítható a ⚙️ Beállításokban.</div>
-          <input id="profInp" class="fi" maxlength="24" style="width:100%;text-align:center;font-weight:800;padding:14px" placeholder="pl. Réka">
+          <input id="profInp" class="fi" maxlength="24" style="width:100%;text-align:center;font-weight:800;padding:14px;margin-bottom:14px" placeholder="pl. Réka">
+          <div style="font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;text-align:center">Válassz avatárt</div>
+          <div id="profIconGrd" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:4px 0"></div>
         </div>
         <div class="mft"><button class="btnp" style="width:100%" onclick="saveProfileModal()">✅ Mentés</button></div>
       </div>
@@ -10658,10 +10767,18 @@ document.addEventListener('DOMContentLoaded',async()=>{
   };
   window.openJoinModal=function(){ ensureModals(); document.getElementById('joinInp').value=''; document.getElementById('joinMbg').classList.add('on'); };
   window.closeJoinModal=function(){ const m=document.getElementById('joinMbg'); if(m) m.classList.remove('on'); };
+  let profSelectedIcon='';
+  function renderProfIconGrd(){
+    const grd=document.getElementById('profIconGrd'); if(!grd) return;
+    grd.innerHTML=EMOJIS.map(e=>`<span onclick="window.pickProfIcon('${e}')" style="font-size:24px;cursor:pointer;padding:6px;border-radius:10px;border:1.5px solid ${e===profSelectedIcon?'var(--acc)':'transparent'};background:${e===profSelectedIcon?'var(--adim)':'transparent'}">${e}</span>`).join('');
+  }
+  window.pickProfIcon=function(ic){ profSelectedIcon=ic; renderProfIconGrd(); };
   window.openProfileModal=function(){
     ensureModals();
     const inp=document.getElementById('profInp');
     if(inp) inp.value=myProfileName||'';
+    profSelectedIcon=myProfileIcon||'🧑';
+    renderProfIconGrd();
     document.getElementById('profMbg').classList.add('on');
     setTimeout(()=>inp?.focus(),200);
   };
@@ -10670,6 +10787,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const v=(document.getElementById('profInp')?.value||'').trim();
     if(!v){ toast('⚠️ Adj meg egy nevet'); return; }
     setProfileName(v);
+    setProfileIcon(profSelectedIcon||'🧑');
     const pn=document.getElementById('soProfileInp'); if(pn) pn.value=v;
     closeProfileModal();
     toast('✓ Profil mentve: '+v);
